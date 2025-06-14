@@ -1,0 +1,30 @@
+[
+    {
+        "id": 1,
+        "name": "Produits de r\u00e9cup\u00e9ration"
+    },
+    {
+        "id": 2,
+        "name": "Produits en cuivre"
+    },
+    {
+        "id": 3,
+        "name": "Produits en fer"
+    },
+    {
+        "id": 4,
+        "name": "Produits en acier"
+    },
+    {
+        "id": 5,
+        "name": "Produits en aluminium"
+    },
+    {
+        "id": 6,
+        "name": "Produits en duraluminium"
+    },
+    {
+        "id": 7,
+        "name": "Produits en plastanium"
+    }
+]

@@ -1,0 +1,62 @@
+[
+    {
+        "id": 1,
+        "name": "Utilitaires",
+        "parent_id": null
+    },
+    {
+        "id": 2,
+        "name": "Outils de construction",
+        "parent_id": 1
+    },
+    {
+        "id": 3,
+        "name": "Outils de cartographie",
+        "parent_id": 1
+    },
+    {
+        "id": 4,
+        "name": "D\u00e9ployables",
+        "parent_id": 1
+    },
+    {
+        "id": 5,
+        "name": "Outils de r\u00e9colte",
+        "parent_id": 1
+    },
+    {
+        "id": 6,
+        "name": "Outils d'hydratation",
+        "parent_id": 1
+    },
+    {
+        "id": 7,
+        "name": "Outils utilitaires",
+        "parent_id": 1
+    },
+    {
+        "id": 8,
+        "name": "Armes",
+        "parent_id": null
+    },
+    {
+        "id": 9,
+        "name": "Munitions",
+        "parent_id": 8
+    },
+    {
+        "id": 10,
+        "name": "Consommables",
+        "parent_id": 1
+    },
+    {
+        "id": 11,
+        "name": "Divers",
+        "parent_id": null
+    },
+    {
+        "id": 12,
+        "name": "Carburant",
+        "parent_id": 11
+    }
+]
