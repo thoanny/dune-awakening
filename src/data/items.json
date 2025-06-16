@@ -7,7 +7,7 @@
         "type_id": 7,
         "details": "Ceinture \u00e0 suspenseur permettant de se soustraire \u00e0 l'action de la gravit\u00e9 pendant quelques instants",
         "description": "Cette ceinture \u00e0 suspenseur unique est c\u00e9l\u00e8bre pour avoir \u00e9t\u00e9 utilis\u00e9e lors de l'illustre pi\u00e8ce \"L'ombre de mon p\u00e8re\". Les jongleurs s'en servent pour virevolter de mani\u00e8re impressionnante au cours de leurs num\u00e9ros. Sautez \u00e0 deux reprises pour l'activer et flotter vers le haut. Les champs suspenseurs conservet le mouvement imprim\u00e9, et ils consomment de l'\u00e9nergie tant qu'ils sont activ\u00e9s.",
-        "icon": null,
+        "icon": "t_ui_iconwearchoamsuspensorpartialreductionr_d.webp",
         "volume": 2,
         "stack": 1,
         "level": 1,

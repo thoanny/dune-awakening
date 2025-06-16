@@ -1,6 +1,45 @@
 @import 'tailwindcss';
 @plugin "daisyui";
 
+@plugin "daisyui/theme" {
+	name: 'dune';
+	default: true;
+	prefersdark: false;
+	color-scheme: 'dark';
+	--color-base-100: oklch(25.33% 0.016 252.42);
+	--color-base-200: oklch(23.26% 0.014 253.1);
+	--color-base-300: oklch(21.15% 0.012 254.09);
+	--color-base-content: oklch(97.807% 0.029 256.847);
+	--color-primary: oklch(0.7067 0.0932 77.3);
+	--color-primary-content: oklch(0.3 0.0932 77.3);
+	--color-secondary: oklch(0.5591 0.1306 323.04);
+	--color-secondary-content: oklch(0.2 0.0421 319.46);
+	--color-accent: oklch(0.8411 0.1446 324.75);
+	--color-accent-content: oklch(0.4 0.1446 324.75);
+	--color-neutral: oklch(14% 0.005 285.823);
+	--color-neutral-content: oklch(92% 0.004 286.32);
+	--color-info: oklch(74% 0.16 232.661);
+	--color-info-content: oklch(29% 0.066 243.157);
+	--color-success: oklch(76% 0.177 163.223);
+	--color-success-content: oklch(37% 0.077 168.94);
+	--color-warning: oklch(82% 0.189 84.429);
+	--color-warning-content: oklch(41% 0.112 45.904);
+	--color-error: oklch(0.2188 0.0898 29.23);
+	--color-error-content: oklch(0.65 0.0898 29.23);
+	--radius-selector: 0rem;
+	--radius-field: 0rem;
+	--radius-box: 0rem;
+	--size-selector: 0.25rem;
+	--size-field: 0.25rem;
+	--border: 1px;
+	--depth: 0;
+	--noise: 0;
+}
+
+@utility btn {
+	@apply btn-outline;
+}
+
 h1 {
 	@apply text-5xl font-bold text-primary mb-4;
 }
@@ -15,4 +54,87 @@ pre {
 
 ul {
 	@apply mb-4;
+}
+
+.bg-quality-orange {
+	@apply bg-linear-to-b from-[#161516] to-[#e17737];
+}
+
+/* [ ] Refine colors (green, blue and purple) */
+
+.bg-quality-green {
+	@apply bg-linear-to-b from-[#181614] to-[#5a754d];
+}
+
+.bg-quality-blue {
+	@apply bg-linear-to-b from-[#151515] to-[#5c86bc];
+}
+
+.bg-quality-purple {
+	@apply bg-linear-to-b from-[#3a2e55] to-[#020000];
+}
+
+header {
+	@apply bg-black;
+}
+
+header nav {
+	@apply flex justify-center;
+}
+
+header nav a {
+	--gap: 2px;
+	border-width: var(--gap);
+	border-style: solid;
+	border-image: linear-gradient(to bottom, transparent, transparent) 1 100%;
+	margin-left: calc(var(--gap) * -1);
+	border-bottom: 0;
+	border-top-width: 2px;
+}
+
+header nav a span {
+	border-bottom: 2px solid transparent;
+	display: block;
+	@apply px-6 pt-6 pb-3;
+	height: 100%;
+}
+
+header nav a.router-link-active {
+	@apply bg-linear-to-b from-[#000000] via-[#2d153b] to-[#4d265c] text-accent;
+	border-image: linear-gradient(to bottom, #000, #b470b8) 1 100%;
+	/* color: #c7a2d8; */
+}
+
+header nav a.router-link-active span {
+	border-bottom-color: #f9a9ff;
+}
+
+.text-shadow {
+	text-shadow:
+		-1px 0 #000,
+		0 1px #000,
+		1px 0 #000,
+		0 -1px #000,
+		0 2px 3px #000;
+}
+
+.title {
+	--s: 1rem;
+	padding: calc(var(--s) * 0.75) calc(var(--s) * 2);
+	clip-path: polygon(
+		0 50%,
+		var(--s) 0,
+		calc(100% - var(--s)) 0,
+		100% 50%,
+		calc(100% - var(--s)) 100%,
+		0 100%,
+		var(--s) 100%
+	);
+	background: var(--color-primary);
+	color: var(--color-primary-content);
+	width: fit-content;
+	user-select: none;
+	font-weight: 500;
+	font-size: 0.875rem;
+	margin: 0;
 }
