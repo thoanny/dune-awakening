@@ -33,3 +33,20 @@ npm run build
 ```sh
 npm run lint
 ```
+
+## Admin
+
+Installer Django :
+`python -m pip install Django`
+
+Vérifier que le dossier Scripts de Python soit dans les variables d'environnements (Path), exemple :
+`C:\Users\{user}\AppData\Roaming\Python\Python313\Scripts`
+
+Pour démarrer le serveur :
+`python ./admin/manage.py 7000` (pour lancer sur le port 7000)
+
+D'abord créer un projet (admin), puis créer des apps (app).
+
+Modifier les models.py, importer dans le admin.py.
+
+Si modification de models : `python manage.py makemigrations` pour générer les migrations, puis `python manage.py migrate` pour exécuter les migrations.
