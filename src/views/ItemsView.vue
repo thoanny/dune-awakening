@@ -1,34 +1,31 @@
 <template>
-	<table class="table">
-		<tbody>
-			<tr v-for="item in items" :key="item.id">
-				<td>{{ item.id }}</td>
-				<td>{{ item.name }}</td>
-				<td>{{ item.category_id }}</td>
-				<td>{{ item.subcategory_id }}</td>
-				<td>{{ item.type_id }}</td>
-				<td>{{ item.details }}</td>
-				<td>{{ item.description }}</td>
-				<td>{{ item.icon }}</td>
-				<td>{{ item.volume }}</td>
-				<td>{{ item.stack }}</td>
-				<td>{{ item.level }}</td>
-				<td>{{ item.quality }}</td>
-				<td>{{ item.source_id }}</td>
-				<td>{{ item.stats }}</td>
-			</tr>
-		</tbody>
-	</table>
-	<hr />
-	<button v-tippy="{ content: 'Hi!' }">Tippy!</button>
-	<button v-tippy="'Hello!'">Tippy!</button>
-
-	<tippy>
-		<button>Tippy!</button>
-		<template #content> <strong>Hi!</strong> </template>
-	</tippy>
+	<div class="container mx-auto">
+		<TitleSection title="Objets" />
+		<div class="flex gap-4 flex-wrap mx-4 mt-4">
+			<tippy v-for="item in items" :key="item.pk">
+				<button
+					class="size-24 border border-primary bg-black/50"
+					:class="[`bg-quality-${item.fields.quality}`]"
+				>
+					<img
+						v-if="item.fields.icon"
+						:src="`/img/items/${item.fields.icon}`"
+						class="object-contain w-full h-full p-2"
+					/>
+				</button>
+				<template #content>
+					<ItemTooltip :item="item" />
+				</template>
+			</tippy>
+		</div>
+	</div>
 </template>
 
 <script setup>
-import items from '@/data/items.json';
+import TitleSection from '@/components/TitleSection.vue';
+import ItemTooltip from '@/components/ItemTooltip.vue';
+
+import { useAppStore } from '@/stores/app';
+const store = useAppStore();
+const { items } = store;
 </script>
