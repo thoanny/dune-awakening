@@ -51,10 +51,9 @@ export const useAppStore = defineStore('app', () => {
 		}
 	};
 
-	const countInQueueByRecipeId = (recipeId) =>
-		computed(() => {
-			return queue.value.find((q) => q.id === recipeId)?.count ?? 0;
-		});
+	const countInQueueByRecipeId = (recipeId) => {
+		return queue.value.find((q) => q.id === recipeId)?.count ?? 0;
+	};
 
 	const shoppingList = () =>
 		computed(() => {

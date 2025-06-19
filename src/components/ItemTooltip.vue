@@ -31,7 +31,10 @@
 				class="object-contain w-full h-full"
 			/>
 		</div>
-		<div class="px-4 py-3" v-if="item.fields.details">
+		<div class="px-4 py-3" v-if="item.fields.description">
+			{{ item.fields.description }}
+		</div>
+		<div class="px-4 py-3" v-else-if="item.fields.details">
 			{{ item.fields.details }}
 		</div>
 		<div
@@ -44,7 +47,7 @@
 		</div>
 		<div class="flex flex-col divide-y-1 divide-[#1c1c1c]" v-if="item.fields.stats.length > 0">
 			<div
-				class="flex justify-between px-4 py-2"
+				class="flex justify-between px-4 py-2 gap-4"
 				v-for="stat in item.fields.stats"
 				:key="stat.id"
 			>
@@ -63,6 +66,6 @@ import MkIcon from './MkIcon.vue';
 
 const volume = (size) =>
 	computed(() => {
-		return (size / 10).toLocaleString('fr');
+		return (size / 100).toLocaleString('fr');
 	});
 </script>
