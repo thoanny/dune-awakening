@@ -41,7 +41,6 @@ export const useAppStore = defineStore('app', () => {
 	const removeFromQueue = (recipeId) => {
 		const idx = queue.value.findIndex((q) => q.id === recipeId);
 		if (idx < 0) {
-			console.log('false;');
 			return false;
 		} else {
 			if (queue.value[idx].count === 1) {
@@ -90,7 +89,6 @@ export const useAppStore = defineStore('app', () => {
 	const queueLocal = JSON.parse(localStorage.getItem('recipes-queue'));
 	if (queueLocal) {
 		queue.value = queueLocal;
-		console.log(queue.value);
 	}
 
 	const getTotalItems = () => {

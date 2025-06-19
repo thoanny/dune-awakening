@@ -29,31 +29,7 @@
 				:key="recipe.pk"
 				class="border border-primary/50 flex flex-wrap gap-2 p-2 items-center select-none"
 			>
-				<div class="flex flex-col gap-1">
-					<button
-						class="btn btn-primary btn-sm btn-square"
-						@click="store.removeFromQueue(recipe.pk)"
-						:disabled="store.countInQueueByRecipeId(recipe.pk) <= 0"
-					>
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							width="24"
-							height="24"
-							viewBox="0 0 24 24"
-							fill="none"
-							stroke="currentColor"
-							stroke-width="2"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							class="icon icon-tabler icons-tabler-outline icon-tabler-minus size-4"
-						>
-							<path stroke="none" d="M0 0h24v24H0z" fill="none" />
-							<path d="M5 12l14 0" />
-						</svg>
-					</button>
-					<span class="self-center text-sm mt-[2px] mb-[2px]">{{
-						store.countInQueueByRecipeId(recipe.pk)
-					}}</span>
+				<div class="flex flex-col gap-2">
 					<button
 						class="btn btn-primary btn-sm btn-square"
 						@click="store.addToQueue(recipe.pk)"
@@ -76,6 +52,27 @@
 							<path d="M5 12l14 0" />
 						</svg>
 					</button>
+					<button
+						class="btn btn-primary btn-sm btn-square"
+						@click="store.removeFromQueue(recipe.pk)"
+						:disabled="store.countInQueueByRecipeId(recipe.pk) <= 0"
+					>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							width="24"
+							height="24"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							class="icon icon-tabler icons-tabler-outline icon-tabler-minus size-4"
+						>
+							<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+							<path d="M5 12l14 0" />
+						</svg>
+					</button>
 				</div>
 				<div>
 					<tippy>
@@ -85,11 +82,9 @@
 						>
 							<span
 								class="badge badge-primary font-semibold badge-sm absolute bottom-0 left-0"
+								v-if="store.countInQueueByRecipeId(recipe.pk) > 0"
 								>&times;{{
-									store.countInQueueByRecipeId(recipe.pk) > 0
-										? store.countInQueueByRecipeId(recipe.pk) *
-											recipe.fields.quantity
-										: recipe.fields.quantity
+									store.countInQueueByRecipeId(recipe.pk) * recipe.fields.quantity
 								}}</span
 							>
 							<img
@@ -140,7 +135,10 @@
 						</template>
 					</tippy>
 				</div>
-				<div v-for="ingredient in recipe.fields.ingredients" :key="ingredient.id">
+				<div
+					v-for="ingredient in ingredients(recipe.fields.ingredients)"
+					:key="ingredient.id"
+				>
 					<tippy>
 						<div
 							class="size-24 relative border border-primary"
@@ -190,6 +188,10 @@ const recipesFromItemId = ref();
 
 const loadCurrentRecipe = (id) => {
 	recipesFromItemId.value = recipes.filter((recipe) => recipe.fields.item?.id === parseInt(id));
+};
+
+const ingredients = (ingredients) => {
+	return ingredients.sort((a, b) => a.item.name.localeCompare(b.item.name));
 };
 
 onMounted(() => {
