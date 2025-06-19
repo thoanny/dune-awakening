@@ -34,7 +34,13 @@
 						<path d="M17 17h-11v-14h-2" />
 						<path d="M6 5l14 1l-1 7h-13" />
 					</svg>
-					<div class="badge badge-sm badge-neutral">{{ queue.length }}</div>
+					<div class="badge badge-sm badge-neutral">
+						{{
+							queue
+								.map((q) => q.count)
+								.reduce((previous, current) => previous + current)
+						}}
+					</div>
 				</button>
 			</div>
 		</div>

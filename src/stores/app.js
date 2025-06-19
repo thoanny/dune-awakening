@@ -35,6 +35,7 @@ export const useAppStore = defineStore('app', () => {
 		} else {
 			queue.value[idx].count++;
 		}
+		saveQueueToLocal();
 	};
 
 	const removeFromQueue = (recipeId) => {
@@ -49,6 +50,7 @@ export const useAppStore = defineStore('app', () => {
 				queue.value[idx].count--;
 			}
 		}
+		saveQueueToLocal();
 	};
 
 	const countInQueueByRecipeId = (recipeId) => {
@@ -80,6 +82,16 @@ export const useAppStore = defineStore('app', () => {
 
 			return list.length > 0 ? list : null;
 		});
+
+	const saveQueueToLocal = () => {
+		localStorage.setItem('recipes-queue', JSON.stringify(queue.value));
+	};
+
+	const queueLocal = JSON.parse(localStorage.getItem('recipes-queue'));
+	if (queueLocal) {
+		queue.value = queueLocal;
+		console.log(queue.value);
+	}
 
 	return {
 		items,
