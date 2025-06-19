@@ -10,12 +10,8 @@
 					class="input input-bordered w-full"
 				/>
 			</div>
-			<div>
-				<button
-					class="btn btn-primary"
-					v-if="queue.length > 0"
-					@click="shoppingModal.showModal()"
-				>
+			<div v-if="queue.length > 0">
+				<button class="btn btn-primary" @click="shoppingModal.showModal()">
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						width="24"
@@ -44,8 +40,8 @@
 				</button>
 			</div>
 		</div>
-		<div class="flex gap-4 mt-4 px-4">
-			<div class="w-1/3 flex flex-col gap-2">
+		<div class="flex flex-col-reverse xl:flex-row gap-4 mt-4 px-4">
+			<div class="w-full xl:w-1/3 flex flex-col gap-2">
 				<RouterLink
 					:to="{ name: 'recipe', params: { id: recipe.fields.item.id } }"
 					v-for="recipe in filteredRecipes"
@@ -77,14 +73,14 @@
 							</template>
 							{{ recipe.fields.item.name }}
 						</div>
-						<div v-if="recipe.fields.item.details">
+						<div v-if="recipe.fields.item.details" class="line-clamp-2 leading-5">
 							{{ recipe.fields.item.details }}
 						</div>
 					</div>
 					<!-- <pre>{{ recipe }}</pre> -->
 				</RouterLink>
 			</div>
-			<div class="w-2/3">
+			<div class="w-full xl:w-2/3">
 				<RouterView />
 			</div>
 		</div>

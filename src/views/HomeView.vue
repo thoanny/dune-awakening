@@ -2,7 +2,7 @@
 	<div class="container mx-auto">
 		<div class="header-image bg-primary">
 			<div
-				class="absolute w-full top-2 sm:top-8 xl:top-24 flex flex-col items-center mix-blend-screen text-primary"
+				class="absolute w-full top-4 sm:top-8 xl:top-24 flex flex-col items-center mix-blend-screen text-primary"
 			>
 				<div class="text-xl sm:text-3xl font-bold">Dune: Awakening</div>
 				<div class="text-lg sm:text-xl font-semibold">&mdash; Fansite &mdash;</div>
@@ -44,7 +44,7 @@
 				loading="lazy"
 			/>
 		</div>
-		<div class="grid grid-cols-2 gap-4 mt-4">
+		<div class="grid grid-cols-2 gap-4 mt-4 px-4">
 			<div class="stats bg-base-300 text-center">
 				<div class="stat">
 					<div class="stat-value">{{ getTotalItems() }}</div>

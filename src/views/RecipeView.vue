@@ -27,7 +27,7 @@
 			<div
 				v-for="recipe in recipesFromItemId"
 				:key="recipe.pk"
-				class="border border-primary/50 flex gap-2 p-2 items-center select-none"
+				class="border border-primary/50 flex flex-wrap gap-2 p-2 items-center select-none"
 			>
 				<div class="flex flex-col gap-1">
 					<button
