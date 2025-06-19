@@ -93,6 +93,14 @@ export const useAppStore = defineStore('app', () => {
 		console.log(queue.value);
 	}
 
+	const getTotalItems = () => {
+		return items.length;
+	};
+
+	const getTotalRecipes = () => {
+		return recipes.length;
+	};
+
 	return {
 		items,
 		recipes,
@@ -103,5 +111,7 @@ export const useAppStore = defineStore('app', () => {
 		addToQueue,
 		removeFromQueue,
 		countInQueueByRecipeId,
+		getTotalItems,
+		getTotalRecipes,
 	};
 });
