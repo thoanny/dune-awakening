@@ -64,6 +64,7 @@
 							:src="`/img/items/${recipe.fields.item.icon}`"
 							class="object-contain w-full h-full p-2"
 							alt=""
+							loading="lazy"
 							v-if="recipe.fields.item.icon"
 						/>
 					</div>
@@ -100,6 +101,7 @@
 						<img
 							class="size-10 rounded-box"
 							:src="`/img/items/${recipe.icon}`"
+							loading="lazy"
 							v-if="recipe.icon"
 						/>
 					</div>
@@ -155,7 +157,12 @@
 				<ul class="list !mb-0">
 					<li class="list-row px-0" v-for="item in shoppingList" :key="item.id">
 						<div v-if="item?.icon">
-							<img class="size-6 rounded-box" :src="`/img/items/${item?.icon}`" />
+							<img
+								class="size-6 rounded-box"
+								:src="`/img/items/${item?.icon}`"
+								loading="lazy"
+								alt=""
+							/>
 						</div>
 						<div class="self-center">
 							<div>{{ item.name }}</div>

@@ -11,6 +11,7 @@
 						v-if="item.fields.icon"
 						:src="`/img/items/${item.fields.icon}`"
 						class="object-contain w-full h-full p-2"
+						loading="lazy"
 					/>
 				</button>
 				<template #content>

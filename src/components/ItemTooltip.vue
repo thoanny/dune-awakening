@@ -29,6 +29,7 @@
 				:src="`/img/items/${item.fields.icon}`"
 				:alt="item.fields.name"
 				class="object-contain w-full h-full"
+				loading="lazy"
 			/>
 		</div>
 		<div class="px-4 py-3" v-if="item.fields.description">
