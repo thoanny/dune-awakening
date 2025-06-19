@@ -5,6 +5,7 @@
 				:src="`/img/items/${currentRecipe.fields.item.icon}`"
 				class="object-contain w-full h-full"
 				alt=""
+				v-if="currentRecipe.fields.item.icon"
 			/>
 			<div class="border border-primary/50 p-2 absolute top-3 left-4 flex items-center">
 				<button
@@ -29,7 +30,7 @@
 					</svg>
 				</button>
 				<span class="w-16 shrink-0 text-center">
-					{{ store.countInQueueByRecipeId(currentRecipe?.pk) }}
+					{{ currentRecipeInQueue }}
 				</span>
 				<button
 					class="btn btn-primary btn-square btn-sm"
@@ -107,7 +108,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { onBeforeRouteUpdate, useRoute } from 'vue-router';
 import MkIcon from '@/components/MkIcon.vue';
 import ItemTooltip from '@/components/ItemTooltip.vue';
@@ -119,12 +120,14 @@ const { recipes } = store;
 
 const route = useRoute();
 const currentRecipe = ref();
-const currentRecipeInQueue = ref();
 
 const loadCurrentRecipe = (id) => {
 	currentRecipe.value = recipes.find((recipe) => recipe.pk === parseInt(id));
-	currentRecipeInQueue.value = store.countInQueueByRecipeId(id)?.value;
 };
+
+const currentRecipeInQueue = computed(() => {
+	return store.countInQueueByRecipeId(currentRecipe.value?.pk);
+});
 
 onMounted(() => {
 	loadCurrentRecipe(route.params.id);

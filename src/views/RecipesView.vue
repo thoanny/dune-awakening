@@ -2,7 +2,14 @@
 	<div class="container mx-auto" id="recipes">
 		<TitleSection title="Recettes" />
 		<div class="flex items-center justify-between px-4 mt-4">
-			<div>filters</div>
+			<div>
+				<select name="" class="select select-bordered" v-model="filteredWorkshop">
+					<option value="">---</option>
+					<option :value="workshop.id" v-for="workshop in workshops" :key="workshop.id">
+						{{ workshop.name }}
+					</option>
+				</select>
+			</div>
 			<div>
 				<button
 					class="btn btn-primary"
@@ -35,7 +42,7 @@
 			<div class="w-1/3 flex flex-col gap-2">
 				<RouterLink
 					:to="{ name: 'recipe', params: { id: recipe.pk } }"
-					v-for="recipe in recipes"
+					v-for="recipe in filteredRecipes"
 					:key="recipe.pk"
 					class="flex h-24 bg-black/50 border border-primary/50 hover:border-primary"
 				>
@@ -51,6 +58,7 @@
 							:src="`/img/items/${recipe.fields.item.icon}`"
 							class="object-contain w-full h-full p-2"
 							alt=""
+							v-if="recipe.fields.item.icon"
 						/>
 					</div>
 					<div
@@ -82,8 +90,12 @@
 			<h4 class="text-lg font-bold">File d'attente</h4>
 			<ul class="list" v-if="queue.length > 0">
 				<li class="list-row px-0" v-for="recipe in queue" :key="recipe.id">
-					<div v-if="recipe.icon">
-						<img class="size-10 rounded-box" :src="`/img/items/${recipe.icon}`" />
+					<div>
+						<img
+							class="size-10 rounded-box"
+							:src="`/img/items/${recipe.icon}`"
+							v-if="recipe.icon"
+						/>
 					</div>
 					<div class="self-center">
 						<div>{{ recipe.name }}</div>
@@ -109,7 +121,7 @@
 					<button
 						class="btn btn-square"
 						@click="store.addToQueue(recipe.id)"
-						:disabled="recipe.count >= 1000"
+						:disabled="recipe.count >= 500"
 					>
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
@@ -154,7 +166,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import TitleSection from '@/components/TitleSection.vue';
 import MkIcon from '@/components/MkIcon.vue';
 
@@ -167,4 +179,39 @@ const { queue } = storeToRefs(store);
 
 const my_modal_2 = ref();
 const shoppingList = store.shoppingList();
+
+const filteredRecipes = computed(() => {
+	return recipes
+		.sort((a, b) => a.fields.item.name.localeCompare(b.fields.item.name))
+		.filter((recipe) => {
+			if (!filteredWorkshop.value) {
+				return true;
+			}
+			if (recipe.fields.workshop?.id === filteredWorkshop.value) {
+				return true;
+			}
+			return false;
+		});
+});
+
+const filteredWorkshop = ref('');
+
+const workshops = computed(() => {
+	return recipes
+		.map((recipe) => {
+			if (recipe.fields.workshop) {
+				return { id: recipe.fields.workshop.id, name: recipe.fields.workshop.name };
+			} else {
+				return;
+			}
+		})
+		.reduce((previous, current) => {
+			// console.log('reduce', previous, current);
+			if (previous && !previous.find((item) => item?.id === current?.id)) {
+				previous.push(current);
+			}
+			return previous;
+		}, [])
+		.filter((recipe) => !!recipe);
+});
 </script>
