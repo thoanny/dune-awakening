@@ -77,7 +77,7 @@
 				<div>
 					<tippy>
 						<div
-							class="size-24 relative border border-primary"
+							class="size-18 md:size-24 relative border border-primary"
 							:class="[`bg-quality-${recipe.fields.item.quality}`]"
 						>
 							<span
@@ -120,7 +120,7 @@
 				<div v-if="recipe.fields.workshop">
 					<tippy>
 						<div
-							class="size-24 border border-primary"
+							class="size-18 md:size-24 border border-primary"
 							:class="[`bg-quality-${recipe.fields.workshop.quality}`]"
 						>
 							<img
@@ -141,7 +141,7 @@
 				>
 					<tippy>
 						<div
-							class="size-24 relative border border-primary"
+							class="size-18 md:size-24 relative border border-primary"
 							:class="[`bg-quality-${ingredient.item.quality}`]"
 						>
 							<span
