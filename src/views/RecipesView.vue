@@ -46,7 +46,7 @@
 					:to="{ name: 'recipe', params: { id: recipe.fields.item.id } }"
 					v-for="recipe in filteredRecipes"
 					:key="recipe.pk"
-					class="flex h-24 bg-black/50 border border-primary/50 hover:border-primary"
+					class="flex h-22 bg-black/50 border border-primary/50 hover:border-primary"
 				>
 					<div
 						class="aspect-square h-full shrink-0 relative"
@@ -72,9 +72,6 @@
 								{{ recipe.fields.quantity }}&nbsp;×
 							</template>
 							{{ recipe.fields.item.name }}
-						</div>
-						<div v-if="recipe.fields.item.details" class="line-clamp-2 leading-5">
-							{{ recipe.fields.item.details }}
 						</div>
 					</div>
 					<!-- <pre>{{ recipe }}</pre> -->

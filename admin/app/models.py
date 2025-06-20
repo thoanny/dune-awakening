@@ -119,11 +119,8 @@ class Item(models.Model):
     category = models.ForeignKey(Item_Category, on_delete=models.SET_NULL, null=True, blank=True)
     subcategory = models.ForeignKey(Item_SubCategory, on_delete=models.SET_NULL, null=True, blank=True)
     type = models.ForeignKey(Item_Type, on_delete=models.SET_NULL, null=True, blank=True)
-    details = models.CharField(max_length=255, null=True, blank=True)
-    description = models.TextField(null=True, blank=True)
     icon = models.CharField(max_length=255, null=True, blank=True)
     volume = models.IntegerField(null=True, blank=True)
-    stack = models.IntegerField(null=True, blank=True)
     level = models.IntegerField(null=True, blank=True)
     quality = models.CharField(max_length=10, choices=QUALITY, null=True, blank=True)
     sources = models.ManyToManyField(Item_Source, blank=True)
@@ -140,7 +137,6 @@ class Item(models.Model):
         return {
             "id": self.id, 
             "name": self.name, 
-            "details": self.details, 
             "icon": self.icon, 
             "level": self.level, 
             "quality": self.quality

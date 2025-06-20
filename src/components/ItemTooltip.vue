@@ -32,12 +32,6 @@
 				loading="lazy"
 			/>
 		</div>
-		<div class="px-4 py-3" v-if="item.fields.description">
-			{{ item.fields.description }}
-		</div>
-		<div class="px-4 py-3" v-else-if="item.fields.details">
-			{{ item.fields.details }}
-		</div>
 		<div
 			class="bg-[#1c1c1c] flex flex-col divide-y-1 divide-[#2d2825]"
 			v-if="item.fields.sources.length > 0"
@@ -48,7 +42,7 @@
 		</div>
 		<div class="flex flex-col divide-y-1 divide-[#1c1c1c]" v-if="item.fields.stats.length > 0">
 			<div
-				class="flex justify-between px-4 py-2 gap-4"
+				class="flex justify-between px-4 py-1 gap-4 text-sm"
 				v-for="stat in item.fields.stats"
 				:key="stat.id"
 			>
