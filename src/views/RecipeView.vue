@@ -1,5 +1,5 @@
 <template>
-	<div v-if="recipesFromItemId && recipesFromItemId.length > 0">
+	<div v-if="recipesFromItemId && recipesFromItemId.length > 0" class="sticky top-4">
 		<div
 			class="h-68 relative"
 			:class="[`bg-quality-${recipesFromItemId[0].fields.item.quality}`]"
@@ -77,7 +77,7 @@
 				<div>
 					<tippy>
 						<div
-							class="size-18 md:size-24 relative border border-primary"
+							class="size-18 md:size-22 relative border border-primary"
 							:class="[`bg-quality-${recipe.fields.item.quality}`]"
 						>
 							<span
@@ -120,7 +120,7 @@
 				<div v-if="recipe.fields.workshop">
 					<tippy>
 						<div
-							class="size-18 md:size-24 border border-primary"
+							class="size-18 md:size-22 border border-primary"
 							:class="[`bg-quality-${recipe.fields.workshop.quality}`]"
 						>
 							<img
@@ -141,7 +141,7 @@
 				>
 					<tippy>
 						<div
-							class="size-18 md:size-24 relative border border-primary"
+							class="size-18 md:size-22 relative border border-primary"
 							:class="[`bg-quality-${ingredient.item.quality}`]"
 						>
 							<span

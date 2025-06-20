@@ -2,15 +2,15 @@
 	<div
 		class="flex flex-col divide-y-1 divide-[#1c1c1c] bg-[#2d2825] min-w-xs text-[#ffda94] text-shadow shadow-xl/50"
 	>
-		<div class="border border-primary px-4 py-3 font-semibold">
-			<div class="uppercase text-[#c1995c]" v-if="item.fields.type">
+		<div class="flex flex-col gap-1 border border-primary px-4 py-3 font-semibold">
+			<div class="uppercase text-[#c1995c] leading-5" v-if="item.fields.type">
 				<template v-if="item.fields.type.parent_name">
 					{{ item.fields.type.parent_name }} -
 				</template>
 				{{ item.fields.type.name }}
 			</div>
-			<div class="text-lg">{{ item.fields.name }}</div>
-			<div class="italic text-[#c1995c]">
+			<div class="text-lg leading-5">{{ item.fields.name }}</div>
+			<div class="italic text-[#c1995c] leading-5">
 				{{ item.fields.category?.name }}
 				<template v-if="item.fields.category && item.fields.subcategory"> - </template>
 				{{ item.fields.subcategory?.name }}

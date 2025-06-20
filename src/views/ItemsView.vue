@@ -15,7 +15,7 @@
 					v-for="subcategory in subcategories"
 					:key="subcategory.id"
 				>
-					{{ category.name }}
+					{{ subcategory.name }}
 				</option>
 			</select>
 			<select class="select select-bordered w-auto" v-model="filteredType">

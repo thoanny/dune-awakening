@@ -7,19 +7,29 @@ from .models import Recipe, Recipe_Ingredient
 class ItemAdmin(admin.ModelAdmin):
     filter_horizontal = ('sources', 'stats',)
     list_display = ('name', 'category', 'subcategory', 'type',)
+    search_fields = ['name']
+    ordering = ('name',)
 
-class Item_TypeAdmin(admin.ModelAdmin):
+class ItemTypeAdmin(admin.ModelAdmin):
     list_display = ('name', 'parent',)
 
 class RecipeAdmin(admin.ModelAdmin):
     filter_horizontal = ('ingredients',)
     list_display = ('__str__', 'workshop',)
+    ordering = ('item__name', 'quantity',)
+    search_fields = ['item__name']
+
+class ItemSourceAdmin(admin.ModelAdmin):
+    ordering = ('name',)
+
+class ItemStatAdmin(admin.ModelAdmin):
+    ordering = ('name', 'value',)
 
 admin.site.register(Item, ItemAdmin)
 admin.site.register(Item_Category)
 admin.site.register(Item_SubCategory)
-admin.site.register(Item_Type, Item_TypeAdmin)
-admin.site.register(Item_Source)
-admin.site.register(Item_Stat)
+admin.site.register(Item_Type, ItemTypeAdmin)
+admin.site.register(Item_Source, ItemSourceAdmin)
+admin.site.register(Item_Stat, ItemStatAdmin)
 admin.site.register(Recipe, RecipeAdmin)
 admin.site.register(Recipe_Ingredient)
