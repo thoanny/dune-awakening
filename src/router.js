@@ -8,15 +8,16 @@ import RecipeView from '@/views/RecipeView.vue';
 import DevView from '@/views/DevView.vue';
 
 const routes = [
-	{ path: '/', component: HomeView },
-	{ path: '/items', component: ItemsView },
+	{ path: '/', name: 'home', component: HomeView },
+	{ path: '/objets', name: 'items', component: ItemsView },
 	{
-		path: '/recipes',
+		path: '/schemas',
+		name: 'recipes',
 		component: RecipesView,
-		children: [{ path: ':id', name: 'recipe', component: RecipeView }],
+		children: [{ path: ':slug', name: 'recipe', component: RecipeView }],
 	},
-	{ path: '/about', component: AboutView },
-	{ path: '/dev', component: DevView },
+	{ path: '/a-propos', name: 'about', component: AboutView },
+	{ path: '/dev', name: 'dev', component: DevView },
 ];
 
 const router = createRouter({

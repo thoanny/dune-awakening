@@ -186,8 +186,8 @@ const { recipes } = store;
 const route = useRoute();
 const recipesFromItemId = ref();
 
-const loadCurrentRecipe = (id) => {
-	recipesFromItemId.value = recipes.filter((recipe) => recipe.fields.item?.id === parseInt(id));
+const loadCurrentRecipe = (slug) => {
+	recipesFromItemId.value = recipes.filter((recipe) => recipe.fields.item?.slug === slug);
 };
 
 const ingredients = (ingredients) => {
@@ -195,11 +195,11 @@ const ingredients = (ingredients) => {
 };
 
 onMounted(() => {
-	loadCurrentRecipe(route.params.id);
+	loadCurrentRecipe(route.params.slug);
 });
 
 onBeforeRouteUpdate((to) => {
-	loadCurrentRecipe(to.params.id);
+	loadCurrentRecipe(to.params.slug);
 });
 </script>
 

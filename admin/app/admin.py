@@ -9,6 +9,7 @@ class ItemAdmin(admin.ModelAdmin):
     list_display = ('name', 'category', 'subcategory', 'type',)
     search_fields = ['name']
     ordering = ('name',)
+    prepopulated_fields = {"slug": ("name",)}
 
 class ItemTypeAdmin(admin.ModelAdmin):
     list_display = ('name', 'parent',)

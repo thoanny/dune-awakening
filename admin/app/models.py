@@ -125,6 +125,7 @@ class Item(models.Model):
     quality = models.CharField(max_length=10, choices=QUALITY, null=True, blank=True)
     sources = models.ManyToManyField(Item_Source, blank=True)
     stats = models.ManyToManyField(Item_Stat, blank=True)
+    slug = models.SlugField(default="", null=False)
 
     def __str__(self):
         return self.name
@@ -136,6 +137,7 @@ class Item(models.Model):
     def natural_key(self):
         return {
             "id": self.id, 
+            "slug": self.slug, 
             "name": self.name, 
             "icon": self.icon, 
             "level": self.level, 
@@ -159,6 +161,7 @@ class Recipe_Ingredient(models.Model):
             "id": self.id, 
             "item": {
                 "id": self.item.id, 
+                "slug": self.item.slug, 
                 "name": self.item.name, 
                 "icon": self.item.icon, 
                 "level": self.item.level, 

@@ -43,7 +43,7 @@
 		<div class="flex flex-col-reverse xl:flex-row gap-4 mt-4 px-4">
 			<div class="w-full xl:w-1/3 flex flex-col gap-2">
 				<RouterLink
-					:to="{ name: 'recipe', params: { id: recipe.fields.item.id } }"
+					:to="{ name: 'recipe', params: { slug: recipe.fields.item.slug } }"
 					v-for="recipe in filteredRecipes"
 					:key="recipe.pk"
 					class="flex h-22 bg-black/50 border border-primary/50 hover:border-primary"
