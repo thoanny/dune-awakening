@@ -5,6 +5,7 @@ import ItemsView from '@/views/ItemsView.vue';
 import AboutView from '@/views/AboutView.vue';
 import RecipesView from '@/views/RecipesView.vue';
 import RecipeView from '@/views/RecipeView.vue';
+import LandsraadView from '@/views/LandsraadView.vue';
 import DevView from '@/views/DevView.vue';
 
 const routes = [
@@ -16,6 +17,7 @@ const routes = [
 		component: RecipesView,
 		children: [{ path: ':slug', name: 'recipe', component: RecipeView }],
 	},
+	{ path: '/landsraad', name: 'landsraad', component: LandsraadView },
 	{ path: '/a-propos', name: 'about', component: AboutView },
 	{ path: '/dev', name: 'dev', component: DevView },
 ];
