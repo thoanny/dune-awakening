@@ -70,7 +70,18 @@ class Item_Type(models.Model):
 
 
 class Item_Source(models.Model):
+    TYPE = {
+        'CAVE': "Caverne",
+        'ENEMY_CAMP': "Camp",
+        'ENEMY_OUTPOST': "Avant-poste",
+        'LANDMARK': "Landmark",
+        'SHIPWRECK': "Épaves",
+        'TESTING_STATION': "Station expérimentale",
+        'HARVEST': "Récole",
+        'CRAFT': "Fabrication",
+    }
     name = models.CharField(max_length=100)
+    type = models.CharField(choices=TYPE, null=True, blank=True)
 
     def __str__(self):
         return self.name

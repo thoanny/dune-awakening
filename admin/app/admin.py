@@ -22,6 +22,7 @@ class RecipeAdmin(admin.ModelAdmin):
 
 class ItemSourceAdmin(admin.ModelAdmin):
     ordering = ('name',)
+    list_display = ('name', 'type',)
 
 class ItemStatAdmin(admin.ModelAdmin):
     ordering = ('name', 'value',)
