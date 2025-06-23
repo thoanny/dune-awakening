@@ -1,7 +1,7 @@
 <template>
 	<div class="container mx-auto">
 		<TitleSection title="Landsraad" />
-		<div class="grid grid-cols-5 gap-4 mt-4">
+		<div class="grid grid-cols-5 gap-4 mt-4 px-4">
 			<div
 				v-for="house in houses"
 				:key="house"
@@ -16,6 +16,21 @@
 
 <script setup>
 import TitleSection from '@/components/TitleSection.vue';
+
+/*
+
+Cryshah :
+- Début du landsraad : lundi 19h UTC
+- Fin du landsraad : dimanche 19h UTC
+- 5 tuiles : du mardi au samedi à 17h UTC
+- Limite des récompenses : début du prochain landsraad
+
+Discord officiel :
+- New term starts: mardi 24 juin 2025 à 05:00 (Europe/Paris)
+- Voting session starts: dimanche 29 juin 2025 à 20:00 (Europe/Paris)
+- Voting session ends: lundi 23 juin 2025 à 20:00 (Europe/Paris)
+
+*/
 
 const houses = [
 	'Hagal', // Épée de Regis

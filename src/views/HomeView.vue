@@ -44,23 +44,23 @@
 				loading="lazy"
 			/>
 		</div>
-		<div class="grid grid-cols-2 gap-4 mt-4 px-4">
+		<div class="grid grid-cols-2 lg:grid-cols-4 gap-4 px-4 mt-4 md:-mt-18 lg:-mt-24 xl:-mt-28">
 			<div class="stats bg-base-300 text-center">
 				<div class="stat">
-					<div class="stat-value">{{ getTotalItems() }}</div>
+					<div class="stat-value text-xl sm:text-3xl">{{ getTotalItems() }}</div>
 					<div class="stat-desc">objets</div>
 				</div>
 			</div>
 			<div class="stats bg-base-300 text-center">
 				<div class="stat">
-					<div class="stat-value">{{ getTotalRecipes() }}</div>
+					<div class="stat-value text-xl sm:text-3xl">{{ getTotalRecipes() }}</div>
 					<div class="stat-desc">recettes</div>
 				</div>
 			</div>
-			<div class="stats bg-base-300 text-center">
+			<div class="stats bg-base-300 text-center col-span-2">
 				<div class="stat">
 					<div class="stat-value">
-						<span class="countdown font-mono">
+						<span class="countdown font-mono text-xl sm:text-3xl">
 							<span
 								:style="`--value: ${dailyRestart.hours}`"
 								aria-live="polite"
@@ -86,6 +86,18 @@
 					<div class="stat-desc">prochain redémarrage quotidien</div>
 				</div>
 			</div>
+			<div class="stats bg-base-300 text-center col-span-2">
+				<div class="stat">
+					<div class="stat-value text-xl sm:text-3xl">{{ weeklyCoriolis?.start }}</div>
+					<div class="stat-desc">Début de la tempête de Coriolis</div>
+				</div>
+			</div>
+			<div class="stats bg-base-300 text-center col-span-2">
+				<div class="stat">
+					<div class="stat-value text-xl sm:text-3xl">{{ weeklyCoriolis?.end }}</div>
+					<div class="stat-desc">Fin de la tempête de Coriolis</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </template>
@@ -99,9 +111,16 @@ const store = useAppStore();
 const { getTotalItems, getTotalRecipes } = store;
 
 const UTC_DAILY_RESTART_HOUR = 3; // 3
+const UTC_CORIOLIS_START_HOUR = 17; // 17
+const UTC_CORIOLIS_END_HOUR = 3; // 3
+const UTC_CORIOLIS_START_DAY = 1; // 3
+const UTC_CORIOLIS_END_DAY = 2; // 3
 
 const dailyRestartInterval = ref();
 const dailyRestart = ref({});
+
+const weeklyCoriolisInterval = ref();
+const weeklyCoriolis = ref({});
 
 const msToTime = (duration) => {
 	var seconds = Math.floor((duration / 1000) % 60),
@@ -127,13 +146,69 @@ const setDailyRestartValue = () => {
 	dailyRestart.value = { ...msToTime(nextDailyRestart.diff(moment())) };
 };
 
+const setWeeklyCoriolisValue = () => {
+	const end = moment
+		.utc()
+		.day(UTC_CORIOLIS_END_DAY)
+		.hour(UTC_CORIOLIS_END_HOUR)
+		.minute(0)
+		.second(0);
+	const nextWeeklyCoriolisEnd =
+		end > moment()
+			? end
+			: moment
+					.utc()
+					.day(UTC_CORIOLIS_END_DAY + 7)
+					.hour(UTC_CORIOLIS_END_HOUR)
+					.minute(0)
+					.second(0);
+
+	const nextWeeklyCoriolisStart =
+		end > moment()
+			? moment()
+					.utc()
+					.day(UTC_CORIOLIS_START_DAY)
+					.hour(UTC_CORIOLIS_START_HOUR)
+					.minute(0)
+					.second(0)
+			: moment()
+					.utc()
+					.day(UTC_CORIOLIS_START_DAY + 7)
+					.hour(UTC_CORIOLIS_START_HOUR)
+					.minute(0)
+					.second(0);
+
+	weeklyCoriolis.value = {
+		start: new Intl.DateTimeFormat('fr-FR', {
+			// weekday: 'long',
+			year: 'numeric',
+			month: 'long',
+			day: 'numeric',
+			hour: 'numeric',
+			minute: 'numeric',
+		}).format(nextWeeklyCoriolisStart),
+		end: new Intl.DateTimeFormat('fr-FR', {
+			// weekday: 'long',
+			year: 'numeric',
+			month: 'long',
+			day: 'numeric',
+			hour: 'numeric',
+			minute: 'numeric',
+		}).format(nextWeeklyCoriolisEnd),
+	};
+};
+
 onMounted(() => {
 	setDailyRestartValue();
 	dailyRestartInterval.value = setInterval(setDailyRestartValue, 1000);
+
+	setWeeklyCoriolisValue();
+	weeklyCoriolisInterval.value = setInterval(setWeeklyCoriolisValue, 1000 * 60);
 });
 
 onUnmounted(() => {
 	clearInterval(dailyRestartInterval.value);
+	clearInterval(weeklyCoriolisInterval.value);
 });
 </script>
 
