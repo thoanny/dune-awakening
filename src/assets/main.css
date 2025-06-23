@@ -150,3 +150,7 @@ header nav a.router-link-active span {
 #recipes .router-link-active {
 	@apply border-accent;
 }
+
+.stat-desc {
+	@apply uppercase tracking-wider;
+}

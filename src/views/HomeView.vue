@@ -7,36 +7,6 @@
 				<div class="text-xl sm:text-3xl font-bold">Dune: Awakening</div>
 				<div class="text-lg sm:text-xl font-semibold">&mdash; Fansite &mdash;</div>
 			</div>
-			<!-- <img
-				src="https://duneawakening.com/wp-content/uploads/09-DA_SC8B_Desktop_3840x2160.jpg"
-				class="object-cover object-bottom w-full h-full"
-				alt=""
-				loading="lazy"
-			/> -->
-			<!-- <img
-				src="https://duneawakening.com/wp-content/uploads/da-screenshot-1-e9e246.jpg"
-				class="object-cover object-bottom w-full h-full"
-				alt=""
-				loading="lazy"
-			/> -->
-			<!-- <img
-				src="https://duneawakening.com/wp-content/uploads/da-screenshot-10-a16165.jpg"
-				class="object-cover object-bottom w-full h-full"
-				alt=""
-				loading="lazy"
-			/> -->
-			<!-- <img
-				src="https://duneawakening.com/wp-content/uploads/da-screenshot-3-1e5a01.jpg"
-				class="object-cover object-bottom w-full h-full"
-				alt=""
-				loading="lazy"
-			/> -->
-			<!-- <img
-				src="https://duneawakening.com/wp-content/uploads/2025/02/da-ss-f1-desertvista-180e30.png"
-				class="object-cover object-bottom w-full h-full"
-				alt=""
-				loading="lazy"
-			/> -->
 			<img
 				src="/img/bg-01.webp"
 				class="object-cover object-bottom w-full h-full mix-blend-overlay"
@@ -48,168 +18,28 @@
 			<div class="stats bg-base-300 text-center">
 				<div class="stat">
 					<div class="stat-value text-xl sm:text-3xl">{{ getTotalItems() }}</div>
-					<div class="stat-desc">objets</div>
+					<div class="stat-desc">Objets</div>
 				</div>
 			</div>
 			<div class="stats bg-base-300 text-center">
 				<div class="stat">
 					<div class="stat-value text-xl sm:text-3xl">{{ getTotalRecipes() }}</div>
-					<div class="stat-desc">recettes</div>
+					<div class="stat-desc">Recettes</div>
 				</div>
 			</div>
-			<div class="stats bg-base-300 text-center col-span-2">
-				<div class="stat">
-					<div class="stat-value">
-						<span class="countdown font-mono text-xl sm:text-3xl">
-							<span
-								:style="`--value: ${dailyRestart.hours}`"
-								aria-live="polite"
-								:aria-label="dailyRestart.hours"
-								>{{ dailyRestart.hours }}</span
-							>
-							:
-							<span
-								:style="`--value: ${dailyRestart.minutes}`"
-								aria-live="polite"
-								:aria-label="dailyRestart.minutes"
-								>{{ dailyRestart.minutes }}</span
-							>
-							:
-							<span
-								:style="`--value: ${dailyRestart.seconds}`"
-								aria-live="polite"
-								:aria-label="dailyRestart.seconds"
-								>{{ dailyRestart.seconds }}</span
-							>
-						</span>
-					</div>
-					<div class="stat-desc">prochain redémarrage quotidien</div>
-				</div>
-			</div>
-			<div class="stats bg-base-300 text-center col-span-2">
-				<div class="stat">
-					<div class="stat-value text-xl sm:text-3xl">{{ weeklyCoriolis?.start }}</div>
-					<div class="stat-desc">Début de la tempête de Coriolis</div>
-				</div>
-			</div>
-			<div class="stats bg-base-300 text-center col-span-2">
-				<div class="stat">
-					<div class="stat-value text-xl sm:text-3xl">{{ weeklyCoriolis?.end }}</div>
-					<div class="stat-desc">Fin de la tempête de Coriolis</div>
-				</div>
-			</div>
+			<DailyRestart />
+			<WeeklyCoriolis />
 		</div>
 	</div>
 </template>
 
 <script setup>
-import { onMounted, onUnmounted, ref } from 'vue';
-import moment from 'moment';
 import { useAppStore } from '@/stores/app';
+import WeeklyCoriolis from '@/components/WeeklyCoriolis.vue';
+import DailyRestart from '@/components/DailyRestart.vue';
 
 const store = useAppStore();
 const { getTotalItems, getTotalRecipes } = store;
-
-const UTC_DAILY_RESTART_HOUR = 3; // 3
-const UTC_CORIOLIS_START_HOUR = 17; // 17
-const UTC_CORIOLIS_END_HOUR = 3; // 3
-const UTC_CORIOLIS_START_DAY = 1; // 3
-const UTC_CORIOLIS_END_DAY = 2; // 3
-
-const dailyRestartInterval = ref();
-const dailyRestart = ref({});
-
-const weeklyCoriolisInterval = ref();
-const weeklyCoriolis = ref({});
-
-const msToTime = (duration) => {
-	var seconds = Math.floor((duration / 1000) % 60),
-		minutes = Math.floor((duration / (1000 * 60)) % 60),
-		hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
-
-	hours = hours < 10 ? '0' + hours : hours;
-	minutes = minutes < 10 ? '0' + minutes : minutes;
-	seconds = seconds < 10 ? '0' + seconds : seconds;
-
-	return {
-		hours: hours,
-		minutes: minutes,
-		seconds: seconds,
-	};
-};
-
-const setDailyRestartValue = () => {
-	const nextDailyRestart =
-		moment().utc().hours() < UTC_DAILY_RESTART_HOUR
-			? moment().utc().hours(UTC_DAILY_RESTART_HOUR).minutes(0).seconds(0)
-			: moment().utc().hours(UTC_DAILY_RESTART_HOUR).minutes(0).seconds(0).add(1, 'd');
-	dailyRestart.value = { ...msToTime(nextDailyRestart.diff(moment())) };
-};
-
-const setWeeklyCoriolisValue = () => {
-	const end = moment
-		.utc()
-		.day(UTC_CORIOLIS_END_DAY)
-		.hour(UTC_CORIOLIS_END_HOUR)
-		.minute(0)
-		.second(0);
-	const nextWeeklyCoriolisEnd =
-		end > moment()
-			? end
-			: moment
-					.utc()
-					.day(UTC_CORIOLIS_END_DAY + 7)
-					.hour(UTC_CORIOLIS_END_HOUR)
-					.minute(0)
-					.second(0);
-
-	const nextWeeklyCoriolisStart =
-		end > moment()
-			? moment()
-					.utc()
-					.day(UTC_CORIOLIS_START_DAY)
-					.hour(UTC_CORIOLIS_START_HOUR)
-					.minute(0)
-					.second(0)
-			: moment()
-					.utc()
-					.day(UTC_CORIOLIS_START_DAY + 7)
-					.hour(UTC_CORIOLIS_START_HOUR)
-					.minute(0)
-					.second(0);
-
-	weeklyCoriolis.value = {
-		start: new Intl.DateTimeFormat('fr-FR', {
-			// weekday: 'long',
-			year: 'numeric',
-			month: 'long',
-			day: 'numeric',
-			hour: 'numeric',
-			minute: 'numeric',
-		}).format(nextWeeklyCoriolisStart),
-		end: new Intl.DateTimeFormat('fr-FR', {
-			// weekday: 'long',
-			year: 'numeric',
-			month: 'long',
-			day: 'numeric',
-			hour: 'numeric',
-			minute: 'numeric',
-		}).format(nextWeeklyCoriolisEnd),
-	};
-};
-
-onMounted(() => {
-	setDailyRestartValue();
-	dailyRestartInterval.value = setInterval(setDailyRestartValue, 1000);
-
-	setWeeklyCoriolisValue();
-	weeklyCoriolisInterval.value = setInterval(setWeeklyCoriolisValue, 1000 * 60);
-});
-
-onUnmounted(() => {
-	clearInterval(dailyRestartInterval.value);
-	clearInterval(weeklyCoriolisInterval.value);
-});
 </script>
 
 <style scoped>
