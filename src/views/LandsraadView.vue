@@ -1,13 +1,17 @@
 <template>
 	<div class="container mx-auto">
 		<TitleSection title="Landsraad" />
-		<div class="grid grid-cols-5 gap-4 mt-4 px-4">
+		<div class="grid grid-cols-3 md:grid-cols-5 gap-4 mt-4 px-4">
 			<div
 				v-for="house in houses"
 				:key="house"
 				class="bg-black/50 text-center flex flex-col items-center justify-center p-4 font-bold gap-2"
 			>
-				<img :src="`/img/houses/${house}.webp`" alt="" class="size-16 opacity-50" />
+				<img
+					:src="`/img/houses/${house}.webp`"
+					alt=""
+					class="size-16 object-contain opacity-50"
+				/>
 				{{ house }}
 			</div>
 		</div>
