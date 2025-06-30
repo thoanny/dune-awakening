@@ -16,6 +16,6 @@ json.export:
 	@$(eval file ?=all)
 	python -Xutf8 ./admin/manage.py dumpdata --format=json --natural-foreign $(model) > ./src/data/$(file).json
 
-data:
+json.data:
 	make json.export model=app.item file=items
 	make json.export model=app.recipe file=recipes

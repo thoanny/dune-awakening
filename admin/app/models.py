@@ -139,6 +139,7 @@ class Item(models.Model):
     sources = models.ManyToManyField(Item_Source, blank=True)
     stats = models.ManyToManyField(Item_Stat, blank=True)
     slug = models.SlugField(default="", null=False)
+    landsraad = models.BooleanField(null=True)
 
     def __str__(self):
         return self.name
