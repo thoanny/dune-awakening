@@ -56,34 +56,6 @@
 								</svg>
 							</button>
 						</div>
-						<!-- <div>
-								<tippy>
-									<div
-										class="size-20 relative border border-primary"
-										:class="[`bg-quality-${recipe.fields.item.quality}`]"
-									>
-										<span
-											class="badge badge-primary font-semibold badge-sm absolute bottom-0 left-0"
-											v-if="store.countInQueueByRecipeId(recipe.pk) > 0"
-											>&times;{{
-												store.countInQueueByRecipeId(recipe.pk) *
-												recipe.fields.quantity
-											}}</span
-										>
-										<img
-											:src="`/img/items/${recipe.fields.item.icon}`"
-											class="w-full h-full object-contain p-2"
-											alt=""
-											loading="lazy"
-										/>
-									</div>
-									<template #content>
-										<ItemTooltip
-											:item="store.getItemById(recipe.fields.item.id)"
-										/>
-									</template>
-								</tippy>
-							</div> -->
 						<div>
 							<!-- = -->
 							<svg

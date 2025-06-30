@@ -88,80 +88,11 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
 import TitleSection from '@/components/TitleSection.vue';
-import MkIcon from '@/components/MkIcon.vue';
-
 import { useAppStore } from '@/stores/app';
 import { storeToRefs } from 'pinia';
 
 const store = useAppStore();
-const { recipes } = store;
 const { queue } = storeToRefs(store);
-
-const shoppingModal = ref();
-const searchValue = ref();
 const shoppingList = store.shoppingList();
-
-const filteredRecipes = computed(() => {
-	return (
-		[...recipes]
-			.sort((a, b) => a.fields.item.name.localeCompare(b.fields.item.name))
-			// .filter((recipe) => {
-			// 	if (!filteredWorkshop.value) {
-			// 		return true;
-			// 	}
-			// 	if (recipe.fields.workshop?.id === filteredWorkshop.value) {
-			// 		return true;
-			// 	}
-			// 	return false;
-			// })
-			.filter((recipe) => {
-				if (!searchValue.value) {
-					return true;
-				}
-				const s = searchValue.value
-					.normalize('NFD')
-					.replace(/\p{Diacritic}/gu, '')
-					.toLowerCase();
-
-				return (
-					recipe.fields.item.name
-						.normalize('NFD')
-						.replace(/\p{Diacritic}/gu, '')
-						.toLowerCase()
-						.indexOf(s) >= 0
-				);
-			})
-			.reduce((previous, current) => {
-				if (
-					previous &&
-					!previous.find((recipe) => recipe.fields.item?.id === current.fields.item?.id)
-				) {
-					previous.push(current);
-				}
-				return previous;
-			}, [])
-	);
-});
-
-// const filteredWorkshop = ref('');
-
-// const workshops = computed(() => {
-// 	return recipes
-// 		.map((recipe) => {
-// 			if (recipe.fields.workshop) {
-// 				return { id: recipe.fields.workshop.id, name: recipe.fields.workshop.name };
-// 			} else {
-// 				return;
-// 			}
-// 		})
-// 		.reduce((previous, current) => {
-// 			if (previous && !previous.find((item) => item?.id === current?.id)) {
-// 				previous.push(current);
-// 			}
-// 			return previous;
-// 		}, [])
-// 		.filter((recipe) => !!recipe);
-// });
 </script>
