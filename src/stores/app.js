@@ -25,6 +25,7 @@ export const useAppStore = defineStore('app', () => {
 		if (idx < 0) {
 			queue.value.push({
 				id: recipe.pk,
+				slug: recipe.fields.item.slug,
 				name:
 					recipe.fields.quantity > 1
 						? `${recipe.fields.item.name} [×${recipe.fields.quantity}]`
@@ -68,6 +69,7 @@ export const useAppStore = defineStore('app', () => {
 						if (idx < 0) {
 							list.push({
 								id: ingredient.item.id,
+								slug: ingredient.item.slug,
 								name: ingredient.item.name,
 								icon: ingredient.item.icon,
 								total: ingredient.quantity * q.count,

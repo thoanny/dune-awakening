@@ -6,6 +6,7 @@ import AboutView from '@/views/AboutView.vue';
 import LandsraadView from '@/views/LandsraadView.vue';
 import DevView from '@/views/DevView.vue';
 import ItemView from '@/views/ItemView.vue';
+import QueueView from './views/QueueView.vue';
 
 const routes = [
 	{ path: '/', name: 'home', component: HomeView },
@@ -19,6 +20,7 @@ const routes = [
 	{ path: '/landsraad', name: 'landsraad', component: LandsraadView },
 	{ path: '/a-propos', name: 'about', component: AboutView },
 	{ path: '/dev', name: 'dev', component: DevView },
+	{ path: '/liste-de-courses', name: 'queue', component: QueueView },
 ];
 
 const router = createRouter({
