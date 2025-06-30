@@ -71,17 +71,19 @@ class Item_Type(models.Model):
 
 class Item_Source(models.Model):
     TYPE = {
-        'CAVE': "Caverne",
-        'ENEMY_CAMP': "Camp",
         'ENEMY_OUTPOST': "Avant-poste",
-        'LANDMARK': "Landmark",
+        'ENEMY_CAMP': "Camp",
+        'CAVE': "Caverne",
         'SHIPWRECK': "Épaves",
-        'TESTING_STATION': "Station expérimentale",
-        'HARVEST': "Récole",
         'CRAFT': "Fabrication",
+        'LANDMARK': "Landmark",
+        'MERCHANT': "Marchand",
+        'HARVEST': "Récole",
+        'TESTING_STATION': "Station expérimentale",
     }
     name = models.CharField(max_length=100)
     type = models.CharField(choices=TYPE, null=True, blank=True)
+    map = models.URLField(null=True, blank=True)
 
     def __str__(self):
         return self.name
