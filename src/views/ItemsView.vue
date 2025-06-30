@@ -52,8 +52,9 @@
 		</div>
 		<div class="flex gap-4 flex-wrap mx-4 mt-4" v-if="filteredItems.length > 0">
 			<tippy v-for="item in filteredItems" :key="item.pk">
-				<button
-					class="size-24 border border-primary bg-black/50"
+				<RouterLink
+					:to="{ name: 'item', params: { slug: item.fields.slug } }"
+					class="size-24 block border border-primary bg-black/50"
 					:class="[`bg-quality-${item.fields.quality}`]"
 				>
 					<img
@@ -62,7 +63,7 @@
 						class="object-contain w-full h-full p-2"
 						loading="lazy"
 					/>
-				</button>
+				</RouterLink>
 				<template #content>
 					<ItemTooltip :item="item" />
 				</template>
