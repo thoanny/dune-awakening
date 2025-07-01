@@ -34,6 +34,16 @@
 	--border: 1px;
 	--depth: 0;
 	--noise: 0;
+
+	--dune-color-purple: oklch(0.3346 0.0684 297.97);
+	--dune-color-purple-darker: oklch(0.266 0.054 298.57);
+	--dune-color-gray: oklch(0.4419 0.0313 102.83);
+	--dune-color-green: oklch(0.5271 0.0689 134.56);
+	--dune-color-green-darker: oklch(0.3761 0.0386 133.83);
+	--dune-color-orange: oklch(0.6749 0.1509 48.7);
+	--dune-color-orange-darker: oklch(0.4525 0.0865 49.15);
+	--dune-color-blue: oklch(0.612 0.0985 254.97);
+	--dune-color-blue-darker: oklch(0.4194 0.0554 256.58);
 }
 
 /* @utility btn {
@@ -56,26 +66,29 @@ ul {
 	@apply mb-4;
 }
 
-.bg-quality-ORANGE {
-	@apply bg-linear-to-b from-[#161516] to-[#e17737];
-}
-
-/* [ ] Refine colors (green, blue and purple) */
-
-.bg-quality-GREEN {
-	@apply bg-linear-to-b from-[#181614] to-[#5a754d];
-}
-
-.bg-quality-BLUE {
-	@apply bg-linear-to-b from-[#151515] to-[#5c86bc];
-}
-
-.bg-quality-PURPLE {
-	@apply bg-linear-to-b from-[#3a2e55] to-[#020000];
-}
-
+/* Gris : OK */
 .bg-quality-GRAY {
-	@apply bg-linear-to-b from-[#302e2c] to-[#959595];
+	@apply bg-linear-to-t from-(--dune-color-gray) to-transparent;
+}
+
+/* Vert : OK */
+.bg-quality-GREEN {
+	@apply bg-linear-to-t from-(--dune-color-green) via-(--dune-color-green-darker) to-transparent;
+}
+
+/* Bleu : OK */
+.bg-quality-BLUE {
+	@apply bg-linear-to-t from-(--dune-color-blue) via-(--dune-color-blue-darker) to-transparent;
+}
+
+/* Violet : OK */
+.bg-quality-PURPLE {
+	@apply bg-linear-to-b from-(--dune-color-purple) via-(--dune-color-purple-darker) to-transparent;
+}
+
+/* Orange : OK */
+.bg-quality-ORANGE {
+	@apply bg-linear-to-t from-(--dune-color-orange) via-(--dune-color-orange-darker) to-transparent;
 }
 
 .bg-quality-null {
