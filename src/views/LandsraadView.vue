@@ -118,10 +118,9 @@
 </template>
 
 <script setup>
-import AES from 'crypto-js/aes';
-import CryptoJS from 'crypto-js';
 import { ref, onMounted, watch } from 'vue';
 import { useDraggable } from 'vue-draggable-plus';
+import LZString from 'lz-string';
 import TitleSection from '@/components/TitleSection.vue';
 import HouseTile from '@/components/HouseTile.vue';
 import InfoCircleIcon from '@/icons/InfoCircleIcon.vue';
@@ -131,10 +130,15 @@ import BombIcon from '@/icons/BombIcon.vue';
 
 const importModal = ref();
 const exportModal = ref();
+const el = ref();
+const myWorldHouses = ref([]);
+const editMode = ref(false);
+const exportCode = ref('');
+const codeEl = ref();
 
 const updateCode = () => {
 	myWorldHouses.value = JSON.parse(
-		AES.decrypt(codeEl.value.trim(), SECRET).toString(CryptoJS.enc.Utf8),
+		LZString.decompressFromEncodedURIComponent(codeEl.value.trim()),
 	);
 	codeEl.value = '';
 	return;
@@ -154,12 +158,6 @@ Discord officiel :
 - Voting session ends: lundi 23 juin 2025 à 20:00 (Europe/Paris)
 
 */
-
-const el = ref();
-const myWorldHouses = ref([]);
-const editMode = ref(false);
-const exportCode = ref('');
-const codeEl = ref();
 
 const handleHouseLost = (houseId) => {
 	const idx = myWorldHouses.value.findIndex((house) => house.id === houseId);
@@ -232,9 +230,9 @@ const houses = [
 	{ id: '17', name: 'Spinette', wish: '', status: null },
 	{ id: '18', name: 'Taligari', wish: '', status: null },
 	{ id: '19', name: 'Thorvald', wish: '', status: null },
-	{ id: '20', name: 'Tseida', wish: '', status: null }, // Feraille de carbure
+	{ id: '20', name: 'Tseida', wish: '', status: null },
 	{ id: '21', name: 'Varota', wish: '', status: null },
-	{ id: '22', name: 'Vernius', wish: '', status: null }, // Carte des creux
+	{ id: '22', name: 'Vernius', wish: '', status: null },
 	{ id: '23', name: 'Wallach', wish: '', status: null },
 	{ id: '24', name: 'Wayku', wish: '', status: null },
 	{ id: '25', name: 'Wydras', wish: '', status: null },
@@ -248,13 +246,8 @@ onMounted(() => {
 	}
 });
 
-//////////////////////////////////////////////////////////////////////
-
-const SECRET = 'roUDSw98ntlA*gG#xU3zSXh0Ly7923^i#z#DuK#g'; // No secret!
-
 const saveMyWorldHouses = () => {
-	const encrypted = AES.encrypt(JSON.stringify(myWorldHouses.value), SECRET);
-	exportCode.value = encrypted;
+	exportCode.value = LZString.compressToEncodedURIComponent(JSON.stringify(myWorldHouses.value));
 
 	if (myWorldHouses.value.length > 0) {
 		localStorage.setItem('landsraad', JSON.stringify(myWorldHouses.value));
