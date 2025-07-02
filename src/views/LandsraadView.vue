@@ -48,19 +48,7 @@
 					Modifier
 				</button>
 				<div class="inline-flex gap-2 items-center" v-if="editMode">
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						width="24"
-						height="24"
-						viewBox="0 0 24 24"
-						fill="currentColor"
-						class="icon icon-tabler icons-tabler-filled icon-tabler-info-circle size-5 shrink-0"
-					>
-						<path stroke="none" d="M0 0h24v24H0z" fill="none" />
-						<path
-							d="M12 2c5.523 0 10 4.477 10 10a10 10 0 0 1 -19.995 .324l-.005 -.324l.004 -.28c.148 -5.393 4.566 -9.72 9.996 -9.72zm0 9h-1l-.117 .007a1 1 0 0 0 0 1.986l.117 .007v3l.007 .117a1 1 0 0 0 .876 .876l.117 .007h1l.117 -.007a1 1 0 0 0 .876 -.876l.007 -.117l-.007 -.117a1 1 0 0 0 -.764 -.857l-.112 -.02l-.117 -.006v-3l-.007 -.117a1 1 0 0 0 -.876 -.876l-.117 -.007zm.01 -3l-.127 .007a1 1 0 0 0 0 1.986l.117 .007l.127 -.007a1 1 0 0 0 0 -1.986l-.117 -.007z"
-						/>
-					</svg>
+					<InfoCircleIcon class="size-5 shrink-0" />
 					<span class="text-sm"
 						>Clic gauche dans la case&nbsp;= gagné&nbsp;; clic droit (ou appui long sur
 						mobile)&nbsp;= perdu.</span
@@ -69,67 +57,13 @@
 			</div>
 			<div class="flex items-center gap-2">
 				<button class="btn btn-primary btn-square" @click="exportModal.showModal()">
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						width="24"
-						height="24"
-						viewBox="0 0 24 24"
-						fill="none"
-						stroke="currentColor"
-						stroke-width="2"
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						class="icon icon-tabler icons-tabler-outline icon-tabler-share size-5"
-					>
-						<path stroke="none" d="M0 0h24v24H0z" fill="none" />
-						<path d="M6 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
-						<path d="M18 6m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
-						<path d="M18 18m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
-						<path d="M8.7 10.7l6.6 -3.4" />
-						<path d="M8.7 13.3l6.6 3.4" />
-					</svg>
+					<ShareIcon class="size-5" />
 				</button>
 				<button class="btn btn-primary btn-square" @click="importModal.showModal()">
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						width="24"
-						height="24"
-						viewBox="0 0 24 24"
-						fill="none"
-						stroke="currentColor"
-						stroke-width="2"
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						class="icon icon-tabler icons-tabler-outline icon-tabler-download size-5"
-					>
-						<path stroke="none" d="M0 0h24v24H0z" fill="none" />
-						<path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
-						<path d="M7 11l5 5l5 -5" />
-						<path d="M12 4l0 12" />
-					</svg>
+					<DownloadIcon class="size-5" />
 				</button>
 				<button class="btn btn-primary btn-square" @click="handleResetMyWorldHouses">
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						width="24"
-						height="24"
-						viewBox="0 0 24 24"
-						fill="none"
-						stroke="currentColor"
-						stroke-width="2"
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						class="icon icon-tabler icons-tabler-outline icon-tabler-bomb size-5"
-					>
-						<path stroke="none" d="M0 0h24v24H0z" fill="none" />
-						<path
-							d="M15.349 5.349l3.301 3.301a1.2 1.2 0 0 1 0 1.698l-.972 .972a7.5 7.5 0 1 1 -5 -5l.972 -.972a1.2 1.2 0 0 1 1.698 0z"
-						/>
-						<path
-							d="M17 7l1.293 -1.293a2.414 2.414 0 0 0 .707 -1.707a1 1 0 0 1 1 -1h1"
-						/>
-						<path d="M7 13a3 3 0 0 1 3 -3" />
-					</svg>
+					<BombIcon class="size-5" />
 				</button>
 			</div>
 		</div>
@@ -181,7 +115,6 @@
 			<button>close</button>
 		</form>
 	</dialog>
-	<pre>{{ myWorldHouses }}</pre>
 </template>
 
 <script setup>
@@ -191,6 +124,10 @@ import { ref, onMounted, watch } from 'vue';
 import { useDraggable } from 'vue-draggable-plus';
 import TitleSection from '@/components/TitleSection.vue';
 import HouseTile from '@/components/HouseTile.vue';
+import InfoCircleIcon from '@/icons/InfoCircleIcon.vue';
+import ShareIcon from '@/icons/ShareIcon.vue';
+import DownloadIcon from '@/icons/DownloadIcon.vue';
+import BombIcon from '@/icons/BombIcon.vue';
 
 const importModal = ref();
 const exportModal = ref();
@@ -283,20 +220,20 @@ const houses = [
 	{ id: '5', name: 'Hagal', wish: '', status: null },
 	{ id: '6', name: 'Hurata', wish: '', status: null },
 	{ id: '7', name: 'Imota', wish: '', status: null },
-	{ id: '8', name: 'Kenola', wish: '', status: null }, // Déserteurs
+	{ id: '8', name: 'Kenola', wish: '', status: null },
 	{ id: '9', name: 'Lindaren', wish: '', status: null },
 	{ id: '10', name: 'Maros', wish: '', status: null },
 	{ id: '11', name: 'Mikarrol', wish: '', status: null },
-	{ id: '12', name: 'Moritani', wish: '', status: null }, // Esclavagistes
+	{ id: '12', name: 'Moritani', wish: '', status: null },
 	{ id: '13', name: 'Mutelli', wish: '', status: null },
-	{ id: '14', name: 'Novebruns', wish: '', status: null }, // Diptères des sables
-	{ id: '15', name: 'Richèse', wish: '', status: null }, // Pilleurs d'épaves
+	{ id: '14', name: 'Novebruns', wish: '', status: null },
+	{ id: '15', name: 'Richèse', wish: '', status: null },
 	{ id: '16', name: 'Sor', wish: '', status: null },
 	{ id: '17', name: 'Spinette', wish: '', status: null },
-	{ id: '18', name: 'Taligari', wish: '', status: null }, // Déserteurs
+	{ id: '18', name: 'Taligari', wish: '', status: null },
 	{ id: '19', name: 'Thorvald', wish: '', status: null },
 	{ id: '20', name: 'Tseida', wish: '', status: null }, // Feraille de carbure
-	{ id: '21', name: 'Varota', wish: '', status: null }, // Troupes de la maison Atréides
+	{ id: '21', name: 'Varota', wish: '', status: null },
 	{ id: '22', name: 'Vernius', wish: '', status: null }, // Carte des creux
 	{ id: '23', name: 'Wallach', wish: '', status: null },
 	{ id: '24', name: 'Wayku', wish: '', status: null },
