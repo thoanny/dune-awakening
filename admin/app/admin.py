@@ -6,7 +6,7 @@ from .models import Recipe, Recipe_Ingredient
 
 class ItemAdmin(admin.ModelAdmin):
     filter_horizontal = ('sources', 'stats',)
-    list_display = ('name', 'category', 'subcategory', 'type',)
+    list_display = ('name', 'category', 'subcategory', 'type', 'landsraad',)
     search_fields = ['name']
     ordering = ('name',)
     prepopulated_fields = {"slug": ("name",)}
