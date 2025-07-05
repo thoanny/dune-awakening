@@ -120,6 +120,10 @@ const kills = [
 		id: -7,
 		name: 'Maas Kharet',
 	},
+	{
+		id: -8,
+		name: 'Kirabs',
+	},
 ];
 
 const filteredKills = computed(() => {
