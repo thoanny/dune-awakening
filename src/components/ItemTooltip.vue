@@ -40,7 +40,10 @@
 				source.name
 			}}</span>
 		</div>
-		<div class="flex flex-col divide-y-1 divide-[#1c1c1c]" v-if="item.fields.stats.length > 0">
+		<div
+			class="flex flex-col divide-y-1 divide-[#1c1c1c]"
+			v-if="item.fields.stats.length > 0 && !$slots.default"
+		>
 			<div
 				class="flex justify-between px-4 py-1 gap-4 text-sm"
 				v-for="stat in item.fields.stats"
@@ -50,6 +53,7 @@
 				<span>{{ stat.value }}</span>
 			</div>
 		</div>
+		<slot />
 	</div>
 </template>
 

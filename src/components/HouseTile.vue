@@ -61,7 +61,50 @@
 					>
 				</div>
 				<template #content>
-					<ItemTooltip :item="getWish(house.wish)?.data" v-if="house.wish" />
+					<ItemTooltip :item="getWish(house.wish)?.data" v-if="house.wish">
+						<template v-if="getWish(house.wish)?.data.fields.landsraad_points">
+							<div
+								v-for="(step, s) in steps_points"
+								:key="s"
+								class="flex justify-between gap-2 px-4 py-2 text-sm"
+							>
+								<div>Palier {{ s + 1 }} ({{ step }} pts)</div>
+								<div>
+									&times;{{
+										Math.ceil(
+											step /
+												getWish(house.wish)?.data.fields.landsraad_points,
+										)
+									}}
+									({{
+										getWish(house.wish)?.data.fields.landsraad_points *
+										Math.ceil(
+											step /
+												getWish(house.wish)?.data.fields.landsraad_points,
+										)
+									}} pts)
+								</div>
+							</div>
+							<div class="flex justify-between gap-2 px-4 py-2 text-sm">
+								<div>Total ({{ max_points }} pts)</div>
+								<div>
+									&times;{{
+										Math.ceil(
+											max_points /
+												getWish(house.wish)?.data.fields.landsraad_points,
+										)
+									}}
+									({{
+										getWish(house.wish)?.data.fields.landsraad_points *
+										Math.ceil(
+											max_points /
+												getWish(house.wish)?.data.fields.landsraad_points,
+										)
+									}} pts)
+								</div>
+							</div>
+						</template>
+					</ItemTooltip>
 				</template>
 			</tippy>
 			<div
@@ -125,6 +168,10 @@ const kills = [
 		name: 'Kirabs',
 	},
 ];
+
+const kills_points = 23;
+const steps_points = [700, 3500, 7000, 10500, 14000];
+const max_points = 70000;
 
 const filteredKills = computed(() => {
 	return kills.sort((a, b) => a.name.localeCompare(b.name));

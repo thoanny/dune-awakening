@@ -140,6 +140,7 @@ class Item(models.Model):
     stats = models.ManyToManyField(Item_Stat, blank=True)
     slug = models.SlugField(default="", null=False)
     landsraad = models.BooleanField(null=True)
+    landsraad_points = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
         return self.name
