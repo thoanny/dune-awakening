@@ -7,6 +7,7 @@
 			'house-lost': house.status === 'lost',
 			'house-win': house.status === 'win',
 		}"
+		@click="$emit('showDetails', house.id)"
 	>
 		<div class="absolute top-0 right-0 z-10">
 			<div class="h-full w-full absolute top-0 left-0 custom-bg-linear"></div>
@@ -28,12 +29,19 @@
 			:checked="house.status === 'win'"
 			v-show="editMode"
 		/>
+
+		<div
+			class="btn btn-sm btn-primary z-20 btn-square top-1 right-1 absolute"
+			v-if="!editMode && house.step > 0 && !house.picked"
+		>
+			<GiftIcon class="size-5" />
+		</div>
 		<img :src="`/img/houses/${house.name}.webp`" alt="" class="size-12 object-contain z-20" />
 		<span class="font-bold z-20 text-shadow text-base-content">{{ house.name }}</span>
 		<select
 			v-model="wish"
 			class="select select-xs w-full relative !z-20 text-base-content"
-			v-if="!house.status && editMode"
+			v-if="editMode"
 		>
 			<option value="">---</option>
 			<optgroup label="Livrer">
@@ -47,7 +55,7 @@
 				</option>
 			</optgroup>
 		</select>
-		<template v-else-if="!house.status">
+		<template v-else>
 			<tippy v-if="getWish(house.wish)?.type === 'delivery'">
 				<div class="flex gap-1 items-center justify-center relative z-20 h-6">
 					<RouterLink
@@ -66,9 +74,25 @@
 							<div
 								v-for="(step, s) in steps_points"
 								:key="s"
-								class="flex justify-between gap-2 px-4 py-2 text-sm"
+								class="flex justify-between items-center gap-2 px-4 py-2 text-sm"
 							>
-								<div>Palier {{ s + 1 }} ({{ step }} pts)</div>
+								<div class="flex items-center gap-1">
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										width="24"
+										height="24"
+										viewBox="0 0 24 24"
+										fill="currentColor"
+										class="icon icon-tabler icons-tabler-filled icon-tabler-circle-check text-success size-4 inline-flex"
+										v-if="house.step >= s + 1"
+									>
+										<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+										<path
+											d="M17 3.34a10 10 0 1 1 -14.995 8.984l-.005 -.324l.005 -.324a10 10 0 0 1 14.995 -8.336zm-1.293 5.953a1 1 0 0 0 -1.32 -.083l-.094 .083l-3.293 3.292l-1.293 -1.292l-.094 -.083a1 1 0 0 0 -1.403 1.403l.083 .094l2 2l.094 .083a1 1 0 0 0 1.226 0l.094 -.083l4 -4l.083 -.094a1 1 0 0 0 -.083 -1.32z"
+										/>
+									</svg>
+									Palier {{ s + 1 }} ({{ step }} pts)
+								</div>
 								<div>
 									&times;{{
 										Math.ceil(
@@ -108,16 +132,13 @@
 				</template>
 			</tippy>
 			<div
-				class="flex gap-1 items-center h-6 text-sm line-clamp-1 z-20"
+				class="flex gap-1 items-center h-6 text-sm z-20"
 				v-else-if="getWish(house.wish)?.type === 'kill'"
 			>
-				Tuer&nbsp;: {{ getWish(house.wish)?.data.name }}
+				<span class="line-clamp-1">Tuer&nbsp;: {{ getWish(house.wish)?.data.name }}</span>
 			</div>
 			<span class="z-20" v-else> --- </span>
 		</template>
-		<div class="flex items-center h-6 z-20 text-sm font-semibold text-shadow" v-else>
-			{{ house.status === 'win' ? 'Gagné' : 'Perdu' }}
-		</div>
 	</div>
 </template>
 
@@ -127,47 +148,13 @@ import ItemTooltip from '@/components/ItemTooltip.vue';
 import { useAppStore } from '@/stores/app';
 import StripesIcon from '@/icons/StripesIcon.vue';
 import ArrowsMoveIcon from '@/icons/ArrowsMoveIcon.vue';
+import GiftIcon from '@/icons/GiftIcon.vue';
 const store = useAppStore();
-const { items } = store;
-const emit = defineEmits(['houseWin', 'houseLost', 'changeWish']);
+const { items, kills } = store;
+const emit = defineEmits(['houseWin', 'houseLost', 'changeWish', 'showDetails']);
 const props = defineProps(['house', 'editMode']);
 
 const wish = ref('');
-
-const kills = [
-	{
-		id: -1,
-		name: 'Troupes de la maison Harkonen',
-	},
-	{
-		id: -2,
-		name: 'Troupes de la maison Atréide',
-	},
-	{
-		id: -3,
-		name: 'Déserteurs',
-	},
-	{
-		id: -4,
-		name: "Pilleurs d'épaves",
-	},
-	{
-		id: -5,
-		name: 'Esclavagistes',
-	},
-	{
-		id: -6,
-		name: 'Diptères des sables',
-	},
-	{
-		id: -7,
-		name: 'Maas Kharet',
-	},
-	{
-		id: -8,
-		name: 'Kirabs',
-	},
-];
 
 const kills_points = 23;
 const steps_points = [700, 3500, 7000, 10500, 14000];

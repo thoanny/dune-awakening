@@ -101,10 +101,46 @@ export const useAppStore = defineStore('app', () => {
 		return recipes.length;
 	};
 
+	const kills = [
+		{
+			id: -1,
+			name: 'Troupes de la maison Harkonen',
+		},
+		{
+			id: -2,
+			name: 'Troupes de la maison Atréide',
+		},
+		{
+			id: -3,
+			name: 'Déserteurs',
+		},
+		{
+			id: -4,
+			name: "Pilleurs d'épaves",
+		},
+		{
+			id: -5,
+			name: 'Esclavagistes',
+		},
+		{
+			id: -6,
+			name: 'Diptères des sables',
+		},
+		{
+			id: -7,
+			name: 'Maas Kharet',
+		},
+		{
+			id: -8,
+			name: 'Kirabs',
+		},
+	];
+
 	return {
 		items,
 		recipes,
 		queue,
+		kills,
 		shoppingList,
 		getItemById,
 		getRecipeById,
