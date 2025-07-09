@@ -108,11 +108,11 @@ export const useAppStore = defineStore('app', () => {
 		},
 		{
 			id: -2,
-			name: 'Troupes de la maison Atréide',
+			name: 'Troupes de la maison Atréides',
 		},
 		{
 			id: -3,
-			name: 'Déserteurs',
+			name: 'Déserteurs (Désert Profond)',
 		},
 		{
 			id: -4,
@@ -133,6 +133,10 @@ export const useAppStore = defineStore('app', () => {
 		{
 			id: -8,
 			name: 'Kirabs',
+		},
+		{
+			id: -9,
+			name: 'Déserteurs (Bassin de Hagga)',
 		},
 	];
 

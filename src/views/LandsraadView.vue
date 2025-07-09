@@ -72,6 +72,7 @@
 				v-for="house in myWorldHouses"
 				:key="house.id"
 				:house="house"
+				:user="getUserHouse(house.id)"
 				:edit-mode="editMode"
 				@house-win="handleHouseWin"
 				@house-lost="handleHouseLost"
@@ -128,46 +129,143 @@
 					class="size-32 object-contain z-20"
 				/>
 				<h4 class="text-xl font-bold">{{ currentHouse.name }}</h4>
-				<div v-if="currentHouse._wish">
+				<div class="text-center" v-if="currentHouseWish">
 					<RouterLink
-						:to="{ name: 'item', params: { slug: currentHouse._wish.fields.slug } }"
+						:to="{ name: 'item', params: { slug: currentHouseWish.fields.slug } }"
 						class="group"
 						v-if="currentHouse.wish > 0"
 					>
 						Livrer&nbsp;:
 						<span class="group-hover:underline">
-							{{ currentHouse._wish.fields.name }}
+							{{ currentHouseWish.fields.name }}
 						</span>
 					</RouterLink>
 					<span v-else-if="currentHouse.wish < 0">
-						Tuer&nbsp;: {{ currentHouse._wish.name }}
+						Tuer&nbsp;: {{ currentHouseWish.name }}
 					</span>
 				</div>
 				<div class="flex flex-col gap-3 mt-4 w-full" v-if="currentHouse.wish">
-					<div class="flex gap-4 items-center">
-						<input
-							type="range"
-							min="0"
-							max="5"
-							v-model="currentHouse.step"
-							class="range w-full"
-							:class="{ 'range-primary': currentHouse.step > 0 }"
-							@change="handleUpdateStep(currentHouse.id)"
-						/>
-						<span class="whitespace-nowrap"
-							>Palier <strong>{{ currentHouse.step }}</strong> terminé</span
-						>
-					</div>
-					<label class="flex gap-2 items-center select-none">
+					<label class="flex gap-2 items-center justify-center select-none">
 						<input
 							type="checkbox"
-							class="toggle toggle-primary"
+							class="toggle toggle-primary toggle-sm"
 							v-model="currentHouse.picked"
 							:disabled="currentHouse.step == 0"
-							@change="saveMyWorldHouses"
+							@change="handleTogglePicked"
 						/>
 						Récompenses récupérées
 					</label>
+					<div
+						v-if="
+							currentHouseWish &&
+							currentHouseWish.type === 'delivery' &&
+							currentHouseWish.fields.landsraad_points
+						"
+					>
+						<table class="table table-sm">
+							<thead>
+								<tr>
+									<th colspan="3">Palier</th>
+									<th class="text-end">Qt</th>
+									<th class="text-end">Total</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr
+									v-for="(step, s) in steps_points"
+									:key="s"
+									class="hover:bg-base-300 cursor-pointer"
+									@click="updateCurrentHouseStep(s + 1)"
+								>
+									<td width="1">
+										<svg
+											xmlns="http://www.w3.org/2000/svg"
+											width="24"
+											height="24"
+											viewBox="0 0 24 24"
+											fill="currentColor"
+											class="icon icon-tabler icons-tabler-filled icon-tabler-square-check size-5"
+											:class="{
+												'text-base-content opacity-50':
+													currentHouse.step < s + 1,
+												'text-success': currentHouse.step >= s + 1,
+											}"
+										>
+											<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+											<path
+												d="M18.333 2c1.96 0 3.56 1.537 3.662 3.472l.005 .195v12.666c0 1.96 -1.537 3.56 -3.472 3.662l-.195 .005h-12.666a3.667 3.667 0 0 1 -3.662 -3.472l-.005 -.195v-12.666c0 -1.96 1.537 -3.56 3.472 -3.662l.195 -.005h12.666zm-2.626 7.293a1 1 0 0 0 -1.414 0l-3.293 3.292l-1.293 -1.292l-.094 -.083a1 1 0 0 0 -1.32 1.497l2 2l.094 .083a1 1 0 0 0 1.32 -.083l4 -4l.083 -.094a1 1 0 0 0 -.083 -1.32z"
+											/>
+										</svg>
+									</td>
+									<td width="1">{{ s + 1 }}</td>
+									<td class="text-end" width="1">{{ step }}&nbsp;pts</td>
+									<td class="text-end font-bold text-primary text-shadow">
+										&times;&nbsp;{{
+											Math.ceil(
+												step / currentHouseWish.fields.landsraad_points,
+											)
+										}}
+									</td>
+									<td class="text-end">
+										{{
+											currentHouseWish.fields.landsraad_points *
+											Math.ceil(
+												step / currentHouseWish.fields.landsraad_points,
+											)
+										}}&nbsp;pts
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div v-if="currentHouseWish && currentHouseWish.type === 'kill'">
+						<table class="table table-sm">
+							<thead>
+								<tr>
+									<th colspan="3">Palier</th>
+									<th class="text-end">Qt</th>
+									<th class="text-end">Total</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr
+									v-for="(step, s) in steps_points"
+									:key="s"
+									class="hover:bg-base-300 cursor-pointer"
+									@click="updateCurrentHouseStep(s + 1)"
+								>
+									<td width="1">
+										<svg
+											xmlns="http://www.w3.org/2000/svg"
+											width="24"
+											height="24"
+											viewBox="0 0 24 24"
+											fill="currentColor"
+											class="icon icon-tabler icons-tabler-filled icon-tabler-square-check size-5"
+											:class="{
+												'text-base-content opacity-50':
+													currentHouse.step < s + 1,
+												'text-success': currentHouse.step >= s + 1,
+											}"
+										>
+											<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+											<path
+												d="M18.333 2c1.96 0 3.56 1.537 3.662 3.472l.005 .195v12.666c0 1.96 -1.537 3.56 -3.472 3.662l-.195 .005h-12.666a3.667 3.667 0 0 1 -3.662 -3.472l-.005 -.195v-12.666c0 -1.96 1.537 -3.56 3.472 -3.662l.195 -.005h12.666zm-2.626 7.293a1 1 0 0 0 -1.414 0l-3.293 3.292l-1.293 -1.292l-.094 -.083a1 1 0 0 0 -1.32 1.497l2 2l.094 .083a1 1 0 0 0 1.32 -.083l4 -4l.083 -.094a1 1 0 0 0 -.083 -1.32z"
+											/>
+										</svg>
+									</td>
+									<td width="1">{{ s + 1 }}</td>
+									<td class="text-end" width="1">{{ step }}&nbsp;pts</td>
+									<td class="text-end font-bold text-primary text-shadow">
+										&times;&nbsp;{{ Math.ceil(step / kills_points) }}
+									</td>
+									<td class="text-end">
+										{{ kills_points * Math.ceil(step / kills_points) }}&nbsp;pts
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
 				</div>
 				<a
 					v-if="getLocation(currentHouse.id)"
@@ -176,7 +274,7 @@
 					target="_blank"
 					rel="nofollow"
 				>
-					Localisation
+					Localiser le représentant
 				</a>
 			</div>
 		</div>
@@ -209,14 +307,13 @@ const editMode = ref(false);
 const exportCode = ref('');
 const codeEl = ref();
 const currentHouse = ref({});
+const currentHouseWish = ref(null);
 const houseModal = ref();
 
 const updateCode = () => {
 	myWorldHouses.value = JSON.parse(
 		LZString.decompressFromEncodedURIComponent(codeEl.value.trim()),
-	).map((house) => {
-		return { ...house, step: 0, picked: false };
-	});
+	);
 	codeEl.value = '';
 	return;
 };
@@ -258,8 +355,9 @@ const handleHouseWin = (houseId) => {
 
 const handleResetMyWorldHouses = () => {
 	if (confirm('Vous voulez réinitialiser les données ?') == true) {
-		myWorldHouses.value = JSON.parse(JSON.stringify(houses));
+		initHousesData();
 		localStorage.removeItem('landsraad');
+		localStorage.removeItem('landsraad-user');
 		saveMyWorldHouses();
 	}
 };
@@ -288,32 +386,34 @@ useDraggable(el, myWorldHouses, {
 	},
 });
 
+const myHouses = ref([]);
+
 const houses = [
-	{ id: '1', name: 'Alexin', wish: '', status: null, step: 0, picked: false },
-	{ id: '2', name: 'Argosaz', wish: '', status: null, step: 0, picked: false },
-	{ id: '3', name: 'Dyvetz', wish: '', status: null, step: 0, picked: false },
-	{ id: '4', name: 'Ecaz', wish: '', status: null, step: 0, picked: false },
-	{ id: '5', name: 'Hagal', wish: '', status: null, step: 0, picked: false },
-	{ id: '6', name: 'Hurata', wish: '', status: null, step: 0, picked: false },
-	{ id: '7', name: 'Imota', wish: '', status: null, step: 0, picked: false },
-	{ id: '8', name: 'Kenola', wish: '', status: null, step: 0, picked: false },
-	{ id: '9', name: 'Lindaren', wish: '', status: null, step: 0, picked: false },
-	{ id: '10', name: 'Maros', wish: '', status: null, step: 0, picked: false },
-	{ id: '11', name: 'Mikarrol', wish: '', status: null, step: 0, picked: false },
-	{ id: '12', name: 'Moritani', wish: '', status: null, step: 0, picked: false },
-	{ id: '13', name: 'Mutelli', wish: '', status: null, step: 0, picked: false },
-	{ id: '14', name: 'Novebruns', wish: '', status: null, step: 0, picked: false },
-	{ id: '15', name: 'Richèse', wish: '', status: null, step: 0, picked: false },
-	{ id: '16', name: 'Sor', wish: '', status: null, step: 0, picked: false },
-	{ id: '17', name: 'Spinette', wish: '', status: null, step: 0, picked: false },
-	{ id: '18', name: 'Taligari', wish: '', status: null, step: 0, picked: false },
-	{ id: '19', name: 'Thorvald', wish: '', status: null, step: 0, picked: false },
-	{ id: '20', name: 'Tseida', wish: '', status: null, step: 0, picked: false },
-	{ id: '21', name: 'Varota', wish: '', status: null, step: 0, picked: false },
-	{ id: '22', name: 'Vernius', wish: '', status: null, step: 0, picked: false },
-	{ id: '23', name: 'Wallach', wish: '', status: null, step: 0, picked: false },
-	{ id: '24', name: 'Wayku', wish: '', status: null, step: 0, picked: false },
-	{ id: '25', name: 'Wydras', wish: '', status: null, step: 0, picked: false },
+	{ id: '1', name: 'Alexin', wish: '', status: null },
+	{ id: '2', name: 'Argosaz', wish: '', status: null },
+	{ id: '3', name: 'Dyvetz', wish: '', status: null },
+	{ id: '4', name: 'Ecaz', wish: '', status: null },
+	{ id: '5', name: 'Hagal', wish: '', status: null },
+	{ id: '6', name: 'Hurata', wish: '', status: null },
+	{ id: '7', name: 'Imota', wish: '', status: null },
+	{ id: '8', name: 'Kenola', wish: '', status: null },
+	{ id: '9', name: 'Lindaren', wish: '', status: null },
+	{ id: '10', name: 'Maros', wish: '', status: null },
+	{ id: '11', name: 'Mikarrol', wish: '', status: null },
+	{ id: '12', name: 'Moritani', wish: '', status: null },
+	{ id: '13', name: 'Mutelli', wish: '', status: null },
+	{ id: '14', name: 'Novebruns', wish: '', status: null },
+	{ id: '15', name: 'Richèse', wish: '', status: null },
+	{ id: '16', name: 'Sor', wish: '', status: null },
+	{ id: '17', name: 'Spinette', wish: '', status: null },
+	{ id: '18', name: 'Taligari', wish: '', status: null },
+	{ id: '19', name: 'Thorvald', wish: '', status: null },
+	{ id: '20', name: 'Tseida', wish: '', status: null },
+	{ id: '21', name: 'Varota', wish: '', status: null },
+	{ id: '22', name: 'Vernius', wish: '', status: null },
+	{ id: '23', name: 'Wallach', wish: '', status: null },
+	{ id: '24', name: 'Wayku', wish: '', status: null },
+	{ id: '25', name: 'Wydras', wish: '', status: null },
 ];
 
 const housesLocation = [
@@ -348,30 +448,42 @@ const getLocation = (houseId) => {
 	return housesLocation.find((house) => house.id === houseId)?.url;
 };
 
-onMounted(() => {
+const initHousesData = () => {
 	myWorldHouses.value = JSON.parse(JSON.stringify(houses));
+	myHouses.value = JSON.parse(JSON.stringify(houses))
+		.map((house) => {
+			delete house.name;
+			delete house.wish;
+			delete house.status;
+			return { ...house, step: 0, picked: false };
+		})
+		.sort((a, b) => a.id - b.id);
+};
+
+onMounted(() => {
+	initHousesData();
 	const localLandsraad = JSON.parse(localStorage.getItem('landsraad'));
 	if (localLandsraad) {
 		myWorldHouses.value = localLandsraad;
+	}
+	const localUserLandsraad = JSON.parse(localStorage.getItem('landsraad-user'));
+	if (localUserLandsraad) {
+		myHouses.value = localUserLandsraad;
 	}
 });
 
 const saveMyWorldHouses = () => {
 	if (myWorldHouses.value.length > 0) {
-		const localHouses = JSON.parse(JSON.stringify(myWorldHouses.value)).map((house) => {
-			delete house._wish;
-			return house;
-		});
+		const localHouses = JSON.parse(JSON.stringify(myWorldHouses.value));
 		localStorage.setItem('landsraad', JSON.stringify(localHouses));
 	}
 
-	const cleanCode = JSON.parse(JSON.stringify(myWorldHouses.value)).map((house) => {
-		delete house.step;
-		delete house.picked;
-		delete house._wish;
-		return house;
-	});
-	exportCode.value = LZString.compressToEncodedURIComponent(JSON.stringify(cleanCode));
+	if (myHouses.value.length > 0) {
+		const localUserHouses = JSON.parse(JSON.stringify(myHouses.value));
+		localStorage.setItem('landsraad-user', JSON.stringify(localUserHouses));
+	}
+
+	exportCode.value = LZString.compressToEncodedURIComponent(JSON.stringify(myWorldHouses.value));
 };
 
 saveMyWorldHouses();
@@ -380,28 +492,56 @@ watch(myWorldHouses, async () => {
 	saveMyWorldHouses();
 });
 
+const updateCurrentHouse = (houseId) => {
+	const house = myWorldHouses.value.find((house) => house.id === houseId);
+	const userHouse = myHouses.value.find((house) => house.id === houseId);
+	currentHouse.value = { ...house, ...userHouse };
+	if (house?.wish > 0) {
+		currentHouseWish.value = {
+			type: 'delivery',
+			...items.find((item) => item.pk === house.wish),
+		};
+	} else if (house?.wish < 0) {
+		currentHouseWish.value = {
+			type: 'kill',
+			...kills.find((kill) => kill.id === house.wish),
+		};
+	} else {
+		currentHouseWish.value = null;
+	}
+};
+
 const handleShowHouseDetails = (houseId) => {
 	if (editMode.value) {
 		return;
 	}
-	const house = myWorldHouses.value.find((house) => house.id === houseId);
-	currentHouse.value = house;
-	if (house?.wish > 0) {
-		currentHouse.value._wish = {
-			type: 'item',
-			...items.find((item) => item.pk === house.wish),
-		};
-	} else if (house?.wish < 0) {
-		currentHouse.value._wish = {
-			type: 'kill',
-			...kills.find((kill) => kill.id === house.wish),
-		};
-	}
+	updateCurrentHouse(houseId);
 	houseModal.value.showModal();
 };
 
-const handleUpdateStep = (houseId) => {
-	myWorldHouses.value.find((house) => house.id === houseId).picked = false;
+const kills_points = 23;
+const steps_points = [700, 3500, 7000, 10500, 14000];
+
+const updateCurrentHouseStep = (step) => {
+	const idx = myHouses.value.findIndex((house) => house.id === currentHouse.value.id);
+	if (idx >= 0) {
+		myHouses.value[idx].picked = false;
+		myHouses.value[idx].step = myHouses.value[idx].step === step ? 0 : step;
+		updateCurrentHouse(currentHouse.value.id);
+	}
+
+	saveMyWorldHouses();
+};
+
+const getUserHouse = (houseId) => {
+	return myHouses.value.find((house) => house.id === houseId);
+};
+
+const handleTogglePicked = () => {
+	const idx = myHouses.value.findIndex((house) => house.id === currentHouse.value.id);
+	if (idx >= 0) {
+		myHouses.value[idx].picked = currentHouse.value.picked;
+	}
 	saveMyWorldHouses();
 };
 </script>

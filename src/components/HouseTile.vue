@@ -32,7 +32,7 @@
 
 		<div
 			class="btn btn-sm btn-primary z-20 btn-square top-1 right-1 absolute"
-			v-if="!editMode && house.step > 0 && !house.picked"
+			v-if="!editMode && user.step > 0 && !user.picked"
 		>
 			<GiftIcon class="size-5" />
 		</div>
@@ -69,66 +69,7 @@
 					>
 				</div>
 				<template #content>
-					<ItemTooltip :item="getWish(house.wish)?.data" v-if="house.wish">
-						<template v-if="getWish(house.wish)?.data.fields.landsraad_points">
-							<div
-								v-for="(step, s) in steps_points"
-								:key="s"
-								class="flex justify-between items-center gap-2 px-4 py-2 text-sm"
-							>
-								<div class="flex items-center gap-1">
-									<svg
-										xmlns="http://www.w3.org/2000/svg"
-										width="24"
-										height="24"
-										viewBox="0 0 24 24"
-										fill="currentColor"
-										class="icon icon-tabler icons-tabler-filled icon-tabler-circle-check text-success size-4 inline-flex"
-										v-if="house.step >= s + 1"
-									>
-										<path stroke="none" d="M0 0h24v24H0z" fill="none" />
-										<path
-											d="M17 3.34a10 10 0 1 1 -14.995 8.984l-.005 -.324l.005 -.324a10 10 0 0 1 14.995 -8.336zm-1.293 5.953a1 1 0 0 0 -1.32 -.083l-.094 .083l-3.293 3.292l-1.293 -1.292l-.094 -.083a1 1 0 0 0 -1.403 1.403l.083 .094l2 2l.094 .083a1 1 0 0 0 1.226 0l.094 -.083l4 -4l.083 -.094a1 1 0 0 0 -.083 -1.32z"
-										/>
-									</svg>
-									Palier {{ s + 1 }} ({{ step }} pts)
-								</div>
-								<div>
-									&times;{{
-										Math.ceil(
-											step /
-												getWish(house.wish)?.data.fields.landsraad_points,
-										)
-									}}
-									({{
-										getWish(house.wish)?.data.fields.landsraad_points *
-										Math.ceil(
-											step /
-												getWish(house.wish)?.data.fields.landsraad_points,
-										)
-									}} pts)
-								</div>
-							</div>
-							<div class="flex justify-between gap-2 px-4 py-2 text-sm">
-								<div>Total ({{ max_points }} pts)</div>
-								<div>
-									&times;{{
-										Math.ceil(
-											max_points /
-												getWish(house.wish)?.data.fields.landsraad_points,
-										)
-									}}
-									({{
-										getWish(house.wish)?.data.fields.landsraad_points *
-										Math.ceil(
-											max_points /
-												getWish(house.wish)?.data.fields.landsraad_points,
-										)
-									}} pts)
-								</div>
-							</div>
-						</template>
-					</ItemTooltip>
+					<ItemTooltip :item="getWish(house.wish)?.data" v-if="house.wish" />
 				</template>
 			</tippy>
 			<div
@@ -152,13 +93,9 @@ import GiftIcon from '@/icons/GiftIcon.vue';
 const store = useAppStore();
 const { items, kills } = store;
 const emit = defineEmits(['houseWin', 'houseLost', 'changeWish', 'showDetails']);
-const props = defineProps(['house', 'editMode']);
+const props = defineProps(['house', 'editMode', 'user']);
 
 const wish = ref('');
-
-const kills_points = 23;
-const steps_points = [700, 3500, 7000, 10500, 14000];
-const max_points = 70000;
 
 const filteredKills = computed(() => {
 	return kills.sort((a, b) => a.name.localeCompare(b.name));
