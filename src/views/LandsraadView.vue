@@ -65,6 +65,9 @@
 				<button class="btn btn-primary btn-square" @click="handleResetMyWorldHouses">
 					<BombIcon class="size-5" />
 				</button>
+				<button class="btn btn-primary btn-square" @click="listModal.showModal()">
+					<ListIcon class="size-5" />
+				</button>
 			</div>
 		</div>
 		<div class="grid grid-cols-3 md:grid-cols-5 gap-4 mt-4 px-4 select-none" ref="el">
@@ -89,6 +92,49 @@
 				d'autres personnes.
 			</p>
 			<p class="break-all text-xs border border-white/25 p-2">{{ exportCode }}</p>
+			<div class="modal-action">
+				<form method="dialog" class="w-full">
+					<button class="btn btn-primary w-full">Fermer</button>
+				</form>
+			</div>
+		</div>
+		<form method="dialog" class="modal-backdrop">
+			<button>close</button>
+		</form>
+	</dialog>
+	<dialog ref="listModal" class="modal">
+		<div class="modal-box max-h-[90dvh]">
+			<h3 class="text-xl font-bold text-primary">Liste des objets possibles</h3>
+			<table class="table table-sm mt-4">
+				<thead>
+					<tr>
+						<th>Objet</th>
+						<th>Points</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr v-for="item in filteredItems" :key="item.pk">
+						<td>
+							<div class="inline-flex gap-2 items-center">
+								<img
+									:src="`/img/items/${item.fields.icon}`"
+									class="size-6"
+									alt=""
+									v-if="item.fields.icon"
+								/>
+								{{ item.fields.name }}
+							</div>
+						</td>
+						<td class="text-end">
+							{{
+								item.fields.landsraad_points
+									? `${item.fields.landsraad_points} pts`
+									: '???'
+							}}
+						</td>
+					</tr>
+				</tbody>
+			</table>
 			<div class="modal-action">
 				<form method="dialog" class="w-full">
 					<button class="btn btn-primary w-full">Fermer</button>
@@ -285,7 +331,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted, watch, computed } from 'vue';
 import { useAppStore } from '@/stores/app';
 import { useDraggable } from 'vue-draggable-plus';
 import LZString from 'lz-string';
@@ -295,12 +341,14 @@ import InfoCircleIcon from '@/icons/InfoCircleIcon.vue';
 import ShareIcon from '@/icons/ShareIcon.vue';
 import DownloadIcon from '@/icons/DownloadIcon.vue';
 import BombIcon from '@/icons/BombIcon.vue';
+import ListIcon from '@/icons/ListIcon.vue';
 
 const store = useAppStore();
 const { items, kills } = store;
 
 const importModal = ref();
 const exportModal = ref();
+const listModal = ref();
 const el = ref();
 const myWorldHouses = ref([]);
 const editMode = ref(false);
@@ -544,4 +592,10 @@ const handleTogglePicked = () => {
 	}
 	saveMyWorldHouses();
 };
+
+const filteredItems = computed(() => {
+	return items
+		.filter((item) => item.fields?.landsraad === true)
+		.sort((a, b) => a.fields.name.localeCompare(b.fields.name));
+});
 </script>
