@@ -485,9 +485,9 @@ const housesLocation = [
 	{ id: '18', url: 'https://mapgenie.io/dune-awakening/maps/arrakis?locationIds=460568' },
 	{ id: '19', url: 'https://mapgenie.io/dune-awakening/maps/arrakis?locationIds=460436' },
 	{ id: '20', url: 'https://mapgenie.io/dune-awakening/maps/arrakis?locationIds=446889' },
-	{ id: '21', url: 'https://mapgenie.io/dune-awakening/maps/arrakeen?locationIds=460843' },
+	{ id: '21', url: 'https://mapgenie.io/dune-awakening/maps/arrakeen?locationIds=460833' },
 	{ id: '22', url: 'https://mapgenie.io/dune-awakening/maps/arrakis?locationIds=460723' },
-	{ id: '23', url: '' },
+	{ id: '23', url: 'https://mapgenie.io/dune-awakening/maps/arrakeen?locationIds=460843' },
 	{ id: '24', url: '' },
 	{ id: '25', url: 'https://mapgenie.io/dune-awakening/maps/arrakis?locationIds=460637' },
 ];
