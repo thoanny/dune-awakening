@@ -3,11 +3,13 @@
 		class="house bg-base-100 border-2 text-center flex flex-col items-center justify-center p-4 gap-1 relative overflow-hidden"
 		:class="{
 			'house-edit': editMode,
-			'house-wish': house.wish && !house.status,
-			'house-lost': house.status === 'lost',
-			'house-win': house.status === 'win',
+			'house-wish': house.wish_id && !house.status,
+			'house-lost': house.status === 'l',
+			'house-win': house.status === 'w',
+			'cursor-pointer': !editMode,
+			'!opacity-25': house.user.step == 5 && house.user.picked,
 		}"
-		@click="$emit('showDetails', house.id)"
+		@click="$emit('openModal', house.id)"
 	>
 		<div class="absolute top-0 right-0 z-10">
 			<div class="h-full w-full absolute top-0 left-0 custom-bg-linear"></div>
@@ -23,60 +25,68 @@
 			type="checkbox"
 			class="checkbox absolute top-2 right-2 z-20 !bg-base-100"
 			:value="house.id"
-			:indeterminate="house.status === 'lost'"
-			@change.prevent="$emit('houseWin', house.id)"
-			@contextmenu.prevent="$emit('houseLost', house.id)"
-			:checked="house.status === 'win'"
+			:indeterminate="house.status === 'l'"
+			@change.prevent="handleUpdateStatus(house.id, 'w')"
+			@contextmenu.prevent="handleUpdateStatus(house.id, 'l')"
+			:checked="house.status === 'w'"
 			v-show="editMode"
 		/>
 
 		<div
 			class="btn btn-sm btn-primary z-20 btn-square top-1 right-1 absolute"
-			v-if="!editMode && user.step > 0 && !user.picked"
+			v-if="!editMode && house.user.step > 0 && !house.user.picked"
 		>
 			<GiftIcon class="size-5" />
 		</div>
 		<img :src="`/img/houses/${house.name}.webp`" alt="" class="size-12 object-contain z-20" />
-		<span class="font-bold z-20 text-shadow text-base-content">{{ house.name }}</span>
+		<span class="font-bold z-20 text-shadow text-base-content">
+			{{ house.name }}
+			<span
+				class="text-xs text-base-content opacity-75"
+				v-if="house.user.step > 0 && house.user.step < 5 && !editMode"
+				>({{ house.user.step }}/5)</span
+			>
+		</span>
 		<select
-			v-model="wish"
+			v-model="wishId"
+			@change="handleUpdateWish(house.id, wishId)"
 			class="select select-xs w-full relative !z-20 text-base-content"
 			v-if="editMode"
 		>
-			<option value="">---</option>
+			<option value="0">---</option>
 			<optgroup label="Livrer">
-				<option v-for="item in filteredItems" :key="item.pk" :value="item.pk">
+				<option v-for="item in items" :key="item.pk" :value="item.pk">
 					{{ item.fields.name }}
 				</option>
 			</optgroup>
 			<optgroup label="Tuer">
-				<option v-for="kill in filteredKills" :key="kill.id" :value="kill.id">
+				<option v-for="kill in kills" :key="kill.id" :value="kill.id">
 					{{ kill.name }}
 				</option>
 			</optgroup>
 		</select>
 		<template v-else>
-			<tippy v-if="getWish(house.wish)?.type === 'delivery'">
+			<tippy v-if="house.wish.type === 'item'">
 				<div class="flex gap-1 items-center justify-center relative z-20 h-6">
 					<RouterLink
 						:to="{
 							name: 'item',
-							params: { slug: getWish(house.wish)?.data.fields.slug },
+							params: { slug: house.wish.data?.fields.slug },
 						}"
 						class="text-sm line-clamp-1"
 						v-if="house.wish"
-						>Livrer&nbsp;: {{ getWish(house.wish)?.data.fields.name }}</RouterLink
+						>Livrer&nbsp;: {{ house.wish.data?.fields.name }}</RouterLink
 					>
 				</div>
 				<template #content>
-					<ItemTooltip :item="getWish(house.wish)?.data" v-if="house.wish" />
+					<ItemTooltip :item="house.wish.data" v-if="house.wish" />
 				</template>
 			</tippy>
 			<div
 				class="flex gap-1 items-center h-6 text-sm z-20"
-				v-else-if="getWish(house.wish)?.type === 'kill'"
+				v-else-if="house.wish.type === 'kill'"
 			>
-				<span class="line-clamp-1">Tuer&nbsp;: {{ getWish(house.wish)?.data.name }}</span>
+				<span class="line-clamp-1">Tuer&nbsp;: {{ house.wish.data?.name }}</span>
 			</div>
 			<span class="z-20" v-else> --- </span>
 		</template>
@@ -84,49 +94,22 @@
 </template>
 
 <script setup>
-import { computed, ref, watch, watchEffect } from 'vue';
+import { ref, watchEffect } from 'vue';
+import { useLandsraadStore } from '@/stores/landsraad';
+import { storeToRefs } from 'pinia';
 import ItemTooltip from '@/components/ItemTooltip.vue';
-import { useAppStore } from '@/stores/app';
 import StripesIcon from '@/icons/StripesIcon.vue';
 import ArrowsMoveIcon from '@/icons/ArrowsMoveIcon.vue';
 import GiftIcon from '@/icons/GiftIcon.vue';
-const store = useAppStore();
-const { items, kills } = store;
-const emit = defineEmits(['houseWin', 'houseLost', 'changeWish', 'showDetails']);
-const props = defineProps(['house', 'editMode', 'user']);
 
-const wish = ref('');
-
-const filteredKills = computed(() => {
-	return kills.sort((a, b) => a.name.localeCompare(b.name));
-});
-
-const filteredItems = computed(() => {
-	return items
-		.filter((item) => item.fields?.landsraad === true)
-		.sort((a, b) => a.fields.name.localeCompare(b.fields.name));
-});
-
-const getWish = (wishId) => {
-	if (wishId < 0) {
-		return { type: 'kill', data: kills.find((kill) => kill.id === wishId) };
-	} else if (wishId > 0) {
-		return { type: 'delivery', data: items.find((item) => item.pk === wishId) };
-	}
-
-	return null;
-};
-
-watch(wish, (newWish, oldWish) => {
-	if (newWish === oldWish) {
-		return;
-	}
-
-	emit('changeWish', props.house.id, wish.value);
-});
+const props = defineProps(['house']);
+const wishId = ref(null);
+const landsraad = useLandsraadStore();
+const { kills, items, handleUpdateWish, handleUpdateStatus } = landsraad;
+const { editMode } = storeToRefs(landsraad);
 
 watchEffect(() => {
-	wish.value = props.house.wish;
+	wishId.value = props.house.wish_id;
 });
 </script>
 

@@ -1,0 +1,188 @@
+[
+	{
+		"id": 1,
+		"name": "Alexin",
+		"location": {
+			"name": "",
+			"url": "https://mapgenie.io/dune-awakening/maps/harko-village?locationIds=460783"
+		}
+	},
+	{
+		"id": 2,
+		"name": "Argosaz",
+		"location": {
+			"name": "",
+			"url": "https://mapgenie.io/dune-awakening/maps/arrakis?locationIds=459766"
+		}
+	},
+	{
+		"id": 3,
+		"name": "Dyvetz",
+		"location": {
+			"name": "",
+			"url": "https://mapgenie.io/dune-awakening/maps/arrakis?locationIds=460431"
+		}
+	},
+	{
+		"id": 4,
+		"name": "Ecaz",
+		"location": {
+			"name": "",
+			"url": "https://mapgenie.io/dune-awakening/maps/arrakis?locationIds=460696"
+		}
+	},
+	{
+		"id": 5,
+		"name": "Hagal",
+		"location": {
+			"name": "",
+			"url": "https://mapgenie.io/dune-awakening/maps/arrakis?locationIds=460534"
+		}
+	},
+	{
+		"id": 6,
+		"name": "Hurata",
+		"location": {
+			"name": "",
+			"url": "https://mapgenie.io/dune-awakening/maps/arrakis?locationIds=446876"
+		}
+	},
+	{
+		"id": 7,
+		"name": "Imota",
+		"location": {
+			"name": "",
+			"url": "https://mapgenie.io/dune-awakening/maps/arrakis?locationIds=460736"
+		}
+	},
+	{
+		"id": 8,
+		"name": "Kenola",
+		"location": {
+			"name": "",
+			"url": "https://mapgenie.io/dune-awakening/maps/arrakis?locationIds=460730"
+		}
+	},
+	{
+		"id": 9,
+		"name": "Lindaren",
+		"location": {
+			"name": "",
+			"url": "https://mapgenie.io/dune-awakening/maps/arrakis?locationIds=460918"
+		}
+	},
+	{ "id": 10, "name": "Maros", "location": null },
+	{
+		"id": 11,
+		"name": "Mikarrol",
+		"location": {
+			"name": "",
+			"url": "https://mapgenie.io/dune-awakening/maps/arrakis?locationIds=460608"
+		}
+	},
+	{
+		"id": 12,
+		"name": "Moritani",
+		"location": {
+			"name": "",
+			"url": "https://mapgenie.io/dune-awakening/maps/arrakis?locationIds=460697"
+		}
+	},
+	{
+		"id": 13,
+		"name": "Mutelli",
+		"location": {
+			"name": "",
+			"url": "https://mapgenie.io/dune-awakening/maps/arrakeen?locationIds=460830"
+		}
+	},
+	{
+		"id": 14,
+		"name": "Novebruns",
+		"location": {
+			"name": "",
+			"url": "https://mapgenie.io/dune-awakening/maps/arrakis?locationIds=446917"
+		}
+	},
+	{
+		"id": 15,
+		"name": "Richèse",
+		"location": {
+			"name": "",
+			"url": "https://mapgenie.io/dune-awakening/maps/arrakis?locationIds=460724"
+		}
+	},
+	{
+		"id": 16,
+		"name": "Sor",
+		"location": {
+			"name": "",
+			"url": "https://mapgenie.io/dune-awakening/maps/arrakis?locationIds=460523"
+		}
+	},
+	{
+		"id": 17,
+		"name": "Spinette",
+		"location": {
+			"name": "",
+			"url": "https://mapgenie.io/dune-awakening/maps/harko-village?locationIds=460781"
+		}
+	},
+	{
+		"id": 18,
+		"name": "Taligari",
+		"location": {
+			"name": "",
+			"url": "https://mapgenie.io/dune-awakening/maps/arrakis?locationIds=460568"
+		}
+	},
+	{
+		"id": 19,
+		"name": "Thorvald",
+		"location": {
+			"name": "",
+			"url": "https://mapgenie.io/dune-awakening/maps/arrakis?locationIds=460436"
+		}
+	},
+	{
+		"id": 20,
+		"name": "Tseida",
+		"location": {
+			"name": "",
+			"url": "https://mapgenie.io/dune-awakening/maps/arrakis?locationIds=446889"
+		}
+	},
+	{
+		"id": 21,
+		"name": "Varota",
+		"location": {
+			"name": "",
+			"url": "https://mapgenie.io/dune-awakening/maps/arrakeen?locationIds=460833"
+		}
+	},
+	{
+		"id": 22,
+		"name": "Vernius",
+		"location": {
+			"name": "",
+			"url": "https://mapgenie.io/dune-awakening/maps/arrakis?locationIds=460723"
+		}
+	},
+	{
+		"id": 23,
+		"name": "Wallach",
+		"location": {
+			"name": "",
+			"url": "https://mapgenie.io/dune-awakening/maps/arrakeen?locationIds=460843"
+		}
+	},
+	{ "id": 24, "name": "Wayku", "wish": null, "status": null, "location": null },
+	{
+		"id": 25,
+		"name": "Wydras",
+		"location": {
+			"name": "",
+			"url": "https://mapgenie.io/dune-awakening/maps/arrakis?locationIds=460637"
+		}
+	}
+]
