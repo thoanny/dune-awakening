@@ -14,13 +14,23 @@
 					<XIcon class="size-5" v-else />
 					Modifier
 				</button>
-				<div class="inline-flex gap-2 items-center" v-if="editMode">
+				<label class="label select-none">
+					<input
+						type="checkbox"
+						v-model="bonusActive"
+						class="toggle toggle-primary toggle-sm"
+						@change="handleLocalBonusActive"
+					/>
+					Bonus de 20%
+				</label>
+
+				<!-- <div class="inline-flex gap-2 items-center" v-if="editMode">
 					<InfoCircleIcon class="size-5 shrink-0" />
 					<span class="text-sm"
 						>Clic gauche dans la case&nbsp;= gagné&nbsp;; clic droit (ou appui long sur
 						mobile)&nbsp;= perdu.</span
 					>
-				</div>
+				</div> -->
 			</div>
 			<div class="flex flex-wrap justify-center items-center gap-2">
 				<button
@@ -125,7 +135,6 @@
 	</dialog>
 	<dialog class="modal" ref="houseModal">
 		<div class="modal-box max-w-sm" v-if="currentHouse">
-			<!-- <pre>{{ currentHouse }}</pre> -->
 			<form method="dialog">
 				<button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
 			</form>
@@ -145,16 +154,28 @@
 						Livrer&nbsp;:
 						<span class="group-hover:underline">
 							{{ currentHouse.wish.data.fields.name }}
-							<template v-if="currentHouse.wish?.data.fields.landsraad_points">
-								<br /><small
-									><em
-										>{{
-											currentHouse.wish.data.fields.landsraad_points
-										}}&nbsp;points/unité</em
-									></small
-								>
-							</template>
 						</span>
+						<template v-if="currentHouse.wish?.data.fields.landsraad_points">
+							<br /><small>
+								<em>
+									<span v-if="bonusActive">
+										{{
+											Math.ceil(
+												currentHouse.wish.data.fields.landsraad_points *
+													BONUS,
+											)
+										}}
+									</span>
+									<span v-else>
+										{{
+											Math.ceil(
+												currentHouse.wish.data.fields.landsraad_points,
+											)
+										}} </span
+									>&nbsp;points/unité</em
+								></small
+							>
+						</template>
 					</RouterLink>
 					<span v-else-if="currentHouse.wish.type === 'kill'">
 						Tuer&nbsp;: {{ currentHouse.wish.data.name }} <br /><small
@@ -216,7 +237,21 @@
 									</td>
 									<td width="1">{{ s + 1 }}</td>
 									<td class="text-end" width="1">{{ step }}&nbsp;pts</td>
-									<td class="text-end font-bold text-primary text-shadow">
+									<td
+										class="text-end font-bold text-primary text-shadow"
+										v-if="bonusActive"
+									>
+										&times;&nbsp;{{
+											Math.ceil(
+												step /
+													Math.ceil(
+														currentHouse.wish.data.fields
+															.landsraad_points * BONUS,
+													),
+											)
+										}}
+									</td>
+									<td class="text-end font-bold text-primary text-shadow" v-else>
 										&times;&nbsp;{{
 											Math.ceil(
 												step /
@@ -224,7 +259,22 @@
 											)
 										}}
 									</td>
-									<td class="text-end">
+									<td class="text-end" v-if="bonusActive">
+										{{
+											Math.ceil(
+												currentHouse.wish.data.fields.landsraad_points *
+													BONUS,
+											) *
+											Math.ceil(
+												step /
+													Math.ceil(
+														currentHouse.wish.data.fields
+															.landsraad_points * BONUS,
+													),
+											)
+										}}&nbsp;pts
+									</td>
+									<td class="text-end" v-else>
 										{{
 											currentHouse.wish.data.fields.landsraad_points *
 											Math.ceil(
@@ -321,9 +371,12 @@ const landsraad = useLandsraadStore();
 const { handleUpdateStep, handleUpdatePicked, kills_points, steps_points } = landsraad;
 const { houses, items, editMode, exportHousesCode } = storeToRefs(landsraad);
 
+const BONUS = 1.2;
+
 const houseModal = ref();
 const exportImportModal = ref();
 const listModal = ref();
+const bonusActive = ref(false);
 
 const el = ref();
 
@@ -341,6 +394,19 @@ const handleOpenModal = (houseId) => {
 	}
 	currentHouse.value = houses.value.find((house) => house.id === houseId);
 	houseModal.value.showModal();
+};
+
+const initLocalBonusActive = () => {
+	const localBonusActive = localStorage.getItem('landsraad-bonus');
+	if (localBonusActive !== null) {
+		bonusActive.value = Boolean(localBonusActive);
+	}
+};
+
+initLocalBonusActive();
+
+const handleLocalBonusActive = () => {
+	localStorage.setItem('landsraad-bonus', bonusActive.value);
 };
 
 /*
