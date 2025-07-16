@@ -52,6 +52,7 @@ export const useLandsraadStore = defineStore('landsraad', () => {
 	];
 
 	const _saveLocalLandsraad = () => {
+		console.log('_saveLocalLandsraad');
 		localStorage.setItem(
 			'landsraad',
 			JSON.stringify({
@@ -69,6 +70,7 @@ export const useLandsraadStore = defineStore('landsraad', () => {
 	};
 
 	const handleUpdateWish = (houseId, wishId, init = false) => {
+		console.log('handleUpdateWish');
 		const idx = houses.value.findIndex((house) => house.id === houseId);
 		if (idx < 0) {
 			return;
@@ -109,6 +111,7 @@ export const useLandsraadStore = defineStore('landsraad', () => {
 	};
 
 	const initialData = () => {
+		console.log('initialData');
 		houses.value = dataHouses.map((house, h) => ({
 			...house,
 			wish_id: 0,
@@ -139,7 +142,7 @@ export const useLandsraadStore = defineStore('landsraad', () => {
 					};
 
 					if (landsraad.w !== 0) {
-						handleUpdateWish(landsraad._, landsraad.w);
+						handleUpdateWish(landsraad._, landsraad.w, true);
 					}
 				}
 			});
@@ -150,6 +153,7 @@ export const useLandsraadStore = defineStore('landsraad', () => {
 	initialData();
 
 	const exportHousesCode = computed(() => {
+		console.log('exportHousesCode');
 		return LZString.compressToEncodedURIComponent(
 			JSON.stringify(
 				houses.value
@@ -165,6 +169,7 @@ export const useLandsraadStore = defineStore('landsraad', () => {
 	});
 
 	const handleImportHouses = (code) => {
+		console.log('handleImportHouses');
 		try {
 			const importedHouses = JSON.parse(
 				LZString.decompressFromEncodedURIComponent(code.trim()),
@@ -201,6 +206,7 @@ export const useLandsraadStore = defineStore('landsraad', () => {
     status : win (w) || lost (l)
   */
 	const handleUpdateStatus = (houseId, status) => {
+		console.log('handleUpdateStatus');
 		const idx = houses.value.findIndex((house) => house.id === houseId);
 		if (idx < 0) {
 			return;
@@ -211,6 +217,7 @@ export const useLandsraadStore = defineStore('landsraad', () => {
 	};
 
 	const handleReset = () => {
+		console.log('handleReset');
 		if (confirm('Vous voulez réinitialiser les données ?') == true) {
 			localStorage.removeItem('landsraad');
 			initialData();
@@ -228,12 +235,13 @@ export const useLandsraadStore = defineStore('landsraad', () => {
 	});
 
 	const handleUpdateSort = () => {
+		console.log('handleUpdateSort');
 		houses.value = houses.value.map((house, h) => ({ ...house, sort: h }));
 		_saveLocalLandsraad();
 	};
 
 	const handleUpdateStep = (houseId, step) => {
-		console.log('handleUpdateStep', houseId, step);
+		console.log('handleUpdateStep');
 		const house = houses.value.find((h) => h.id === houseId);
 		house.user = {
 			step: house.user.step === step ? 0 : step,
@@ -243,6 +251,7 @@ export const useLandsraadStore = defineStore('landsraad', () => {
 	};
 
 	const handleUpdatePicked = () => {
+		console.log('handleUpdatePicked');
 		_saveLocalLandsraad();
 	};
 
