@@ -14,15 +14,6 @@
 					<XIcon class="size-5" v-else />
 					Modifier
 				</button>
-				<label class="label select-none">
-					<input
-						type="checkbox"
-						v-model="bonusActive"
-						class="toggle toggle-primary toggle-sm"
-						@change="handleLocalBonusActive"
-					/>
-					Bonus de 20%
-				</label>
 
 				<!-- <div class="inline-flex gap-2 items-center" v-if="editMode">
 					<InfoCircleIcon class="size-5 shrink-0" />
@@ -178,8 +169,16 @@
 						</template>
 					</RouterLink>
 					<span v-else-if="currentHouse.wish.type === 'kill'">
-						Tuer&nbsp;: {{ currentHouse.wish.data.name }} <br /><small
-							><em>{{ kills_points }}&nbsp;pts/u</em></small
+						Tuer&nbsp;: {{ currentHouse.wish.data.name }}
+						<br />
+						<small>
+							<em>
+								<span v-if="bonusActive">
+									{{ Math.ceil(kills_points * BONUS) }}
+								</span>
+								<span v-else> {{ Math.ceil(kills_points) }} </span
+								>&nbsp;points/unité</em
+							></small
 						>
 					</span>
 				</div>
@@ -193,6 +192,15 @@
 							@change="handleUpdatePicked"
 						/>
 						Récompenses récupérées
+					</label>
+					<label class="flex gap-2 items-center justify-center select-none">
+						<input
+							type="checkbox"
+							v-model="bonusActive"
+							class="toggle toggle-primary toggle-sm"
+							@change="handleLocalBonusActive"
+						/>
+						Bonus de 20%
 					</label>
 					<div
 						v-if="
@@ -241,7 +249,7 @@
 										class="text-end font-bold text-primary text-shadow"
 										v-if="bonusActive"
 									>
-										&times;&nbsp;{{
+										~&nbsp;{{
 											Math.ceil(
 												step /
 													Math.ceil(
@@ -260,7 +268,7 @@
 										}}
 									</td>
 									<td class="text-end" v-if="bonusActive">
-										{{
+										~&nbsp;{{
 											Math.ceil(
 												currentHouse.wish.data.fields.landsraad_points *
 													BONUS,
@@ -275,7 +283,7 @@
 										}}&nbsp;pts
 									</td>
 									<td class="text-end" v-else>
-										{{
+										=&nbsp;{{
 											currentHouse.wish.data.fields.landsraad_points *
 											Math.ceil(
 												step /
@@ -325,11 +333,27 @@
 									</td>
 									<td width="1">{{ s + 1 }}</td>
 									<td class="text-end" width="1">{{ step }}&nbsp;pts</td>
-									<td class="text-end font-bold text-primary text-shadow">
+									<td
+										class="text-end font-bold text-primary text-shadow"
+										v-if="bonusActive"
+									>
+										~&nbsp;{{
+											Math.ceil(step / Math.ceil(kills_points * BONUS))
+										}}
+									</td>
+									<td class="text-end font-bold text-primary text-shadow" v-else>
 										&times;&nbsp;{{ Math.ceil(step / kills_points) }}
 									</td>
-									<td class="text-end">
-										{{ kills_points * Math.ceil(step / kills_points) }}&nbsp;pts
+									<td class="text-end" v-if="bonusActive">
+										~&nbsp;{{
+											Math.ceil(kills_points * BONUS) *
+											Math.ceil(step / Math.ceil(kills_points * BONUS))
+										}}&nbsp;pts
+									</td>
+									<td class="text-end" v-else>
+										=&nbsp;{{
+											kills_points * Math.ceil(step / kills_points)
+										}}&nbsp;pts
 									</td>
 								</tr>
 							</tbody>
