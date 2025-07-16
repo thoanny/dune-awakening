@@ -4,7 +4,7 @@
 		<div
 			class="px-4 mt-4 flex flex-col xl:flex-row items-center justify-between gap-x-4 gap-y-2"
 		>
-			<div class="flex items-center gap-4">
+			<div class="flex items-center gap-2">
 				<button
 					@click="editMode = !editMode"
 					class="btn leading-none"
@@ -14,29 +14,33 @@
 					<XIcon class="size-5" v-else />
 					Modifier
 				</button>
-
-				<!-- <div class="inline-flex gap-2 items-center" v-if="editMode">
-					<InfoCircleIcon class="size-5 shrink-0" />
-					<span class="text-sm"
-						>Clic gauche dans la case&nbsp;= gagné&nbsp;; clic droit (ou appui long sur
-						mobile)&nbsp;= perdu.</span
-					>
-				</div> -->
+				<button @click="helpModal.showModal()" class="btn leading-none btn-primary">
+					<InfoCircleIcon class="size-5" />
+					Aide
+				</button>
 			</div>
 			<div class="flex flex-wrap justify-center items-center gap-2">
 				<button
-					class="btn btn-primary"
+					class="btn btn-primary leading-none"
 					@click="exportImportModal.showModal()"
 					:disabled="editMode"
 				>
 					<DeviceFloppyIcon class="size-6" />
 					Exporter/Importer
 				</button>
-				<button class="btn btn-primary" @click="landsraad.handleReset" :disabled="editMode">
+				<button
+					class="btn btn-primary leading-none"
+					@click="landsraad.handleReset"
+					:disabled="editMode"
+				>
 					<ArrowBackUpIcon class="size-6" />
 					Réinitialiser
 				</button>
-				<button class="btn btn-primary" @click="listModal.showModal()" :disabled="editMode">
+				<button
+					class="btn btn-primary leading-none"
+					@click="listModal.showModal()"
+					:disabled="editMode"
+				>
 					<ListCheckIcon class="size-6" />
 					Objets possibles
 				</button>
@@ -54,10 +58,12 @@
 			/>
 		</div>
 	</div>
+	<dialog ref="helpModal" class="modal">
+		<LandsraadHelpModal />
+	</dialog>
 	<dialog ref="exportImportModal" class="modal">
 		<ExportImportModal :export-houses-code="exportHousesCode" />
 	</dialog>
-
 	<dialog ref="listModal" class="modal">
 		<LandsraadListModal />
 	</dialog>
@@ -83,12 +89,14 @@ import ListCheckIcon from '@/icons/ListCheckIcon.vue';
 import ExportImportModal from '@/components/modals/LandsraadExportImportModal.vue';
 import LandsraadListModal from '@/components/modals/LandsraadListModal.vue';
 import LandsraadHouseModal from '@/components/modals/LandsraadHouseModal.vue';
+import LandsraadHelpModal from '@/components/modals/LandsraadHelpModal.vue';
 const landsraad = useLandsraadStore();
 const { houses, currentHouse, editMode, exportHousesCode } = storeToRefs(landsraad);
 
 const houseModal = ref();
 const exportImportModal = ref();
 const listModal = ref();
+const helpModal = ref();
 
 const el = ref();
 
