@@ -251,7 +251,5 @@ const { handleLocalBonusActive, handleUpdatePicked, handleUpdateStep, kills_poin
 	landsraad;
 const { currentHouse, bonusActive } = storeToRefs(landsraad);
 
-console.log('bonusActive in modal', bonusActive.value);
-
 const BONUS = 1.2;
 </script>
