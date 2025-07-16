@@ -6,8 +6,10 @@ import dataItems from '@/data/items.json';
 
 export const useLandsraadStore = defineStore('landsraad', () => {
 	const houses = ref();
+	const currentHouse = ref({});
 	const editMode = ref(false);
 	const version = 2;
+	const bonusActive = ref(false);
 
 	const kills_points = 23;
 	const steps_points = [700, 3500, 7000, 10500, 14000];
@@ -255,8 +257,25 @@ export const useLandsraadStore = defineStore('landsraad', () => {
 		_saveLocalLandsraad();
 	};
 
+	const initLocalBonusActive = () => {
+		console.log('initLocalBonusActive');
+		const localBonusActive = localStorage.getItem('landsraad-bonus');
+		if (localBonusActive !== null) {
+			bonusActive.value = localBonusActive === 'true' || false;
+		}
+	};
+
+	initLocalBonusActive();
+
+	const handleLocalBonusActive = () => {
+		console.log('handleLocalBonusActive');
+		localStorage.setItem('landsraad-bonus', bonusActive.value);
+	};
+
 	return {
 		houses,
+		currentHouse,
+		bonusActive,
 		kills,
 		items,
 		editMode,
@@ -270,5 +289,6 @@ export const useLandsraadStore = defineStore('landsraad', () => {
 		handleImportHouses,
 		handleUpdateStep,
 		handleUpdatePicked,
+		handleLocalBonusActive,
 	};
 });
