@@ -58,8 +58,8 @@ const { queue } = storeToRefs(store);
 					}}
 				</span>
 			</RouterLink>
-			<RouterLink :to="{ name: 'about' }" class="hidden sm:block">
-				<span>À propos</span>
+			<RouterLink :to="{ name: 't-potes' }">
+				<span>T-potes</span>
 			</RouterLink>
 		</nav>
 	</header>
