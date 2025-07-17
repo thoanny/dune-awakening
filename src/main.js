@@ -32,6 +32,7 @@ createApp(App)
 	.use(VueMatomo, {
 		host: 'https://analytics.thoanny.fr',
 		siteId: 16,
+		router: router,
 		disableCookies: true,
 	})
 	.mount('#app');
