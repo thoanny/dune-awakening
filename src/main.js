@@ -3,6 +3,7 @@ import './assets/main.css';
 
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
+import VueMatomo from 'vue-matomo';
 import router from './router';
 import VueTippy from 'vue-tippy';
 
@@ -28,4 +29,9 @@ createApp(App)
 			}, // => Global default options * see all props
 		},
 	)
+	.use(VueMatomo, {
+		host: 'https://analytics.thoanny.fr',
+		siteId: 16,
+		disableCookies: true,
+	})
 	.mount('#app');
