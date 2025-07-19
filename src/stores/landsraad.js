@@ -17,7 +17,7 @@ export const useLandsraadStore = defineStore('landsraad', () => {
 	const dataKills = [
 		{
 			id: -1,
-			name: 'Troupes de la maison Harkonen',
+			name: 'Troupes de la maison Harkonnen',
 		},
 		{
 			id: -2,
