@@ -23,18 +23,14 @@
 					<template v-if="currentHouse.wish?.data.fields.landsraad_points">
 						<br /><small>
 							<em>
-								<span v-if="bonusActive">
+								<span>
 									{{
-										Math.ceil(
-											currentHouse.wish.data.fields.landsraad_points * BONUS,
+										Math.round(
+											currentHouse.wish.data.fields.landsraad_points * coef,
 										)
 									}}
 								</span>
-								<span v-else>
-									{{
-										Math.ceil(currentHouse.wish.data.fields.landsraad_points)
-									}} </span
-								>&nbsp;points/unité</em
+								&nbsp;points/unité</em
 							></small
 						>
 					</template>
@@ -44,16 +40,28 @@
 					<br />
 					<small>
 						<em>
-							<span v-if="bonusActive">
-								{{ Math.ceil(kills_points * BONUS) }}
+							<span>
+								{{ Math.round(kills_points * coef) }}
 							</span>
-							<span v-else> {{ Math.ceil(kills_points) }} </span
-							>&nbsp;points/unité</em
+							&nbsp;points/unité</em
 						></small
 					>
 				</span>
 			</div>
 			<div class="flex flex-col gap-3 mt-4 w-full" v-if="currentHouse.wish">
+				<div class="flex items-center gap-3">
+					<input
+						type="range"
+						min="0"
+						:max="BONUSMAX"
+						class="range range-sm range-primary w-full"
+						v-model="bonusLevel"
+						@change="handleLocalBonusLevel"
+					/>
+					<label class="text-left whitespace-nowrap w-28 shrink-0"
+						>Bonus de {{ bonusLevel * 20 }} %</label
+					>
+				</div>
 				<label class="flex gap-2 items-center justify-center select-none">
 					<input
 						type="checkbox"
@@ -63,15 +71,6 @@
 						@change="handleUpdatePicked"
 					/>
 					Récompenses récupérées
-				</label>
-				<label class="flex gap-2 items-center justify-center select-none">
-					<input
-						type="checkbox"
-						v-model="bonusActive"
-						class="toggle toggle-primary toggle-sm"
-						@change="handleLocalBonusActive"
-					/>
-					Bonus de 20%
 				</label>
 				<div
 					v-if="
@@ -116,46 +115,24 @@
 								</td>
 								<td width="1">{{ s + 1 }}</td>
 								<td class="text-end" width="1">{{ step }}&nbsp;pts</td>
-								<td
-									class="text-end font-bold text-primary text-shadow"
-									v-if="bonusActive"
-								>
-									~&nbsp;{{
-										Math.ceil(
-											step /
-												Math.ceil(
-													currentHouse.wish.data.fields.landsraad_points *
-														BONUS,
-												),
-										)
-									}}
-								</td>
-								<td class="text-end font-bold text-primary text-shadow" v-else>
+								<td class="text-end font-bold text-primary text-shadow">
 									&times;&nbsp;{{
 										Math.ceil(
-											step / currentHouse.wish.data.fields.landsraad_points,
+											step /
+												(currentHouse.wish.data.fields.landsraad_points *
+													coef),
 										)
 									}}
 								</td>
-								<td class="text-end" v-if="bonusActive">
-									~&nbsp;{{
-										Math.ceil(
-											currentHouse.wish.data.fields.landsraad_points * BONUS,
-										) *
+								<td class="text-end">
+									=&nbsp;{{
 										Math.ceil(
 											step /
-												Math.ceil(
-													currentHouse.wish.data.fields.landsraad_points *
-														BONUS,
-												),
-										)
-									}}&nbsp;pts
-								</td>
-								<td class="text-end" v-else>
-									=&nbsp;{{
-										currentHouse.wish.data.fields.landsraad_points *
-										Math.ceil(
-											step / currentHouse.wish.data.fields.landsraad_points,
+												(currentHouse.wish.data.fields.landsraad_points *
+													coef),
+										) *
+										Math.round(
+											currentHouse.wish.data.fields.landsraad_points * coef,
 										)
 									}}&nbsp;pts
 								</td>
@@ -201,24 +178,13 @@
 								</td>
 								<td width="1">{{ s + 1 }}</td>
 								<td class="text-end" width="1">{{ step }}&nbsp;pts</td>
-								<td
-									class="text-end font-bold text-primary text-shadow"
-									v-if="bonusActive"
-								>
-									~&nbsp;{{ Math.ceil(step / Math.ceil(kills_points * BONUS)) }}
+								<td class="text-end font-bold text-primary text-shadow">
+									=&nbsp;{{ Math.ceil(step / Math.round(kills_points * coef)) }}
 								</td>
-								<td class="text-end font-bold text-primary text-shadow" v-else>
-									&times;&nbsp;{{ Math.ceil(step / kills_points) }}
-								</td>
-								<td class="text-end" v-if="bonusActive">
-									~&nbsp;{{
-										Math.ceil(kills_points * BONUS) *
-										Math.ceil(step / Math.ceil(kills_points * BONUS))
-									}}&nbsp;pts
-								</td>
-								<td class="text-end" v-else>
+								<td class="text-end">
 									=&nbsp;{{
-										kills_points * Math.ceil(step / kills_points)
+										Math.round(kills_points * coef) *
+										Math.ceil(step / (kills_points * coef))
 									}}&nbsp;pts
 								</td>
 							</tr>
@@ -243,13 +209,22 @@
 </template>
 
 <script setup>
+import { computed } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useLandsraadStore } from '@/stores/landsraad';
 
 const landsraad = useLandsraadStore();
-const { handleLocalBonusActive, handleUpdatePicked, handleUpdateStep, kills_points, steps_points } =
-	landsraad;
-const { currentHouse, bonusActive } = storeToRefs(landsraad);
+const {
+	handleLocalBonusLevel,
+	handleUpdatePicked,
+	handleUpdateStep,
+	kills_points,
+	steps_points,
+	BONUSMAX,
+} = landsraad;
+const { currentHouse, bonusLevel } = storeToRefs(landsraad);
 
-const BONUS = 1.2;
+const coef = computed(() => {
+	return 1 + (bonusLevel.value * 20) / 100;
+});
 </script>

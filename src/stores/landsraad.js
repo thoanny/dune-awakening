@@ -5,11 +5,12 @@ import dataHouses from '@/data/houses.json';
 import dataItems from '@/data/items.json';
 
 export const useLandsraadStore = defineStore('landsraad', () => {
+	const BONUSMAX = 2;
 	const houses = ref();
 	const currentHouse = ref({});
 	const editMode = ref(false);
 	const version = 2;
-	const bonusActive = ref(false);
+	const bonusLevel = ref(0);
 
 	const kills_points = 23;
 	const steps_points = [700, 3500, 7000, 10500, 14000];
@@ -257,31 +258,33 @@ export const useLandsraadStore = defineStore('landsraad', () => {
 		_saveLocalLandsraad();
 	};
 
-	const initLocalBonusActive = () => {
-		console.log('initLocalBonusActive');
-		const localBonusActive = localStorage.getItem('landsraad-bonus');
-		if (localBonusActive !== null) {
-			bonusActive.value = localBonusActive === 'true' || false;
+	const initLocalBonusLevel = () => {
+		console.log('initLocalBonusLevel');
+		const localBonusLevel = localStorage.getItem('landsraad-bonus');
+		if (localBonusLevel !== null) {
+			bonusLevel.value =
+				localBonusLevel >= 0 && localBonusLevel < BONUSMAX ? localBonusLevel : 0;
 		}
 	};
 
-	initLocalBonusActive();
+	initLocalBonusLevel();
 
-	const handleLocalBonusActive = () => {
-		console.log('handleLocalBonusActive');
-		localStorage.setItem('landsraad-bonus', bonusActive.value);
+	const handleLocalBonusLevel = () => {
+		console.log('handleLocalBonusLevel');
+		localStorage.setItem('landsraad-bonus', bonusLevel.value);
 	};
 
 	return {
 		houses,
 		currentHouse,
-		bonusActive,
+		bonusLevel,
 		kills,
 		items,
 		editMode,
 		exportHousesCode,
 		kills_points,
 		steps_points,
+		BONUSMAX,
 		handleUpdateStatus,
 		handleUpdateWish,
 		handleUpdateSort,
@@ -289,6 +292,6 @@ export const useLandsraadStore = defineStore('landsraad', () => {
 		handleImportHouses,
 		handleUpdateStep,
 		handleUpdatePicked,
-		handleLocalBonusActive,
+		handleLocalBonusLevel,
 	};
 });
