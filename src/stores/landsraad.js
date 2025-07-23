@@ -263,7 +263,7 @@ export const useLandsraadStore = defineStore('landsraad', () => {
 		const localBonusLevel = localStorage.getItem('landsraad-bonus');
 		if (localBonusLevel !== null) {
 			bonusLevel.value =
-				localBonusLevel >= 0 && localBonusLevel < BONUSMAX ? localBonusLevel : 0;
+				localBonusLevel >= 0 && localBonusLevel <= BONUSMAX ? localBonusLevel : 0;
 		}
 	};
 
