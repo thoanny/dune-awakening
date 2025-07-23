@@ -81,7 +81,8 @@
 					<table class="table table-sm">
 						<thead>
 							<tr>
-								<th colspan="3">Palier</th>
+								<th colspan="2">Palier</th>
+								<th class="text-end">Points</th>
 								<th class="text-end">Qt</th>
 								<th class="text-end">Total</th>
 							</tr>
@@ -119,8 +120,10 @@
 									&times;&nbsp;{{
 										Math.ceil(
 											step /
-												(currentHouse.wish.data.fields.landsraad_points *
-													coef),
+												Math.round(
+													currentHouse.wish.data.fields.landsraad_points *
+														coef,
+												),
 										)
 									}}
 								</td>
@@ -128,13 +131,15 @@
 									=&nbsp;{{
 										Math.ceil(
 											step /
-												(currentHouse.wish.data.fields.landsraad_points *
-													coef),
+												Math.round(
+													currentHouse.wish.data.fields.landsraad_points *
+														coef,
+												),
 										) *
 										Math.round(
 											currentHouse.wish.data.fields.landsraad_points * coef,
 										)
-									}}&nbsp;pts
+									}}
 								</td>
 							</tr>
 						</tbody>
@@ -144,7 +149,8 @@
 					<table class="table table-sm">
 						<thead>
 							<tr>
-								<th colspan="3">Palier</th>
+								<th colspan="2">Palier</th>
+								<th class="text-end">Points</th>
 								<th class="text-end">Qt</th>
 								<th class="text-end">Total</th>
 							</tr>
@@ -179,13 +185,15 @@
 								<td width="1">{{ s + 1 }}</td>
 								<td class="text-end" width="1">{{ step }}&nbsp;pts</td>
 								<td class="text-end font-bold text-primary text-shadow">
-									=&nbsp;{{ Math.ceil(step / Math.round(kills_points * coef)) }}
+									&times;&nbsp;{{
+										Math.ceil(step / Math.round(kills_points * coef))
+									}}
 								</td>
 								<td class="text-end">
 									=&nbsp;{{
-										Math.round(kills_points * coef) *
-										Math.ceil(step / (kills_points * coef))
-									}}&nbsp;pts
+										Math.ceil(step / Math.round(kills_points * coef)) *
+										Math.round(kills_points * coef)
+									}}
 								</td>
 							</tr>
 						</tbody>
