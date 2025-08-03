@@ -5,7 +5,7 @@ import dataHouses from '@/data/houses.json';
 import dataItems from '@/data/items.json';
 
 export const useLandsraadStore = defineStore('landsraad', () => {
-	const BONUSMAX = 2;
+	const BONUSMAX = 5;
 	const houses = ref();
 	const currentHouse = ref({});
 	const editMode = ref(false);
@@ -253,7 +253,13 @@ export const useLandsraadStore = defineStore('landsraad', () => {
 		_saveLocalLandsraad();
 	};
 
-	const handleUpdatePicked = () => {
+	const handleUpdatePicked = (houseId = null) => {
+		if (houseId) {
+			const idx = houses.value.findIndex((house) => house.id === houseId);
+			if (idx >= 0) {
+				houses.value[idx].user.picked = !houses.value[idx].user.picked;
+			}
+		}
 		console.log('handleUpdatePicked');
 		_saveLocalLandsraad();
 	};

@@ -6,7 +6,12 @@
 		>
 			<div class="flex items-center gap-2">
 				<button
-					@click="editMode = !editMode"
+					@click="
+						() => {
+							editMode = !editMode;
+							display = 'grid';
+						}
+					"
 					class="btn leading-none"
 					:class="{ 'btn-primary': !editMode, 'btn-neutral': editMode }"
 				>
@@ -17,6 +22,15 @@
 				<button @click="helpModal.showModal()" class="btn leading-none btn-primary">
 					<InfoCircleIcon class="size-5" />
 					Aide
+				</button>
+				<button
+					@click="switchDisplay()"
+					class="btn leading-none btn-primary"
+					:disabled="editMode"
+				>
+					<LayoutGridIcon class="size-5" v-if="display === 'grid'" />
+					<ListDetailsIcon class="size-5" v-else />
+					{{ display === 'grid' ? 'Grille' : 'Liste' }}
 				</button>
 			</div>
 			<div class="flex flex-wrap justify-center items-center gap-2">
@@ -49,6 +63,7 @@
 		<div
 			class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 mt-4 px-4 select-none"
 			ref="el"
+			v-show="display === 'grid'"
 		>
 			<HouseTile
 				v-for="house in houses"
@@ -56,6 +71,227 @@
 				:house="house"
 				@open-modal="handleOpenModal"
 			/>
+		</div>
+		<div class="mt-4 px-4" v-show="display === 'list'">
+			<div class="flex items-center gap-3">
+				<input
+					type="range"
+					min="0"
+					:max="BONUSMAX"
+					class="range range-sm range-primary"
+					v-model="bonusLevel"
+					@change="handleLocalBonusLevel"
+				/>
+				<label class="text-left whitespace-nowrap w-28 shrink-0"
+					>Bonus de {{ bonusLevel * 20 }} %</label
+				>
+			</div>
+			<div class="overflow-x-auto mt-4">
+				<table class="table table-sm whitespace-nowrap">
+					<thead>
+						<tr class="bg-base-300">
+							<th>Maison</th>
+							<th>Souhait</th>
+							<th class="text-center">Pts/u</th>
+							<th class="text-center" v-for="(step, s) in steps_points" :key="s">
+								P{{ s + 1 }}
+							</th>
+							<th width="1">Progression</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr
+							v-for="house in filteredHouses"
+							:key="house.id"
+							:class="{
+								'opacity-10': !house.wish_id,
+								'hover:bg-base-300': house.wish_id,
+							}"
+						>
+							<td>
+								<div class="flex gap-1 items-center">
+									<img
+										:src="`/img/houses/${house.name}.webp`"
+										class="size-6 shrink-0"
+										alt=""
+									/>
+									<span class="font-bold">{{ house.name }}</span>
+								</div>
+							</td>
+							<td>
+								<tippy v-if="house.wish.type === 'item'" class="font-semibold">
+									<RouterLink
+										:to="{
+											name: 'item',
+											params: { slug: house.wish.data?.fields.slug },
+										}"
+										>Livrer&nbsp;:
+										{{ house.wish.data?.fields.name }}</RouterLink
+									>
+									<template #content>
+										<ItemTooltip :item="house.wish.data" v-if="house.wish" />
+									</template>
+								</tippy>
+								<span class="font-semibold" v-else-if="house.wish.type === 'kill'">
+									Tuer&nbsp;: {{ house.wish.data?.name }}
+								</span>
+								<span v-else>---</span>
+							</td>
+							<td class="text-center">
+								{{
+									house.wish?.data?.fields?.landsraad_points
+										? Math.round(house.wish.data.fields.landsraad_points * coef)
+										: '???'
+								}}
+							</td>
+							<td class="text-center" v-for="(step, s) in steps_points" :key="s">
+								<template
+									v-if="
+										house.wish.type === 'item' &&
+										house.wish?.data?.fields?.landsraad_points
+									"
+								>
+									{{
+										Math.ceil(
+											step /
+												Math.round(
+													house.wish.data.fields.landsraad_points * coef,
+												),
+										)
+									}}
+								</template>
+								<template v-else-if="house.wish.type === 'kill'">
+									{{ Math.ceil(step / Math.round(kills_points * coef)) }}
+								</template>
+								<template v-else>???</template>
+							</td>
+							<td>
+								<div class="flex gap-1">
+									<button
+										v-for="(step, s) in steps_points"
+										:key="s"
+										class="btn btn-sm btn-square"
+										:class="{
+											'opacity-50 hover:opacity-100 btn-outline border-base-content':
+												house.user.step < s + 1,
+											'btn-success': house.user.step >= s + 1,
+										}"
+										@click="handleUpdateStep(house.id, s + 1)"
+									>
+										{{ s + 1 }}
+									</button>
+									<button
+										class="btn btn-sm btn-square"
+										:class="{
+											'btn-primary': !house.user.picked,
+											'btn-success': house.user.picked,
+										}"
+										:disabled="house.user.step === 0"
+										@click="handleUpdatePicked(house.id)"
+									>
+										<GiftIcon class="size-5" />
+									</button>
+								</div>
+							</td>
+							<!-- <td>
+							<div class="flex gap-1">
+								<div class="flex flex-col gap-1">
+									<div class="flex gap-1 items-center">
+										<svg
+											xmlns="http://www.w3.org/2000/svg"
+											width="24"
+											height="24"
+											viewBox="0 0 24 24"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											class="icon icon-tabler icons-tabler-outline icon-tabler-viewfinder size-5"
+										>
+											<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+											<path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+											<path d="M12 3l0 4" />
+											<path d="M12 21l0 -3" />
+											<path d="M3 12l4 0" />
+											<path d="M21 12l-3 0" />
+											<path d="M12 12l0 .01" />
+										</svg>
+										<button
+											v-for="i in [0, 1, 2, 3, 4]"
+											:key="i"
+											class="btn btn-xs btn-square btn-primary btn-outline"
+										>
+											{{ i + 1 }}
+										</button>
+									</div>
+									<div class="flex gap-1 items-center">
+										<svg
+											xmlns="http://www.w3.org/2000/svg"
+											width="24"
+											height="24"
+											viewBox="0 0 24 24"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											class="icon icon-tabler icons-tabler-outline icon-tabler-package-export size-5"
+										>
+											<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+											<path d="M12 21l-8 -4.5v-9l8 -4.5l8 4.5v4.5" />
+											<path d="M12 12l8 -4.5" />
+											<path d="M12 12v9" />
+											<path d="M12 12l-8 -4.5" />
+											<path d="M15 18h7" />
+											<path d="M19 15l3 3l-3 3" />
+										</svg>
+										<button
+											v-for="i in [0, 1, 2, 3, 4]"
+											:key="i"
+											class="btn btn-xs btn-square btn-primary btn-outline"
+										>
+											{{ i + 1 }}
+										</button>
+									</div>
+								</div>
+								<div>
+									<button
+										class="btn h-full aspect-square btn-primary btn-outline p-0"
+									>
+										<svg
+											xmlns="http://www.w3.org/2000/svg"
+											width="24"
+											height="24"
+											viewBox="0 0 24 24"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											class="icon icon-tabler icons-tabler-outline icon-tabler-gift size-5"
+										>
+											<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+											<path
+												d="M3 8m0 1a1 1 0 0 1 1 -1h16a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-16a1 1 0 0 1 -1 -1z"
+											/>
+											<path d="M12 8l0 13" />
+											<path
+												d="M19 12v7a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-7"
+											/>
+											<path
+												d="M7.5 8a2.5 2.5 0 0 1 0 -5a4.8 8 0 0 1 4.5 5a4.8 8 0 0 1 4.5 -5a2.5 2.5 0 0 1 0 5"
+											/>
+										</svg>
+									</button>
+								</div>
+							</div>
+						</td> -->
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<!-- <pre>{{ houses }}</pre> -->
 		</div>
 	</div>
 	<dialog ref="helpModal" class="modal">
@@ -73,7 +309,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { useDraggable } from 'vue-draggable-plus';
 import TitleSection from '@/components/TitleSection.vue';
 import HouseTile from '@/components/HouseTile.vue';
@@ -90,9 +326,24 @@ import ExportImportModal from '@/components/modals/LandsraadExportImportModal.vu
 import LandsraadListModal from '@/components/modals/LandsraadListModal.vue';
 import LandsraadHouseModal from '@/components/modals/LandsraadHouseModal.vue';
 import LandsraadHelpModal from '@/components/modals/LandsraadHelpModal.vue';
-const landsraad = useLandsraadStore();
-const { houses, currentHouse, editMode, exportHousesCode } = storeToRefs(landsraad);
 
+import ItemTooltip from '@/components/ItemTooltip.vue';
+import GiftIcon from '@/icons/GiftIcon.vue';
+import LayoutGridIcon from '@/icons/LayoutGridIcon.vue';
+import ListDetailsIcon from '@/icons/ListDetailsIcon.vue';
+
+const landsraad = useLandsraadStore();
+const {
+	kills_points,
+	steps_points,
+	BONUSMAX,
+	handleUpdateStep,
+	handleUpdatePicked,
+	handleLocalBonusLevel,
+} = landsraad;
+const { houses, currentHouse, editMode, exportHousesCode, bonusLevel } = storeToRefs(landsraad);
+
+const display = ref('grid');
 const houseModal = ref();
 const exportImportModal = ref();
 const listModal = ref();
@@ -129,5 +380,17 @@ useDraggable(el, houses, {
 	onUpdate() {
 		landsraad.handleUpdateSort();
 	},
+});
+
+const switchDisplay = () => {
+	display.value = display.value === 'grid' ? 'list' : 'grid';
+};
+
+const coef = computed(() => {
+	return 1 + (bonusLevel.value * 20) / 100;
+});
+
+const filteredHouses = computed(() => {
+	return JSON.parse(JSON.stringify(houses.value)).sort((a, b) => a.name.localeCompare(b.name));
 });
 </script>
