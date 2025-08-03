@@ -138,11 +138,19 @@
 								<span v-else>---</span>
 							</td>
 							<td class="text-center">
-								{{
-									house.wish?.data?.fields?.landsraad_points
-										? Math.round(house.wish.data.fields.landsraad_points * coef)
-										: '???'
-								}}
+								<template v-if="house.wish?.type === 'kill'">
+									{{ Math.round(kills_points * coef) }}
+								</template>
+								<template v-else-if="house.wish?.type === 'item'">
+									{{
+										house.wish.data?.fields?.landsraad_points
+											? Math.round(
+													house.wish.data.fields.landsraad_points * coef,
+												)
+											: '???'
+									}}
+								</template>
+								<template v-else>???</template>
 							</td>
 							<td class="text-center" v-for="(step, s) in steps_points" :key="s">
 								<template
