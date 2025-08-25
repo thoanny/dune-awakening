@@ -9,7 +9,6 @@
 					@click="
 						() => {
 							editMode = !editMode;
-							display = 'grid';
 						}
 					"
 					class="btn leading-none"
@@ -63,7 +62,7 @@
 		<div
 			class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 mt-4 px-4 select-none"
 			ref="el"
-			v-show="display === 'grid'"
+			v-if="display === 'grid' || editMode"
 		>
 			<HouseTile
 				v-for="house in houses"
@@ -72,7 +71,7 @@
 				@open-modal="handleOpenModal"
 			/>
 		</div>
-		<div class="mt-4 px-4" v-show="display === 'list'">
+		<div class="mt-4 px-4" v-else-if="display === 'list' && !editMode">
 			<div class="flex items-center gap-3">
 				<input
 					type="range"
@@ -231,7 +230,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useDraggable } from 'vue-draggable-plus';
 import TitleSection from '@/components/TitleSection.vue';
 import HouseTile from '@/components/HouseTile.vue';
@@ -311,8 +310,16 @@ useDraggable(el, houses, {
 	},
 });
 
+onMounted(() => {
+	const localDisplay = localStorage.getItem('landsraad-display');
+	if (localDisplay && ['grid', 'list'].indexOf(localDisplay) >= 0) {
+		display.value = localDisplay;
+	}
+});
+
 const switchDisplay = () => {
 	display.value = display.value === 'grid' ? 'list' : 'grid';
+	localStorage.setItem('landsraad-display', display.value);
 };
 
 const coef = computed(() => {
