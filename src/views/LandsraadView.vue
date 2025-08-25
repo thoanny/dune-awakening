@@ -87,7 +87,7 @@
 				>
 			</div>
 			<div class="mt-4">
-				<table class="table table-sm whitespace-nowrap table-pin-rows">
+				<table class="table table-sm whitespace-nowrap table-pin-rows select-none">
 					<thead class="">
 						<tr class="bg-base-300">
 							<th>Maison</th>
@@ -169,15 +169,12 @@
 								>
 									{{
 										Math.ceil(
-											step /
-												Math.round(
-													house.wish.data.fields.landsraad_points * coef,
-												),
+											step / (house.wish.data.fields.landsraad_points * coef),
 										)
 									}}
 								</template>
 								<template v-else-if="house.wish.type === 'kill'">
-									{{ Math.ceil(step / Math.round(kills_points * coef)) }}
+									{{ Math.ceil(step / (kills_points * coef)) }}
 								</template>
 								<template v-else>???</template>
 							</td>
@@ -209,100 +206,6 @@
 									</button>
 								</div>
 							</td>
-							<!-- <td>
-							<div class="flex gap-1">
-								<div class="flex flex-col gap-1">
-									<div class="flex gap-1 items-center">
-										<svg
-											xmlns="http://www.w3.org/2000/svg"
-											width="24"
-											height="24"
-											viewBox="0 0 24 24"
-											fill="none"
-											stroke="currentColor"
-											stroke-width="2"
-											stroke-linecap="round"
-											stroke-linejoin="round"
-											class="icon icon-tabler icons-tabler-outline icon-tabler-viewfinder size-5"
-										>
-											<path stroke="none" d="M0 0h24v24H0z" fill="none" />
-											<path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
-											<path d="M12 3l0 4" />
-											<path d="M12 21l0 -3" />
-											<path d="M3 12l4 0" />
-											<path d="M21 12l-3 0" />
-											<path d="M12 12l0 .01" />
-										</svg>
-										<button
-											v-for="i in [0, 1, 2, 3, 4]"
-											:key="i"
-											class="btn btn-xs btn-square btn-primary btn-outline"
-										>
-											{{ i + 1 }}
-										</button>
-									</div>
-									<div class="flex gap-1 items-center">
-										<svg
-											xmlns="http://www.w3.org/2000/svg"
-											width="24"
-											height="24"
-											viewBox="0 0 24 24"
-											fill="none"
-											stroke="currentColor"
-											stroke-width="2"
-											stroke-linecap="round"
-											stroke-linejoin="round"
-											class="icon icon-tabler icons-tabler-outline icon-tabler-package-export size-5"
-										>
-											<path stroke="none" d="M0 0h24v24H0z" fill="none" />
-											<path d="M12 21l-8 -4.5v-9l8 -4.5l8 4.5v4.5" />
-											<path d="M12 12l8 -4.5" />
-											<path d="M12 12v9" />
-											<path d="M12 12l-8 -4.5" />
-											<path d="M15 18h7" />
-											<path d="M19 15l3 3l-3 3" />
-										</svg>
-										<button
-											v-for="i in [0, 1, 2, 3, 4]"
-											:key="i"
-											class="btn btn-xs btn-square btn-primary btn-outline"
-										>
-											{{ i + 1 }}
-										</button>
-									</div>
-								</div>
-								<div>
-									<button
-										class="btn h-full aspect-square btn-primary btn-outline p-0"
-									>
-										<svg
-											xmlns="http://www.w3.org/2000/svg"
-											width="24"
-											height="24"
-											viewBox="0 0 24 24"
-											fill="none"
-											stroke="currentColor"
-											stroke-width="2"
-											stroke-linecap="round"
-											stroke-linejoin="round"
-											class="icon icon-tabler icons-tabler-outline icon-tabler-gift size-5"
-										>
-											<path stroke="none" d="M0 0h24v24H0z" fill="none" />
-											<path
-												d="M3 8m0 1a1 1 0 0 1 1 -1h16a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-16a1 1 0 0 1 -1 -1z"
-											/>
-											<path d="M12 8l0 13" />
-											<path
-												d="M19 12v7a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-7"
-											/>
-											<path
-												d="M7.5 8a2.5 2.5 0 0 1 0 -5a4.8 8 0 0 1 4.5 5a4.8 8 0 0 1 4.5 -5a2.5 2.5 0 0 1 0 5"
-											/>
-										</svg>
-									</button>
-								</div>
-							</div>
-						</td> -->
 						</tr>
 					</tbody>
 				</table>
