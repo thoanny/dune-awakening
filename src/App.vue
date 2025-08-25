@@ -58,9 +58,6 @@ const { queue } = storeToRefs(store);
 					}}
 				</span>
 			</RouterLink>
-			<RouterLink :to="{ name: 't-potes' }">
-				<span>T-potes</span>
-			</RouterLink>
 		</nav>
 	</header>
 	<div>
