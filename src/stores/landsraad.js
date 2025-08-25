@@ -269,7 +269,7 @@ export const useLandsraadStore = defineStore('landsraad', () => {
 				houses.value[idx].user.picked = !houses.value[idx].user.picked;
 			}
 		}
-		console.log('handleUpdatePicked');
+		console.log('handleUpdatePicked', houseId);
 		_saveLocalLandsraad();
 	};
 

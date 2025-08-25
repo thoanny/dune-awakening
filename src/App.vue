@@ -31,6 +31,7 @@ const { queue } = storeToRefs(store);
 						<path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" /></svg></span
 			></RouterLink>
 			<RouterLink :to="{ name: 'landsraad' }"><span>Landsraad</span></RouterLink>
+			<RouterLink :to="{ name: 'houses' }"><span>Maisons</span></RouterLink>
 			<RouterLink :to="{ name: 'items' }"><span>Objets</span></RouterLink>
 
 			<RouterLink :to="{ name: 'queue' }" v-if="queue.length > 0">

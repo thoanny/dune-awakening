@@ -3,7 +3,7 @@
 		"id": 1,
 		"name": "Alexin",
 		"location": {
-			"name": "",
+			"name": "Village d'Harko",
 			"url": "https://mapgenie.io/dune-awakening/maps/harko-village?locationIds=460783"
 		}
 	},
@@ -13,6 +13,10 @@
 		"location": {
 			"name": "",
 			"url": "https://mapgenie.io/dune-awakening/maps/arrakis?locationIds=459766"
+		},
+		"map": {
+			"x": 58.79,
+			"y": 84.09
 		}
 	},
 	{
@@ -21,6 +25,10 @@
 		"location": {
 			"name": "",
 			"url": "https://mapgenie.io/dune-awakening/maps/arrakis?locationIds=460431"
+		},
+		"map": {
+			"x": 87.45,
+			"y": 56.17
 		}
 	},
 	{
@@ -29,6 +37,10 @@
 		"location": {
 			"name": "",
 			"url": "https://mapgenie.io/dune-awakening/maps/arrakis?locationIds=460696"
+		},
+		"map": {
+			"x": 93.07,
+			"y": 52.8
 		}
 	},
 	{
@@ -37,6 +49,10 @@
 		"location": {
 			"name": "",
 			"url": "https://mapgenie.io/dune-awakening/maps/arrakis?locationIds=460534"
+		},
+		"map": {
+			"x": 43.2,
+			"y": 28.3
 		}
 	},
 	{
@@ -45,6 +61,10 @@
 		"location": {
 			"name": "",
 			"url": "https://mapgenie.io/dune-awakening/maps/arrakis?locationIds=446876"
+		},
+		"map": {
+			"x": 94.8,
+			"y": 66.15
 		}
 	},
 	{
@@ -53,6 +73,10 @@
 		"location": {
 			"name": "",
 			"url": "https://mapgenie.io/dune-awakening/maps/arrakis?locationIds=460736"
+		},
+		"map": {
+			"x": 82.57,
+			"y": 22.21
 		}
 	},
 	{
@@ -61,6 +85,10 @@
 		"location": {
 			"name": "",
 			"url": "https://mapgenie.io/dune-awakening/maps/arrakis?locationIds=460730"
+		},
+		"map": {
+			"x": 18.43,
+			"y": 28.56
 		}
 	},
 	{
@@ -69,15 +97,23 @@
 		"location": {
 			"name": "",
 			"url": "https://mapgenie.io/dune-awakening/maps/arrakis?locationIds=460918"
+		},
+		"map": {
+			"x": 23.36,
+			"y": 4.16
 		}
 	},
-	{ "id": 10, "name": "Maros", "location": null },
+	{ "id": 10, "name": "Maros", "location": { "name": "Désert profond (B8)" } },
 	{
 		"id": 11,
 		"name": "Mikarrol",
 		"location": {
 			"name": "",
 			"url": "https://mapgenie.io/dune-awakening/maps/arrakis?locationIds=460608"
+		},
+		"map": {
+			"x": 67.3,
+			"y": 35.77
 		}
 	},
 	{
@@ -86,13 +122,17 @@
 		"location": {
 			"name": "",
 			"url": "https://mapgenie.io/dune-awakening/maps/arrakis?locationIds=460697"
+		},
+		"map": {
+			"x": 89.29,
+			"y": 57.55
 		}
 	},
 	{
 		"id": 13,
 		"name": "Mutelli",
 		"location": {
-			"name": "",
+			"name": "Arrakeen",
 			"url": "https://mapgenie.io/dune-awakening/maps/arrakeen?locationIds=460830"
 		}
 	},
@@ -102,6 +142,10 @@
 		"location": {
 			"name": "",
 			"url": "https://mapgenie.io/dune-awakening/maps/arrakis?locationIds=446917"
+		},
+		"map": {
+			"x": 54.28,
+			"y": 54.4
 		}
 	},
 	{
@@ -110,6 +154,10 @@
 		"location": {
 			"name": "",
 			"url": "https://mapgenie.io/dune-awakening/maps/arrakis?locationIds=460724"
+		},
+		"map": {
+			"x": 51.13,
+			"y": 28.14
 		}
 	},
 	{
@@ -118,13 +166,17 @@
 		"location": {
 			"name": "",
 			"url": "https://mapgenie.io/dune-awakening/maps/arrakis?locationIds=460523"
+		},
+		"map": {
+			"x": 52.39,
+			"y": 18.31
 		}
 	},
 	{
 		"id": 17,
 		"name": "Spinette",
 		"location": {
-			"name": "",
+			"name": "Village d'Harko",
 			"url": "https://mapgenie.io/dune-awakening/maps/harko-village?locationIds=460781"
 		}
 	},
@@ -134,6 +186,10 @@
 		"location": {
 			"name": "",
 			"url": "https://mapgenie.io/dune-awakening/maps/arrakis?locationIds=460568"
+		},
+		"map": {
+			"x": 29.87,
+			"y": 36.36
 		}
 	},
 	{
@@ -142,6 +198,10 @@
 		"location": {
 			"name": "",
 			"url": "https://mapgenie.io/dune-awakening/maps/arrakis?locationIds=460436"
+		},
+		"map": {
+			"x": 90.6,
+			"y": 42.34
 		}
 	},
 	{
@@ -150,13 +210,17 @@
 		"location": {
 			"name": "",
 			"url": "https://mapgenie.io/dune-awakening/maps/arrakis?locationIds=446889"
+		},
+		"map": {
+			"x": 79.53,
+			"y": 56.65
 		}
 	},
 	{
 		"id": 21,
 		"name": "Varota",
 		"location": {
-			"name": "",
+			"name": "Arrakeen",
 			"url": "https://mapgenie.io/dune-awakening/maps/arrakeen?locationIds=460833"
 		}
 	},
@@ -166,23 +230,31 @@
 		"location": {
 			"name": "",
 			"url": "https://mapgenie.io/dune-awakening/maps/arrakis?locationIds=460723"
+		},
+		"map": {
+			"x": 49.71,
+			"y": 27.71
 		}
 	},
 	{
 		"id": 23,
 		"name": "Wallach",
 		"location": {
-			"name": "",
+			"name": "Arrakeen",
 			"url": "https://mapgenie.io/dune-awakening/maps/arrakeen?locationIds=460843"
 		}
 	},
-	{ "id": 24, "name": "Wayku", "wish": null, "status": null, "location": null },
+	{ "id": 24, "name": "Wayku", "location": { "name": "Désert profond (A2)" } },
 	{
 		"id": 25,
 		"name": "Wydras",
 		"location": {
 			"name": "",
 			"url": "https://mapgenie.io/dune-awakening/maps/arrakis?locationIds=460637"
+		},
+		"map": {
+			"x": 17.74,
+			"y": 60.49
 		}
 	}
 ]
