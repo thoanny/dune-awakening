@@ -86,9 +86,9 @@
 					>Bonus de {{ bonusLevel * 20 }} %</label
 				>
 			</div>
-			<div class="overflow-x-auto mt-4">
-				<table class="table table-sm whitespace-nowrap">
-					<thead>
+			<div class="mt-4">
+				<table class="table table-sm whitespace-nowrap table-pin-rows">
+					<thead class="">
 						<tr class="bg-base-300">
 							<th>Maison</th>
 							<th>Souhait</th>
@@ -105,14 +105,16 @@
 							:key="house.id"
 							:class="{
 								'opacity-10': !house.wish_id,
-								'hover:bg-base-300': house.wish_id,
+								'hover:bg-base-300': house.wish_id && activeRow !== house.id,
+								'bg-secondary/50': activeRow === house.id,
 							}"
+							@click="handleRowActive(house.id)"
 						>
 							<td>
-								<div class="flex gap-1 items-center">
+								<div class="flex gap-2 items-center">
 									<img
 										:src="`/img/houses/${house.name}.webp`"
-										class="size-6 shrink-0"
+										class="size-7 shrink-0"
 										alt=""
 									/>
 									<span class="font-bold">{{ house.name }}</span>
@@ -125,8 +127,14 @@
 											name: 'item',
 											params: { slug: house.wish.data?.fields.slug },
 										}"
-										>Livrer&nbsp;:
-										{{ house.wish.data?.fields.name }}</RouterLink
+										class="inline-flex gap-1 items-center"
+									>
+										<img
+											v-if="house.wish.data?.fields.icon"
+											:src="`/img/items/${house.wish.data.fields.icon}`"
+											class="size-7"
+											alt=""
+										/>{{ house.wish.data?.fields.name }}</RouterLink
 									>
 									<template #content>
 										<ItemTooltip :item="house.wish.data" v-if="house.wish" />
@@ -357,6 +365,8 @@ const exportImportModal = ref();
 const listModal = ref();
 const helpModal = ref();
 
+const activeRow = ref(null);
+
 const el = ref();
 
 const handleOpenModal = (houseId) => {
@@ -365,6 +375,10 @@ const handleOpenModal = (houseId) => {
 	}
 	currentHouse.value = houses.value.find((house) => house.id === houseId);
 	houseModal.value.showModal();
+};
+
+const handleRowActive = (houseId) => {
+	activeRow.value = activeRow.value === houseId ? null : houseId;
 };
 
 /*
