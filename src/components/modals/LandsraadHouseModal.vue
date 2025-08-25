@@ -93,6 +93,7 @@
 								:key="s"
 								class="hover:bg-base-300 cursor-pointer"
 								@click="handleUpdateStep(currentHouse.id, s + 1)"
+								@contextmenu.prevent="handleUpdateTarget(currentHouse.id, s + 1)"
 							>
 								<td width="1">
 									<svg
@@ -104,8 +105,13 @@
 										class="icon icon-tabler icons-tabler-filled icon-tabler-square-check size-5"
 										:class="{
 											'text-base-content opacity-50':
-												currentHouse.user.step < s + 1,
+												currentHouse.user.step < s + 1 &&
+												(currentHouse.user.target < s + 1 ||
+													!currentHouse.user.target),
 											'text-success': currentHouse.user.step >= s + 1,
+											'text-primary':
+												currentHouse.user.target >= s + 1 &&
+												currentHouse.user.step < s + 1,
 										}"
 									>
 										<path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -120,10 +126,8 @@
 									&times;&nbsp;{{
 										Math.ceil(
 											step /
-												Math.round(
-													currentHouse.wish.data.fields.landsraad_points *
-														coef,
-												),
+												(currentHouse.wish.data.fields.landsraad_points *
+													coef),
 										)
 									}}
 								</td>
@@ -131,10 +135,8 @@
 									=&nbsp;{{
 										Math.ceil(
 											step /
-												Math.round(
-													currentHouse.wish.data.fields.landsraad_points *
-														coef,
-												),
+												(currentHouse.wish.data.fields.landsraad_points *
+													coef),
 										) *
 										Math.round(
 											currentHouse.wish.data.fields.landsraad_points * coef,
@@ -226,6 +228,7 @@ const {
 	handleLocalBonusLevel,
 	handleUpdatePicked,
 	handleUpdateStep,
+	handleUpdateTarget,
 	kills_points,
 	steps_points,
 	BONUSMAX,

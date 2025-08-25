@@ -64,6 +64,7 @@ export const useLandsraadStore = defineStore('landsraad', () => {
 					w: house.wish_id,
 					s: house.status,
 					u: house.user.step,
+					t: house.user.target,
 					p: +house.user.picked,
 					o: house.sort,
 				})),
@@ -120,7 +121,7 @@ export const useLandsraadStore = defineStore('landsraad', () => {
 			wish_id: 0,
 			wish: { type: null, data: null },
 			status: '',
-			user: { step: 0, picked: false },
+			user: { step: 0, target: 0, picked: false },
 			sort: h,
 		}));
 
@@ -140,7 +141,11 @@ export const useLandsraadStore = defineStore('landsraad', () => {
 						...houses.value[idx],
 						wish_id: landsraad.w,
 						status: landsraad.s,
-						user: { step: landsraad.u, picked: Boolean(landsraad.p) },
+						user: {
+							step: landsraad.u,
+							target: landsraad.t,
+							picked: Boolean(landsraad.p),
+						},
 						sort: landsraad.o,
 					};
 
@@ -246,10 +251,14 @@ export const useLandsraadStore = defineStore('landsraad', () => {
 	const handleUpdateStep = (houseId, step) => {
 		console.log('handleUpdateStep');
 		const house = houses.value.find((h) => h.id === houseId);
-		house.user = {
-			step: house.user.step === step ? 0 : step,
-			picked: false,
-		};
+		(house.user.step = house.user.step === step ? 0 : step), (house.user.picked = false);
+		_saveLocalLandsraad();
+	};
+
+	const handleUpdateTarget = (houseId, target) => {
+		console.log('handleUpdateTarget');
+		const house = houses.value.find((h) => h.id === houseId);
+		house.user.target = house.user.target === target ? 0 : target;
 		_saveLocalLandsraad();
 	};
 
@@ -298,6 +307,7 @@ export const useLandsraadStore = defineStore('landsraad', () => {
 		handleImportHouses,
 		handleUpdateStep,
 		handleUpdatePicked,
+		handleUpdateTarget,
 		handleLocalBonusLevel,
 	};
 });

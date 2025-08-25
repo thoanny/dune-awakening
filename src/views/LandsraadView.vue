@@ -92,8 +92,8 @@
 						<tr class="bg-base-300">
 							<th>Maison</th>
 							<th>Souhait</th>
-							<th class="text-center">Pts/u</th>
-							<th class="text-center" v-for="(step, s) in steps_points" :key="s">
+							<th class="text-center w-18">Pts/u</th>
+							<th class="text-center w-18" v-for="(step, s) in steps_points" :key="s">
 								P{{ s + 1 }}
 							</th>
 							<th width="1">Progression</th>
@@ -104,13 +104,11 @@
 							v-for="house in filteredHouses"
 							:key="house.id"
 							:class="{
-								'opacity-10': !house.wish_id,
 								'hover:bg-base-300': house.wish_id && activeRow !== house.id,
 								'bg-secondary/50': activeRow === house.id,
 							}"
-							@click="handleRowActive(house.id)"
 						>
-							<td>
+							<td @click="handleRowActive(house.id)">
 								<div class="flex gap-2 items-center">
 									<img
 										:src="`/img/houses/${house.name}.webp`"
@@ -143,7 +141,7 @@
 								<span class="font-semibold" v-else-if="house.wish.type === 'kill'">
 									Tuer&nbsp;: {{ house.wish.data?.name }}
 								</span>
-								<span v-else>---</span>
+								<span v-else>&ndash;</span>
 							</td>
 							<td class="text-center">
 								<template v-if="house.wish?.type === 'kill'">
@@ -155,10 +153,10 @@
 											? Math.round(
 													house.wish.data.fields.landsraad_points * coef,
 												)
-											: '???'
+											: '&ndash;'
 									}}
 								</template>
-								<template v-else>???</template>
+								<template v-else>&ndash;</template>
 							</td>
 							<td class="text-center" v-for="(step, s) in steps_points" :key="s">
 								<template
@@ -176,7 +174,7 @@
 								<template v-else-if="house.wish.type === 'kill'">
 									{{ Math.ceil(step / (kills_points * coef)) }}
 								</template>
-								<template v-else>???</template>
+								<template v-else>&ndash;</template>
 							</td>
 							<td>
 								<div class="flex gap-1">
@@ -186,10 +184,15 @@
 										class="btn btn-sm btn-square"
 										:class="{
 											'opacity-50 hover:opacity-100 btn-outline border-base-content':
-												house.user.step < s + 1,
+												house.user.step < s + 1 &&
+												(house.user.target < s + 1 || !house.user.target),
 											'btn-success': house.user.step >= s + 1,
+											'btn-primary':
+												house.user.target >= s + 1 &&
+												house.user.step < s + 1,
 										}"
 										@click="handleUpdateStep(house.id, s + 1)"
+										@contextmenu.prevent="handleUpdateTarget(house.id, s + 1)"
 									>
 										{{ s + 1 }}
 									</button>
@@ -257,6 +260,7 @@ const {
 	steps_points,
 	BONUSMAX,
 	handleUpdateStep,
+	handleUpdateTarget,
 	handleUpdatePicked,
 	handleLocalBonusLevel,
 } = landsraad;
