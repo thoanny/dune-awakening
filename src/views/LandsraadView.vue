@@ -62,7 +62,7 @@
 		<div
 			class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 mt-4 px-4 select-none"
 			ref="el"
-			v-if="display === 'grid' || editMode"
+			v-show="display === 'grid' || editMode"
 		>
 			<HouseTile
 				v-for="house in houses"
@@ -71,7 +71,7 @@
 				@open-modal="handleOpenModal"
 			/>
 		</div>
-		<div class="mt-4 px-4" v-else-if="display === 'list' && !editMode">
+		<div class="mt-4 px-4" v-show="display === 'list' && !editMode">
 			<div class="flex items-center gap-3">
 				<input
 					type="range"
