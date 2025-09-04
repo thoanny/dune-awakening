@@ -7,6 +7,7 @@ import DevView from '@/views/DevView.vue';
 import ItemView from '@/views/ItemView.vue';
 import QueueView from './views/QueueView.vue';
 import HousesView from './views/HousesView.vue';
+import SkinsView from './views/SkinsView.vue';
 
 const routes = [
 	{ path: '/', name: 'home', component: HomeView },
@@ -21,6 +22,7 @@ const routes = [
 	{ path: '/houses', name: 'houses', component: HousesView },
 	{ path: '/dev', name: 'dev', component: DevView },
 	{ path: '/liste-de-courses', name: 'queue', component: QueueView },
+	{ path: '/skins', name: 'skins', component: SkinsView },
 ];
 
 const router = createRouter({

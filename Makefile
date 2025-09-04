@@ -19,3 +19,4 @@ json.export:
 json.data:
 	make json.export model=app.item file=items
 	make json.export model=app.recipe file=recipes
+	make json.export model=app.skin file=skins

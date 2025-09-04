@@ -198,3 +198,17 @@ class Recipe(models.Model):
     class Meta:
         verbose_name = "recette"
         verbose_name_plural = "recettes"
+
+
+class Skin(models.Model):
+    name = models.CharField(max_length=100)
+    armor_stillsuit = models.BooleanField()
+    armor_heavy = models.BooleanField()
+    armor_light = models.BooleanField()
+    color_top = models.CharField(max_length=7)
+    color_right = models.CharField(max_length=7)
+    color_bottom = models.CharField(max_length=7)
+    color_left = models.CharField(max_length=7)
+
+    def __str__(self):
+        return self.name

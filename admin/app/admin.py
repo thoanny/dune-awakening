@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 from .models import Item, Item_Category, Item_SubCategory, Item_Type, Item_Source, Item_Stat
-from .models import Recipe, Recipe_Ingredient
+from .models import Recipe, Recipe_Ingredient, Skin
 
 class ItemAdmin(admin.ModelAdmin):
     filter_horizontal = ('sources', 'stats',)
@@ -27,6 +27,11 @@ class ItemSourceAdmin(admin.ModelAdmin):
 class ItemStatAdmin(admin.ModelAdmin):
     ordering = ('name', 'value',)
 
+
+class SkinAdmin(admin.ModelAdmin):
+    ordering = ['name']
+    search_fields = ['name']
+
 admin.site.register(Item, ItemAdmin)
 admin.site.register(Item_Category)
 admin.site.register(Item_SubCategory)
@@ -35,3 +40,4 @@ admin.site.register(Item_Source, ItemSourceAdmin)
 admin.site.register(Item_Stat, ItemStatAdmin)
 admin.site.register(Recipe, RecipeAdmin)
 admin.site.register(Recipe_Ingredient)
+admin.site.register(Skin, SkinAdmin)
