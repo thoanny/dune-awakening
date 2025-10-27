@@ -120,7 +120,8 @@
 										/>
 									</svg>
 								</td>
-								<td width="1">{{ s + 1 }}</td>
+								<td class="text-center" width="1" v-if="s === 5">Max</td>
+								<td class="text-center" width="1" v-else>{{ s + 1 }}</td>
 								<td class="text-end" width="1">{{ step }}&nbsp;pts</td>
 								<td class="text-end font-bold text-primary text-shadow">
 									&times;&nbsp;{{

@@ -13,7 +13,7 @@ export const useLandsraadStore = defineStore('landsraad', () => {
 	const bonusLevel = ref(0);
 
 	const kills_points = 23;
-	const steps_points = [700, 3500, 7000, 10500, 14000];
+	const steps_points = [700, 3500, 7000, 10500, 14000, 70000];
 
 	const dataKills = [
 		{

@@ -93,7 +93,8 @@
 							<th>Souhait</th>
 							<th class="text-center w-18">Pts/u</th>
 							<th class="text-center w-18" v-for="(step, s) in steps_points" :key="s">
-								P{{ s + 1 }}
+								<template v-if="s === 5"> Max </template>
+								<template v-else> P{{ s + 1 }} </template>
 							</th>
 							<th width="1">Progression</th>
 						</tr>
