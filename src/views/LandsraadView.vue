@@ -1,219 +1,139 @@
 <template>
 	<div class="container mx-auto">
 		<TitleSection title="Landsraad" />
+		<!-- Tippy -->
+		<tippy ref="miniMenu" trigger="manual" :follow-cursor="false" :interactive="true">
+			<template #content>
+				<div
+					class="bg-base-300 rounded-box w-56 py-3 shadow-2xl shadow-base-content/50"
+					v-if="currentHouse && !isMiniMenuLoading"
+				>
+					<h4 class="flex gap-2 items-center font-bold mx-2 justify-center">
+						<img
+							:src="`/img/houses/${currentHouse.name}.webp`"
+							alt=""
+							class="size-8 object-contain z-20"
+						/>
+						{{ currentHouse.name }}
+						<img
+							:src="`/img/houses/${currentHouse.name}.webp`"
+							alt=""
+							class="size-8 object-contain z-20"
+						/>
+					</h4>
+
+					<div class="divider text-sm my-3 text-base-content/75 font-semibold">
+						Paliers validés
+					</div>
+					<div class="flex gap-1 justify-center" v-if="currentHouse.user">
+						<button
+							class="btn btn-square btn-sm"
+							v-for="(step, s) in steps_points"
+							:key="s"
+							:class="{
+								'btn-outline': currentHouse.user.step < s + 1,
+								'btn-success': currentHouse.user.step >= s + 1,
+							}"
+							:style="
+								currentHouse.user.step < s + 1
+									? '--btn-color: color-mix(in oklab, var(--color-base-content) 50%, transparent);'
+									: ''
+							"
+							@click="handleUpdateStep(currentHouse.id, s + 1)"
+						>
+							{{ s + 1 }}
+						</button>
+					</div>
+					<div class="divider text-sm my-3 text-base-content/75 font-semibold">
+						Récompenses
+					</div>
+					<label
+						class="flex gap-2 items-center justify-center select-none text-sm"
+						v-if="currentHouse.user"
+					>
+						<input
+							type="checkbox"
+							class="toggle toggle-success toggle-sm"
+							v-model="currentHouse.user.picked"
+							:disabled="currentHouse.user.step === 0"
+							@change="handleUpdatePicked"
+						/>
+						Récupérées
+					</label>
+					<div class="divider text-sm my-3 text-base-content/75 font-semibold">
+						Statut
+					</div>
+					<div class="flex gap-2 mx-3">
+						<button
+							class="btn btn-sm"
+							:class="{
+								'btn-outline': currentHouse.status,
+							}"
+							style="
+								--btn-color: color-mix(
+									in oklab,
+									var(--color-base-content) 50%,
+									transparent
+								);
+							"
+							@click="handleUpdateStatus(currentHouse.id, null)"
+						>
+							Neutre
+						</button>
+						<button
+							class="btn btn-success btn-sm"
+							:class="{
+								'btn-outline': currentHouse.status !== 'w',
+							}"
+							@click="handleUpdateStatus(currentHouse.id, 'w')"
+						>
+							Gagné
+						</button>
+						<button
+							class="btn btn-error btn-sm"
+							:class="{
+								'btn-outline': currentHouse.status !== 'l',
+							}"
+							@click="handleUpdateStatus(currentHouse.id, 'l')"
+						>
+							Perdu
+						</button>
+					</div>
+				</div>
+				<div class="h-[260px] w-56" v-else></div>
+			</template>
+		</tippy>
+		<!-- /Tippy -->
 		<div
-			class="px-4 mt-4 flex flex-col xl:flex-row items-center justify-between gap-x-4 gap-y-2"
+			class="px-4 mt-4 flex flex-col md:flex-row items-center justify-between gap-x-4 gap-y-2"
 		>
 			<div class="flex items-center gap-2">
-				<button
-					@click="
-						() => {
-							editMode = !editMode;
-						}
-					"
-					class="btn leading-none"
-					:class="{ 'btn-primary': !editMode, 'btn-neutral': editMode }"
-				>
-					<EditIcon class="size-5" v-if="!editMode" />
-					<XIcon class="size-5" v-else />
-					Modifier
-				</button>
 				<button @click="helpModal.showModal()" class="btn leading-none btn-primary">
 					<InfoCircleIcon class="size-5" />
 					Aide
 				</button>
-				<button
-					@click="switchDisplay()"
-					class="btn leading-none btn-primary"
-					:disabled="editMode"
-				>
-					<LayoutGridIcon class="size-5" v-if="display === 'grid'" />
-					<ListDetailsIcon class="size-5" v-else />
-					{{ display === 'grid' ? 'Grille' : 'Liste' }}
-				</button>
 			</div>
 			<div class="flex flex-wrap justify-center items-center gap-2">
-				<button
-					class="btn btn-primary leading-none"
-					@click="exportImportModal.showModal()"
-					:disabled="editMode"
-				>
+				<button class="btn btn-primary leading-none" @click="exportImportModal.showModal()">
 					<DeviceFloppyIcon class="size-6" />
 					Exporter/Importer
 				</button>
-				<button
-					class="btn btn-primary leading-none"
-					@click="landsraad.handleReset"
-					:disabled="editMode"
-				>
+				<button class="btn btn-primary leading-none" @click="landsraad.handleReset">
 					<ArrowBackUpIcon class="size-6" />
 					Réinitialiser
-				</button>
-				<button
-					class="btn btn-primary leading-none"
-					@click="listModal.showModal()"
-					:disabled="editMode"
-				>
-					<ListCheckIcon class="size-6" />
-					Objets possibles
 				</button>
 			</div>
 		</div>
 		<div
 			class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 mt-4 px-4 select-none"
 			ref="el"
-			v-show="display === 'grid' || editMode"
 		>
 			<HouseTile
 				v-for="house in houses"
 				:key="house.id"
 				:house="house"
-				@open-modal="handleOpenModal"
+				@click="handleMiniMenu(house.id, $event)"
 			/>
-		</div>
-		<div class="mt-4 px-4" v-show="display === 'list' && !editMode">
-			<div class="flex items-center gap-3">
-				<input
-					type="range"
-					min="0"
-					:max="BONUSMAX"
-					class="range range-sm range-primary"
-					v-model="bonusLevel"
-					@change="handleLocalBonusLevel"
-				/>
-				<label class="text-left whitespace-nowrap w-28 shrink-0"
-					>Bonus de {{ bonusLevel * 20 }} %</label
-				>
-			</div>
-			<div class="mt-4">
-				<table class="table table-sm whitespace-nowrap table-pin-rows select-none">
-					<thead class="">
-						<tr class="bg-base-300">
-							<th>Maison</th>
-							<th>Souhait</th>
-							<th class="text-center w-18">Pts/u</th>
-							<th class="text-center w-18" v-for="(step, s) in steps_points" :key="s">
-								<template v-if="s === 5"> Max </template>
-								<template v-else> P{{ s + 1 }} </template>
-							</th>
-							<th width="1">Progression</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr
-							v-for="house in filteredHouses"
-							:key="house.id"
-							:class="{
-								'hover:bg-base-300': house.wish_id && activeRow !== house.id,
-								'bg-secondary/50': activeRow === house.id,
-							}"
-						>
-							<td @click="handleRowActive(house.id)">
-								<div class="flex gap-2 items-center">
-									<img
-										:src="`/img/houses/${house.name}.webp`"
-										class="size-7 shrink-0"
-										alt=""
-									/>
-									<span class="font-bold">{{ house.name }}</span>
-								</div>
-							</td>
-							<td>
-								<tippy v-if="house.wish.type === 'item'" class="font-semibold">
-									<RouterLink
-										:to="{
-											name: 'item',
-											params: { slug: house.wish.data?.fields.slug },
-										}"
-										class="inline-flex gap-1 items-center"
-									>
-										<img
-											v-if="house.wish.data?.fields.icon"
-											:src="`/img/items/${house.wish.data.fields.icon}`"
-											class="size-7"
-											alt=""
-										/>{{ house.wish.data?.fields.name }}</RouterLink
-									>
-									<template #content>
-										<ItemTooltip :item="house.wish.data" v-if="house.wish" />
-									</template>
-								</tippy>
-								<span class="font-semibold" v-else-if="house.wish.type === 'kill'">
-									Tuer&nbsp;: {{ house.wish.data?.name }}
-								</span>
-								<span v-else>&ndash;</span>
-							</td>
-							<td class="text-center">
-								<template v-if="house.wish?.type === 'kill'">
-									{{ Math.round(kills_points * coef) }}
-								</template>
-								<template v-else-if="house.wish?.type === 'item'">
-									{{
-										house.wish.data?.fields?.landsraad_points
-											? Math.round(
-													house.wish.data.fields.landsraad_points * coef,
-												)
-											: '&ndash;'
-									}}
-								</template>
-								<template v-else>&ndash;</template>
-							</td>
-							<td class="text-center" v-for="(step, s) in steps_points" :key="s">
-								<template
-									v-if="
-										house.wish.type === 'item' &&
-										house.wish?.data?.fields?.landsraad_points
-									"
-								>
-									{{
-										Math.ceil(
-											step / (house.wish.data.fields.landsraad_points * coef),
-										)
-									}}
-								</template>
-								<template v-else-if="house.wish.type === 'kill'">
-									{{ Math.ceil(step / (kills_points * coef)) }}
-								</template>
-								<template v-else>&ndash;</template>
-							</td>
-							<td>
-								<div class="flex gap-1">
-									<button
-										v-for="(step, s) in steps_points"
-										:key="s"
-										class="btn btn-sm btn-square"
-										:class="{
-											'opacity-50 hover:opacity-100 btn-outline border-base-content':
-												house.user.step < s + 1 &&
-												(house.user.target < s + 1 || !house.user.target),
-											'btn-success': house.user.step >= s + 1,
-											'btn-primary':
-												house.user.target >= s + 1 &&
-												house.user.step < s + 1,
-										}"
-										@click="handleUpdateStep(house.id, s + 1)"
-										@contextmenu.prevent="handleUpdateTarget(house.id, s + 1)"
-									>
-										{{ s + 1 }}
-									</button>
-									<button
-										class="btn btn-sm btn-square"
-										:class="{
-											'btn-primary': !house.user.picked,
-											'btn-success': house.user.picked,
-										}"
-										:disabled="house.user.step === 0"
-										@click="handleUpdatePicked(house.id)"
-									>
-										<GiftIcon class="size-5" />
-									</button>
-								</div>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-			<!-- <pre>{{ houses }}</pre> -->
 		</div>
 	</div>
 	<dialog ref="helpModal" class="modal">
@@ -222,16 +142,10 @@
 	<dialog ref="exportImportModal" class="modal">
 		<ExportImportModal :export-houses-code="exportHousesCode" />
 	</dialog>
-	<dialog ref="listModal" class="modal">
-		<LandsraadListModal />
-	</dialog>
-	<dialog class="modal" ref="houseModal">
-		<LandsraadHouseModal />
-	</dialog>
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref } from 'vue';
 import { useDraggable } from 'vue-draggable-plus';
 import TitleSection from '@/components/TitleSection.vue';
 import HouseTile from '@/components/HouseTile.vue';
@@ -239,54 +153,22 @@ import InfoCircleIcon from '@/icons/InfoCircleIcon.vue';
 
 import { useLandsraadStore } from '@/stores/landsraad';
 import { storeToRefs } from 'pinia';
-import EditIcon from '@/icons/EditIcon.vue';
-import XIcon from '@/icons/XIcon.vue';
 import DeviceFloppyIcon from '@/icons/DeviceFloppyIcon.vue';
 import ArrowBackUpIcon from '@/icons/ArrowBackUpIcon.vue';
-import ListCheckIcon from '@/icons/ListCheckIcon.vue';
 import ExportImportModal from '@/components/modals/LandsraadExportImportModal.vue';
-import LandsraadListModal from '@/components/modals/LandsraadListModal.vue';
-import LandsraadHouseModal from '@/components/modals/LandsraadHouseModal.vue';
 import LandsraadHelpModal from '@/components/modals/LandsraadHelpModal.vue';
 
-import ItemTooltip from '@/components/ItemTooltip.vue';
-import GiftIcon from '@/icons/GiftIcon.vue';
-import LayoutGridIcon from '@/icons/LayoutGridIcon.vue';
-import ListDetailsIcon from '@/icons/ListDetailsIcon.vue';
-
 const landsraad = useLandsraadStore();
-const {
-	kills_points,
-	steps_points,
-	BONUSMAX,
-	handleUpdateStep,
-	handleUpdateTarget,
-	handleUpdatePicked,
-	handleLocalBonusLevel,
-} = landsraad;
-const { houses, currentHouse, editMode, exportHousesCode, bonusLevel } = storeToRefs(landsraad);
+const { steps_points, handleUpdateStep, handleUpdatePicked, handleUpdateStatus } = landsraad;
+const { houses, currentHouse, exportHousesCode } = storeToRefs(landsraad);
 
-const display = ref('grid');
-const houseModal = ref();
 const exportImportModal = ref();
-const listModal = ref();
 const helpModal = ref();
 
-const activeRow = ref(null);
-
 const el = ref();
+const miniMenu = ref();
 
-const handleOpenModal = (houseId) => {
-	if (editMode.value) {
-		return;
-	}
-	currentHouse.value = houses.value.find((house) => house.id === houseId);
-	houseModal.value.showModal();
-};
-
-const handleRowActive = (houseId) => {
-	activeRow.value = activeRow.value === houseId ? null : houseId;
-};
+const isMiniMenuLoading = ref();
 
 /*
 
@@ -311,23 +193,26 @@ useDraggable(el, houses, {
 	},
 });
 
-onMounted(() => {
-	const localDisplay = localStorage.getItem('landsraad-display');
-	if (localDisplay && ['grid', 'list'].indexOf(localDisplay) >= 0) {
-		display.value = localDisplay;
-	}
-});
+const handleMiniMenu = (houseId, $event) => {
+	$event.preventDefault();
 
-const switchDisplay = () => {
-	display.value = display.value === 'grid' ? 'list' : 'grid';
-	localStorage.setItem('landsraad-display', display.value);
+	isMiniMenuLoading.value = true;
+	currentHouse.value = houses.value.find((house) => house.id === houseId);
+
+	miniMenu.value.setProps({
+		getReferenceClientRect: () => ({
+			width: 0,
+			height: 0,
+			top: $event.clientY,
+			bottom: $event.clientY,
+			left: $event.clientX,
+			right: $event.clientX,
+		}),
+	});
+
+	setTimeout(() => {
+		isMiniMenuLoading.value = false;
+		miniMenu.value.show();
+	}, 50);
 };
-
-const coef = computed(() => {
-	return 1 + (bonusLevel.value * 20) / 100;
-});
-
-const filteredHouses = computed(() => {
-	return JSON.parse(JSON.stringify(houses.value)).sort((a, b) => a.name.localeCompare(b.name));
-});
 </script>

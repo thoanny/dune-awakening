@@ -1,5 +1,5 @@
 <template>
-	<div class="stats bg-base-300 text-center col-span-2">
+	<div class="stats bg-base-300 text-center">
 		<div class="stat">
 			<div class="stat-value">
 				<span class="countdown font-mono text-xl sm:text-3xl">

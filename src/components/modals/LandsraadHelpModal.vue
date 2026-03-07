@@ -39,13 +39,6 @@
 			afficher les détails de la maison ainsi que des paliers des récompenses (si le souhait
 			est renseigné), ainsi que la localisation de son représentant.
 		</p>
-		<!-- <div class="inline-flex gap-2 items-center" v-if="editMode">
-					<InfoCircleIcon class="size-5 shrink-0" />
-					<span class="text-sm"
-						>Clic gauche dans la case&nbsp;= gagné&nbsp;; clic droit (ou appui long sur
-						mobile)&nbsp;= perdu.</span
-					>
-				</div> -->
 	</div>
 	<form method="dialog" class="modal-backdrop">
 		<button>close</button>
