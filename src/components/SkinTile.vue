@@ -10,13 +10,13 @@
 			{{ name }}
 		</div>
 		<div
-			class="border-2 relative bg-primary flex justify-center border-t-0"
+			class="border-2 relative bg-primary flex justify-center border-t-0 overflow-hidden"
 			:class="{
 				'border-primary ': !checked,
 				'border-success': checked,
 			}"
 		>
-			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 109.57">
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 109.57" class="-mt-12">
 				<g>
 					<polygon points="72 0 72 49.94 36 86.26 0 49.94 0 0 72 0" :fill="top" />
 					<polygon

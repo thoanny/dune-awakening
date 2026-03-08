@@ -2,7 +2,7 @@
 	<div class="container mx-auto">
 		<TitleSection title="Skins" />
 		<div
-			class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-7 gap-x-6 gap-y-4 px-4 mt-6"
+			class="grid grid-cols-2 sm:grid-cols-5 lg:grid-cols-7 xl:grid-cols-9 gap-x-4 gap-y-2 px-4 mt-6"
 		>
 			<SkinTile
 				v-for="skin in filteredSkins"
