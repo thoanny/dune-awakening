@@ -1,12 +1,8 @@
 <template>
 	<div class="container mx-auto">
 		<TitleSection title="Skins" />
-		<!-- <pre>{{ JSON.stringify(skinsChecked) }}</pre> -->
-		<!-- <pre>{{ code }}</pre> -->
-		<!-- <pre>{{ skinsChecked }}</pre> -->
-		<!-- <pre>{{ filteredSkins }}</pre> -->
 		<div
-			class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-x-6 gap-y-4 px-4 mt-6"
+			class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-7 gap-x-6 gap-y-4 px-4 mt-6"
 		>
 			<SkinTile
 				v-for="skin in filteredSkins"
@@ -35,10 +31,6 @@ const filteredSkins = computed(() => {
 });
 
 const skinsChecked = ref([]);
-
-const code = computed(() => {
-	return LZString.compressToEncodedURIComponent(JSON.stringify(skinsChecked.value));
-});
 
 const handleToggleCheck = (skinPk) => {
 	const idx = skinsChecked.value.findIndex((skin) => skin === skinPk);
