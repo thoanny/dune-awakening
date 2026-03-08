@@ -2,7 +2,7 @@
 	<div class="stats bg-base-300 text-center">
 		<div class="stat">
 			<div class="stat-value">
-				<span class="countdown font-mono text-xl sm:text-3xl">
+				<span class="countdown tabular-nums text-xl sm:text-3xl">
 					<span
 						:style="`--value: ${dailyRestart.hours}`"
 						aria-live="polite"

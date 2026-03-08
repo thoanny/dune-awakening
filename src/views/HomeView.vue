@@ -14,7 +14,9 @@
 				loading="lazy"
 			/>
 		</div>
-		<div class="grid grid-cols-1 xl:grid-cols-3 gap-4 px-4 mt-4 md:-mt-18 lg:-mt-24 xl:-mt-28">
+		<div
+			class="grid grid-cols-1 xl:grid-cols-3 gap-4 px-4 mt-4 md:-mt-18 lg:-mt-24 xl:-mt-28 mb-8"
+		>
 			<DailyRestart />
 			<WeeklyCoriolis />
 		</div>
