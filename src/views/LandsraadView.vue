@@ -63,40 +63,24 @@
 					<div class="divider text-sm my-3 text-base-content/75 font-semibold">
 						Statut
 					</div>
-					<div class="flex gap-2 mx-3">
+					<div class="grid grid-cols-2 gap-2 mx-3">
 						<button
-							class="btn btn-sm"
-							:class="{
-								'btn-outline': currentHouse.status,
-							}"
-							style="
-								--btn-color: color-mix(
-									in oklab,
-									var(--color-base-content) 50%,
-									transparent
-								);
-							"
-							@click="handleUpdateStatus(currentHouse.id, null)"
-						>
-							Neutre
-						</button>
-						<button
-							class="btn btn-success btn-sm"
+							class="btn btn-success btn-sm btn-wide"
 							:class="{
 								'btn-outline': currentHouse.status !== 'w',
 							}"
 							@click="handleUpdateStatus(currentHouse.id, 'w')"
 						>
-							Gagné
+							Atréides
 						</button>
 						<button
-							class="btn btn-error btn-sm"
+							class="btn btn-error btn-sm btn-wide"
 							:class="{
 								'btn-outline': currentHouse.status !== 'l',
 							}"
 							@click="handleUpdateStatus(currentHouse.id, 'l')"
 						>
-							Perdu
+							Harkonnen
 						</button>
 					</div>
 				</div>

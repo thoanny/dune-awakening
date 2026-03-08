@@ -6,7 +6,6 @@
 			'house-win': house.status === 'w',
 			'!opacity-25': house.user.step == 5 && house.user.picked,
 		}"
-		@click="$emit('openModal', house.id)"
 	>
 		<div class="absolute top-0 right-0 z-10">
 			<div class="h-full w-full absolute top-0 left-0 custom-bg-linear"></div>
@@ -17,7 +16,7 @@
 		</span>
 
 		<div
-			class="btn btn-sm btn-primary z-20 btn-square top-1 right-1 absolute"
+			class="btn btn-sm btn-neutral z-20 btn-square top-1 right-1 absolute"
 			v-if="house.user.step > 0 && !house.user.picked"
 		>
 			<GiftIcon class="size-5" />
@@ -32,8 +31,8 @@
 				v-for="(step, s) in steps_points"
 				:key="s"
 				:class="{
-					'bg-base-content opacity-25': house.user.step < s + 1,
-					'bg-success': house.user.step >= s + 1,
+					'bg-base-content/25': house.user.step < s + 1,
+					'bg-base-content': house.user.step >= s + 1,
 				}"
 			></div>
 		</div>
@@ -61,16 +60,16 @@ const { steps_points } = landsraad;
 }
 
 .house-lost {
-	--color: #241919;
-	border-color: #984141;
-	color: #984141;
+	--color: var(--color-error-content);
+	border-color: var(--color-error);
+	color: var(--color-error);
 	background: var(--color);
 }
 
 .house-win {
-	--color: #1a1f1b;
-	border-color: #85997a;
-	color: #85997a;
+	--color: var(--color-success-content);
+	border-color: var(--color-success);
+	color: var(--color-success);
 	background: var(--color);
 }
 

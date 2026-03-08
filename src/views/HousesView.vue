@@ -24,8 +24,8 @@
 				:class="{
 					'opacity-100': house.user?.step > 0 && !house.user?.picked,
 					'opacity-50': !house.user?.step || (house.user?.step > 0 && house.user?.picked),
-					'border-success text-success cursor-pointer filter-success':
-						house.user?.step > 0,
+					'cursor-pointer': house.user?.step > 0,
+					'border-dashed': !house.user?.step,
 				}"
 			>
 				<img
@@ -63,7 +63,8 @@
 						'opacity-100 z-40': house.user?.step > 0 && !house.user?.picked,
 						'opacity-50 z-30':
 							!house.user?.step || (house.user?.step > 0 && house.user?.picked),
-						'border-success filter-success cursor-pointer ': house.user?.step > 0,
+						'cursor-pointer': house.user?.step > 0,
+						'border-dashed': !house.user?.step,
 					}"
 				>
 					<img
