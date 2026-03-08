@@ -11,10 +11,22 @@
 			v-if="outsideMapHouses.length > 0"
 		>
 			<div
-				class="bg-base-100 hover:bg-base-300 border-2 border-white flex gap-2 items-center py-2 px-3 leading-5 cursor-pointer"
+				class="bg-base-100 hover:bg-base-300 border-2 flex gap-2 items-center py-2 px-3 leading-5 select-none"
 				v-for="house in outsideMapHouses"
 				:key="house.id"
-				@click="handleUpdatePicked(house.id)"
+				@click="
+					() => {
+						if (house.user?.step > 0) {
+							handleUpdatePicked(house.id);
+						}
+					}
+				"
+				:class="{
+					'opacity-100': house.user?.step > 0 && !house.user?.picked,
+					'opacity-50': !house.user?.step || (house.user?.step > 0 && house.user?.picked),
+					'border-success text-success cursor-pointer filter-success':
+						house.user?.step > 0,
+				}"
 			>
 				<img
 					:src="`/img/houses/${house.name}.webp`"
@@ -38,9 +50,21 @@
 				<div
 					v-for="house in onMapHouses"
 					:key="house.id"
-					class="size-10 shadow/100 border-2 bg-base-100 border-white rounded-full absolute flex items-center justify-center cursor-pointer"
+					class="size-10 shadow/100 border-2 bg-base-100 rounded-full absolute flex items-center justify-center"
 					:style="`left: calc(${house.map?.x}% - 1.25rem); top: calc(${house.map?.y}% - 1.25rem)`"
-					@click="handleUpdatePicked(house.id)"
+					@click="
+						() => {
+							if (house.user?.step > 0) {
+								handleUpdatePicked(house.id);
+							}
+						}
+					"
+					:class="{
+						'opacity-100 z-40': house.user?.step > 0 && !house.user?.picked,
+						'opacity-50 z-30':
+							!house.user?.step || (house.user?.step > 0 && house.user?.picked),
+						'border-success filter-success cursor-pointer ': house.user?.step > 0,
+					}"
 				>
 					<img
 						:src="`/img/houses/${house.name}.webp`"
@@ -78,12 +102,16 @@ const { handleUpdatePicked } = landsraad;
 // };
 
 const onMapHouses = computed(() => {
-	return houses.value.filter(
-		(house) => house.map?.x && house.map?.y && house.user.step > 0 && !house.user.picked,
-	);
+	return houses.value.filter((house) => house.map?.x && house.map?.y);
 });
 
 const outsideMapHouses = computed(() => {
-	return houses.value.filter((house) => !house.map && house.user.step > 0 && !house.user.picked);
+	return houses.value.filter((house) => !house.map);
 });
 </script>
+
+<style>
+.filter-success img {
+	filter: sepia(100%) saturate(2000%) hue-rotate(435deg);
+}
+</style>
