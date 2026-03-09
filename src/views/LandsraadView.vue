@@ -26,7 +26,7 @@
 					<DeviceFloppyIcon class="size-6" />
 					Exporter/Importer
 				</button>
-				<button class="btn btn-primary leading-none" @click="landsraad.handleReset">
+				<button class="btn btn-primary leading-none" @click="handleReset">
 					<ArrowBackUpIcon class="size-6" />
 					Réinitialiser
 				</button>
@@ -68,6 +68,7 @@ import LandsraadHelpModal from '@/components/modals/LandsraadHelpModal.vue';
 import HouseTooltip from '@/components/HouseTooltip.vue';
 
 const landsraad = useLandsraadStore();
+const { handleUpdateSort, handleReset } = landsraad;
 const { houses, exportHousesCode } = storeToRefs(landsraad);
 
 const exportImportModal = ref();
@@ -98,7 +99,7 @@ useDraggable(el, houses, {
 	animation: 150,
 	handle: '.handle',
 	onUpdate() {
-		landsraad.handleUpdateSort();
+		handleUpdateSort();
 	},
 });
 

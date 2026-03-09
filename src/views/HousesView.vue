@@ -109,7 +109,9 @@ const onMapHouses = computed(() => {
 });
 
 const outsideMapHouses = computed(() => {
-	return houses.value.filter((house) => !house.map);
+	return houses.value
+		.filter((house) => !house.map)
+		.sort((a, b) => a.name.localeCompare() - b.name.localeCompare());
 });
 </script>
 

@@ -1,6 +1,6 @@
 <template>
 	<div class="container mx-auto">
-		<TitleSection title="Skins" />
+		<TitleSection title="Skins d'objets" />
 		<div
 			class="grid grid-cols-2 sm:grid-cols-5 lg:grid-cols-7 xl:grid-cols-9 gap-x-4 gap-y-2 px-4 mt-6"
 		>
