@@ -1,88 +1,12 @@
 <template>
 	<div class="container mx-auto">
 		<TitleSection title="Landsraad" />
+
 		<!-- Tippy -->
 		<tippy ref="miniMenu" trigger="manual" :follow-cursor="false" :interactive="true">
 			<template #content>
-				<div
-					class="bg-base-300 rounded-box w-56 py-3 shadow-2xl shadow-base-content/50"
-					v-if="currentHouse && !isMiniMenuLoading"
-				>
-					<h4 class="flex gap-2 items-center font-bold mx-2 justify-center">
-						<img
-							:src="`/img/houses/${currentHouse.name}.webp`"
-							alt=""
-							class="size-8 object-contain z-20"
-						/>
-						{{ currentHouse.name }}
-						<img
-							:src="`/img/houses/${currentHouse.name}.webp`"
-							alt=""
-							class="size-8 object-contain z-20"
-						/>
-					</h4>
-
-					<div class="divider text-sm my-3 text-base-content/75 font-semibold">
-						Paliers validés
-					</div>
-					<div class="flex gap-1 justify-center" v-if="currentHouse.user">
-						<button
-							class="btn btn-square btn-sm"
-							v-for="(step, s) in steps_points"
-							:key="s"
-							:class="{
-								'btn-outline': currentHouse.user.step < s + 1,
-								'btn-success': currentHouse.user.step >= s + 1,
-							}"
-							:style="
-								currentHouse.user.step < s + 1
-									? '--btn-color: color-mix(in oklab, var(--color-base-content) 50%, transparent);'
-									: ''
-							"
-							@click="handleUpdateStep(currentHouse.id, s + 1)"
-						>
-							{{ s + 1 }}
-						</button>
-					</div>
-					<div class="divider text-sm my-3 text-base-content/75 font-semibold">
-						Récompenses
-					</div>
-					<label
-						class="flex gap-2 items-center justify-center select-none text-sm"
-						v-if="currentHouse.user"
-					>
-						<input
-							type="checkbox"
-							class="toggle toggle-success toggle-sm"
-							v-model="currentHouse.user.picked"
-							:disabled="currentHouse.user.step === 0"
-							@change="handleUpdatePicked"
-						/>
-						Récupérées
-					</label>
-					<div class="divider text-sm my-3 text-base-content/75 font-semibold">
-						Statut
-					</div>
-					<div class="grid grid-cols-2 gap-2 mx-3">
-						<button
-							class="btn btn-success btn-sm btn-wide"
-							:class="{
-								'btn-outline': currentHouse.status !== 'w',
-							}"
-							@click="handleUpdateStatus(currentHouse.id, 'w')"
-						>
-							Atréides
-						</button>
-						<button
-							class="btn btn-error btn-sm btn-wide"
-							:class="{
-								'btn-outline': currentHouse.status !== 'l',
-							}"
-							@click="handleUpdateStatus(currentHouse.id, 'l')"
-						>
-							Harkonnen
-						</button>
-					</div>
+				<div v-if="currentHouse && !isMiniMenuLoading">
+					<HouseTooltip :house-id="currentHouse?.id" />
 				</div>
 				<div class="h-[260px] w-56" v-else></div>
 			</template>
@@ -141,10 +65,10 @@ import DeviceFloppyIcon from '@/icons/DeviceFloppyIcon.vue';
 import ArrowBackUpIcon from '@/icons/ArrowBackUpIcon.vue';
 import ExportImportModal from '@/components/modals/LandsraadExportImportModal.vue';
 import LandsraadHelpModal from '@/components/modals/LandsraadHelpModal.vue';
+import HouseTooltip from '@/components/HouseTooltip.vue';
 
 const landsraad = useLandsraadStore();
-const { steps_points, handleUpdateStep, handleUpdatePicked, handleUpdateStatus } = landsraad;
-const { houses, currentHouse, exportHousesCode } = storeToRefs(landsraad);
+const { houses, exportHousesCode } = storeToRefs(landsraad);
 
 const exportImportModal = ref();
 const helpModal = ref();
@@ -152,6 +76,7 @@ const helpModal = ref();
 const el = ref();
 const miniMenu = ref();
 
+const currentHouse = ref({});
 const isMiniMenuLoading = ref();
 
 /*

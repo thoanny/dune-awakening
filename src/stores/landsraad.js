@@ -2,11 +2,11 @@ import { computed, ref } from 'vue';
 import { defineStore } from 'pinia';
 import LZString from 'lz-string';
 import dataHouses from '@/data/houses.json';
+import { useRouter } from 'vue-router';
 
 export const useLandsraadStore = defineStore('landsraad', () => {
 	const houses = ref();
-	const currentHouse = ref({});
-	const version = 2;
+	const version = 3;
 
 	const steps_points = [700, 3500, 7000, 10500, 14000];
 
@@ -20,6 +20,7 @@ export const useLandsraadStore = defineStore('landsraad', () => {
 					s: house.status,
 					u: house.user.step,
 					p: +house.user.picked,
+					pts: house.user.points,
 					o: house.sort,
 				})),
 				version: version,
@@ -32,7 +33,7 @@ export const useLandsraadStore = defineStore('landsraad', () => {
 		houses.value = dataHouses.map((house, h) => ({
 			...house,
 			status: '',
-			user: { step: 0, picked: false },
+			user: { step: 0, picked: false, points: 0 },
 			sort: h,
 		}));
 
@@ -44,6 +45,12 @@ export const useLandsraadStore = defineStore('landsraad', () => {
 			) {
 				localStorage.removeItem('landsraad');
 				localStorage.removeItem('landsraad-user');
+				localStorage.removeItem('landsraad-old');
+				localStorage.removeItem('landsraad-bonus');
+				localStorage.removeItem('landsraad-display');
+
+				const router = useRouter();
+				router.go();
 			}
 			localLandsraad.data?.forEach((landsraad) => {
 				const idx = houses.value.findIndex((house) => house.id === landsraad._);
@@ -53,6 +60,7 @@ export const useLandsraadStore = defineStore('landsraad', () => {
 						status: landsraad.s,
 						user: {
 							step: landsraad.u,
+							points: landsraad.pts,
 							picked: Boolean(landsraad.p),
 						},
 						sort: landsraad.o,
@@ -129,10 +137,14 @@ export const useLandsraadStore = defineStore('landsraad', () => {
 		_saveLocalLandsraad();
 	};
 
-	const handleUpdateStep = (houseId, step) => {
+	const handleUpdateStep = (houseId) => {
 		console.log('handleUpdateStep');
 		const house = houses.value.find((h) => h.id === houseId);
-		(house.user.step = house.user.step === step ? 0 : step), (house.user.picked = false);
+		const idx = steps_points.reverse().findIndex((step) => {
+			return house.user.points >= step;
+		});
+		steps_points.reverse();
+		(house.user.step = idx < 0 ? 0 : steps_points.length - idx), (house.user.picked = false);
 		_saveLocalLandsraad();
 	};
 
@@ -147,9 +159,19 @@ export const useLandsraadStore = defineStore('landsraad', () => {
 		_saveLocalLandsraad();
 	};
 
+	const handleAddPoints = (houseId, points) => {
+		console.log('handleAddPoints');
+		const house = houses.value.find((h) => h.id === houseId);
+		if (house.user.points + points > steps_points.slice(-1)) {
+			house.user.points = steps_points.slice(-1)[0];
+		} else {
+			house.user.points += points;
+		}
+		handleUpdateStep(houseId);
+	};
+
 	return {
 		houses,
-		currentHouse,
 		exportHousesCode,
 		steps_points,
 		handleUpdateStatus,
@@ -158,5 +180,6 @@ export const useLandsraadStore = defineStore('landsraad', () => {
 		handleImportHouses,
 		handleUpdateStep,
 		handleUpdatePicked,
+		handleAddPoints,
 	};
 });
