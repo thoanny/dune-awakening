@@ -40,7 +40,7 @@
 			</div>
 		</div>
 
-		<div class="mt-4 px-4 relative">
+		<div class="mt-4 px-4 relative select-none">
 			<img
 				src="/img/bassin-hagga_compressed.jpg"
 				class="rounded absolute relative z-10 block"
@@ -50,7 +50,8 @@
 				<div
 					v-for="house in onMapHouses"
 					:key="house.id"
-					class="size-10 shadow/100 border-2 bg-base-100 rounded-full absolute flex items-center justify-center"
+					class="size-10 shadow/100 border-2 bg-base-100 rounded-full absolute flex items-center justify-center tooltip tooltip-open"
+					:data-tip="house.name"
 					:style="`left: calc(${house.map?.x}% - 1.25rem); top: calc(${house.map?.y}% - 1.25rem)`"
 					@click="
 						() => {
@@ -61,10 +62,11 @@
 					"
 					:class="{
 						'opacity-100 z-40': house.user?.step > 0 && !house.user?.picked,
-						'opacity-50 z-30':
+						'opacity-60 z-30':
 							!house.user?.step || (house.user?.step > 0 && house.user?.picked),
 						'cursor-pointer': house.user?.step > 0,
 						'border-dashed': !house.user?.step,
+						'tooltip-bottom': ['Richèse', 'Moritani'].indexOf(house.name) >= 0,
 					}"
 				>
 					<img
