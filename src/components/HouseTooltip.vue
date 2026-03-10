@@ -59,8 +59,8 @@
 					:max="steps_points.slice(-1)[0]"
 					v-model="house.user.points"
 					class="text-end"
-					@keyup="handleUpdateStep(house.id)"
-					@change="handleUpdateStep(house.id)"
+					@keyup="updateStep(house.id)"
+					@change="updateStep(house.id)"
 					@wheel.prevent
 				/>
 				<span class="label">/ 14000</span>
@@ -105,6 +105,7 @@
 import { computed } from 'vue';
 import { useLandsraadStore } from '@/stores/landsraad';
 import { storeToRefs } from 'pinia';
+import { useDebounceFn } from '@vueuse/core';
 
 const props = defineProps(['houseId']);
 
@@ -116,4 +117,9 @@ const { houses } = storeToRefs(landsraad);
 const house = computed(() => {
 	return houses.value.find((house) => house.id === props.houseId);
 });
+
+const updateStep = useDebounceFn(() => {
+	console.log('updateStep');
+	handleUpdateStep(props.houseId);
+}, 300);
 </script>
