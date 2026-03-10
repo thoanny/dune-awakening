@@ -6,13 +6,13 @@
 		<h3 class="text-xl font-bold text-primary">Partager votre code</h3>
 		<p class="py-4">
 			Diffusez le code suivant pour partager l'état actuel de votre landsraad avec d'autres
-			personnes.
+			personnes (statut&nbsp;: Atréides/Harkonnen&nbsp;; ordre d'apparition dans le tableau).
 		</p>
 		<p class="break-all text-xs border border-white/25 p-2">{{ exportHousesCode }}</p>
 		<h3 class="text-xl text-primary font-bold mt-4">Importer les données</h3>
 		<p class="py-4">
-			Collez le code qui vous a été partagé pour importer un état de landsraad et le
-			visualiser/modifier.
+			Collez le code qui vous a été partagé pour importer un état de landsraad. Cela n'affecte
+			pas votre progression&nbsp;: paliers validés et récompenses récupérées.
 		</p>
 		<textarea class="textarea w-full" v-model="importCodeEl"></textarea>
 		<div class="modal-action">
