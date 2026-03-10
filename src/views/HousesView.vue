@@ -2,8 +2,9 @@
 	<div class="container mx-auto my-6">
 		<TitleSection title="Maisons" />
 		<p class="px-4 mt-4">
-			Seuls les représentants des maisons où vous devez aller récupérer une récompense
-			s'affichent. Cliquez dessus pour indiquer que vous avez récupéré vos récompenses.
+			Les représentants des Grandes Maisons affichées en surbrillance sont ceux auprès de qui
+			vous devez récupérer une récompense. Cliquez dessus pour enregistrer que vous avez
+			récupéré vos récompenses.
 		</p>
 
 		<div

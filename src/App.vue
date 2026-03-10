@@ -35,8 +35,15 @@ import { RouterLink, RouterView } from 'vue-router';
 	<footer class="opacity-25 py-4 px-4 mt-2 text-center">
 		Tous les logos, marques et images de ce site sont la propriété de Funcom. Ce site n'est pas
 		affilié avec l'éditeur. Réalisé par
-		<a href="https://thoanny.fr" target="_blank" class="link">Thoanny</a> •
-		<a href="https://api.thoanny.fr/legal-notice" target="_blank" class="link"
+		<a href="https://thoanny.fr" target="_blank" class="link" rel="author noopener noreferrer"
+			>Thoanny</a
+		>
+		•
+		<a
+			href="https://api.thoanny.fr/legal-notice"
+			target="_blank"
+			class="link"
+			rel="noopener noreferrer"
 			>Mentions légales</a
 		>
 	</footer>
