@@ -1,11 +1,11 @@
 <template>
-	<div class="stats bg-base-300 text-center col-span-2">
+	<div class="stats bg-base-300 text-center">
 		<div class="stat">
 			<div class="stat-value text-xl sm:text-3xl">{{ weeklyCoriolis?.start }}</div>
 			<div class="stat-desc">Début de la tempête de Coriolis</div>
 		</div>
 	</div>
-	<div class="stats bg-base-300 text-center col-span-2">
+	<div class="stats bg-base-300 text-center">
 		<div class="stat">
 			<div class="stat-value text-xl sm:text-3xl">{{ weeklyCoriolis?.end }}</div>
 			<div class="stat-desc">Fin de la tempête de Coriolis</div>

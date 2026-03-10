@@ -2,8 +2,9 @@
 	<div class="container mx-auto my-6">
 		<TitleSection title="Maisons" />
 		<p class="px-4 mt-4">
-			Seuls les représentants des maisons où vous devez aller récupérer une récompense
-			s'affichent. Cliquez dessus pour indiquer que vous avez récupéré vos récompenses.
+			Les représentants des Grandes Maisons affichées en surbrillance sont ceux auprès de qui
+			vous devez récupérer une récompense. Cliquez dessus pour enregistrer que vous avez
+			récupéré vos récompenses.
 		</p>
 
 		<div
@@ -11,10 +12,22 @@
 			v-if="outsideMapHouses.length > 0"
 		>
 			<div
-				class="bg-base-100 hover:bg-base-300 border-2 border-white flex gap-2 items-center py-2 px-3 leading-5 cursor-pointer"
+				class="bg-base-100 hover:bg-base-300 border-2 flex gap-2 items-center py-2 px-3 leading-5 select-none"
 				v-for="house in outsideMapHouses"
 				:key="house.id"
-				@click="handleUpdatePicked(house.id)"
+				@click="
+					() => {
+						if (house.user?.step > 0) {
+							handleUpdatePicked(house.id);
+						}
+					}
+				"
+				:class="{
+					'opacity-100': house.user?.step > 0 && !house.user?.picked,
+					'opacity-50': !house.user?.step || (house.user?.step > 0 && house.user?.picked),
+					'cursor-pointer': house.user?.step > 0,
+					'border-dashed': !house.user?.step,
+				}"
 			>
 				<img
 					:src="`/img/houses/${house.name}.webp`"
@@ -28,7 +41,7 @@
 			</div>
 		</div>
 
-		<div class="mt-4 px-4 relative">
+		<div class="mt-4 px-4 relative select-none">
 			<img
 				src="/img/bassin-hagga_compressed.jpg"
 				class="rounded absolute relative z-10 block"
@@ -38,9 +51,24 @@
 				<div
 					v-for="house in onMapHouses"
 					:key="house.id"
-					class="size-10 shadow/100 border-2 bg-base-100 border-white rounded-full absolute flex items-center justify-center cursor-pointer"
+					class="size-10 shadow/100 border-2 bg-base-100 rounded-full absolute flex items-center justify-center tooltip tooltip-open"
+					:data-tip="house.name"
 					:style="`left: calc(${house.map?.x}% - 1.25rem); top: calc(${house.map?.y}% - 1.25rem)`"
-					@click="handleUpdatePicked(house.id)"
+					@click="
+						() => {
+							if (house.user?.step > 0) {
+								handleUpdatePicked(house.id);
+							}
+						}
+					"
+					:class="{
+						'opacity-100 z-40': house.user?.step > 0 && !house.user?.picked,
+						'opacity-60 z-30':
+							!house.user?.step || (house.user?.step > 0 && house.user?.picked),
+						'cursor-pointer': house.user?.step > 0,
+						'border-dashed': !house.user?.step,
+						'tooltip-bottom': ['Richèse', 'Moritani'].indexOf(house.name) >= 0,
+					}"
 				>
 					<img
 						:src="`/img/houses/${house.name}.webp`"
@@ -78,12 +106,18 @@ const { handleUpdatePicked } = landsraad;
 // };
 
 const onMapHouses = computed(() => {
-	return houses.value.filter(
-		(house) => house.map?.x && house.map?.y && house.user.step > 0 && !house.user.picked,
-	);
+	return houses.value.filter((house) => house.map?.x && house.map?.y);
 });
 
 const outsideMapHouses = computed(() => {
-	return houses.value.filter((house) => !house.map && house.user.step > 0 && !house.user.picked);
+	return houses.value
+		.filter((house) => !house.map)
+		.sort((a, b) => a.name.localeCompare() - b.name.localeCompare());
 });
 </script>
+
+<style>
+.filter-success img {
+	filter: sepia(100%) saturate(2000%) hue-rotate(435deg);
+}
+</style>

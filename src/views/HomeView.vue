@@ -14,19 +14,9 @@
 				loading="lazy"
 			/>
 		</div>
-		<div class="grid grid-cols-2 lg:grid-cols-4 gap-4 px-4 mt-4 md:-mt-18 lg:-mt-24 xl:-mt-28">
-			<div class="stats bg-base-300 text-center">
-				<div class="stat">
-					<div class="stat-value text-xl sm:text-3xl">{{ getTotalItems() }}</div>
-					<div class="stat-desc">Objets</div>
-				</div>
-			</div>
-			<div class="stats bg-base-300 text-center">
-				<div class="stat">
-					<div class="stat-value text-xl sm:text-3xl">{{ getTotalRecipes() }}</div>
-					<div class="stat-desc">Recettes</div>
-				</div>
-			</div>
+		<div
+			class="grid grid-cols-1 xl:grid-cols-3 gap-4 px-4 mt-4 md:-mt-18 lg:-mt-24 xl:-mt-28 mb-8"
+		>
 			<DailyRestart />
 			<WeeklyCoriolis />
 		</div>
@@ -34,12 +24,8 @@
 </template>
 
 <script setup>
-import { useAppStore } from '@/stores/app';
 import WeeklyCoriolis from '@/components/WeeklyCoriolis.vue';
 import DailyRestart from '@/components/DailyRestart.vue';
-
-const store = useAppStore();
-const { getTotalItems, getTotalRecipes } = store;
 </script>
 
 <style scoped>

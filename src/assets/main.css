@@ -164,16 +164,12 @@ header nav a.router-link-active span {
 	margin: 0;
 }
 
-#recipes .router-link-active {
-	@apply border-accent;
-}
-
 .stat-desc {
 	@apply uppercase tracking-wider;
 }
 
 .sortable-ghost {
-	@apply !bg-primary !border-transparent;
+	@apply !bg-base-content/50 !border-transparent;
 }
 
 .sortable-ghost > * {

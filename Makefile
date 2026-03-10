@@ -4,7 +4,7 @@ migrations:
 migrate:
 	python ./admin/manage.py migrate
 
-serve:
+server:
 	@$(eval port ?=7000)
 	python ./admin/manage.py runserver $(port)
 
@@ -17,6 +17,4 @@ json.export:
 	python -Xutf8 ./admin/manage.py dumpdata --format=json --natural-foreign $(model) > ./src/data/$(file).json
 
 json.data:
-	make json.export model=app.item file=items
-	make json.export model=app.recipe file=recipes
 	make json.export model=app.skin file=skins
