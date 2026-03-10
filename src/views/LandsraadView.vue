@@ -48,7 +48,7 @@
 		<LandsraadHelpModal />
 	</dialog>
 	<dialog ref="exportImportModal" class="modal">
-		<ExportImportModal :export-houses-code="exportHousesCode" />
+		<ExportImportModal />
 	</dialog>
 </template>
 
@@ -69,7 +69,7 @@ import HouseTooltip from '@/components/HouseTooltip.vue';
 
 const landsraad = useLandsraadStore();
 const { handleUpdateSort, handleReset } = landsraad;
-const { houses, exportHousesCode } = storeToRefs(landsraad);
+const { houses } = storeToRefs(landsraad);
 
 const exportImportModal = ref();
 const helpModal = ref();
