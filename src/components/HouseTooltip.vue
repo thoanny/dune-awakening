@@ -37,18 +37,14 @@
 				:max="steps_points.slice(-1)[0]"
 			></progress>
 		</div>
-		<div class="grid grid-cols-2 gap-2 mx-3 mb-3">
+		<div class="grid grid-cols-3 gap-2 mx-3 mb-3">
 			<button
 				class="btn btn-primary btn-outline btn-sm"
-				@click="handleAddPoints(house.id, 750)"
+				v-for="i in [750, 1000, 1250]"
+				:key="i"
+				@click="handleAddPoints(house.id, i)"
 			>
-				+750 points
-			</button>
-			<button
-				class="btn btn-primary btn-outline btn-sm"
-				@click="handleAddPoints(house.id, 1000)"
-			>
-				+1000 pts
+				+{{ i }}
 			</button>
 		</div>
 		<div class="mx-3">
