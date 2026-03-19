@@ -11,10 +11,14 @@
 			<div class="h-full w-full absolute top-0 left-0 custom-bg-linear"></div>
 			<StripesIcon class="w-full h-full" />
 		</div>
-		<span class="handle absolute top-2 left-2 cursor-move z-20 text-base-content">
-			<ArrowsMoveIcon class="size-5" />
-		</span>
 
+		<span class="handle absolute top-2 left-2 cursor-move z-20 text-base-content">
+			<img
+				:src="`/img/specs/${house.specialization}.webp`"
+				alt=""
+				class="size-6 object-contain z-20"
+			/>
+		</span>
 		<div
 			class="btn btn-sm btn-neutral z-20 btn-square top-1 right-1 absolute"
 			v-if="house.user.step > 0 && !house.user.picked"
@@ -25,6 +29,7 @@
 		<span class="font-bold z-20 text-shadow text-base-content">
 			{{ house.name }}
 		</span>
+		<span class="z-20 text-xs text-base-content/75 -mt-1 mb-1">{{ house.location.name }}</span>
 		<div class="flex items-center justify-center gap-1 w-full z-20">
 			<div
 				class="size-2"

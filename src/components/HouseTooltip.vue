@@ -17,11 +17,12 @@
 		<div class="divider text-sm my-3 text-base-content/75 font-semibold">
 			Paliers validés ({{ house.user.step }}/{{ steps_points.length }})
 		</div>
-		<div class="mx-3 mb-3 relative h-4">
+		<div class="mx-3 mb-3 relative h-4 mt-7">
 			<div
 				v-for="(step, s) in steps_points"
 				:key="step"
-				class="w-[2px] h-full absolute bg-base-content z-20"
+				class="w-[2px] h-full absolute bg-base-content z-20 tooltip tooltip-open"
+				:data-tip="step"
 				:class="{
 					'left-[calc(5%_-_1px)]': s == 0,
 					'left-[calc(25%_-_1px)]': s == 1,
@@ -119,3 +120,19 @@ const updateStep = useDebounceFn(() => {
 	handleUpdateStep(props.houseId);
 }, 300);
 </script>
+
+<style scoped>
+@reference "tailwindcss";
+
+.tooltip {
+	--tt-off: calc(100% + 0.25rem);
+}
+
+.tooltip:before {
+	@apply text-xs font-semibold !p-0 bg-transparent;
+}
+
+.tooltip:after {
+	display: none;
+}
+</style>

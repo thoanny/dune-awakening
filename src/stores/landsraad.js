@@ -144,7 +144,7 @@ export const useLandsraadStore = defineStore('landsraad', () => {
 			return house.user.points >= step;
 		});
 		steps_points.reverse();
-		(house.user.step = idx < 0 ? 0 : steps_points.length - idx), (house.user.picked = false);
+		((house.user.step = idx < 0 ? 0 : steps_points.length - idx), (house.user.picked = false));
 		_saveLocalLandsraad();
 	};
 
