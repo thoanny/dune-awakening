@@ -2,10 +2,22 @@
 	<div class="container mx-auto my-6">
 		<TitleSection title="Maisons" />
 		<p class="px-4 mt-4">
-			Les représentants des Grandes Maisons affichées en surbrillance sont ceux auprès de qui
-			vous devez récupérer une récompense. Cliquez dessus pour enregistrer que vous avez
-			récupéré vos récompenses.
+			Les représentants des Grandes Maisons affichées
+			<template v-if="housesShowAll">en surbrillance</template> sont ceux auprès de qui vous
+			devez récupérer une récompense. Cliquez dessus pour enregistrer que vous avez récupéré
+			vos récompenses.
 		</p>
+
+		<label class="label mx-4 mt-4" for="houses-show-all">
+			<input
+				type="checkbox"
+				checked="checked"
+				class="toggle toggle-primary"
+				v-model="housesShowAll"
+				id="houses-show-all"
+			/>
+			Voir toutes les maisons
+		</label>
 
 		<div
 			class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3 mt-4 px-4"
@@ -27,6 +39,7 @@
 					'opacity-50': !house.user?.step || (house.user?.step > 0 && house.user?.picked),
 					'cursor-pointer': house.user?.step > 0,
 					'border-dashed': !house.user?.step,
+					hidden: !housesShowAll && !house.user?.step,
 				}"
 			>
 				<img
@@ -68,6 +81,7 @@
 						'cursor-pointer': house.user?.step > 0,
 						'border-dashed': !house.user?.step,
 						'tooltip-bottom': ['Richèse', 'Moritani'].indexOf(house.name) >= 0,
+						hidden: !housesShowAll && !house.user?.step,
 					}"
 				>
 					<img
@@ -83,6 +97,8 @@
 </template>
 
 <script setup>
+import { useStorage } from '@vueuse/core';
+
 import TitleSection from '@/components/TitleSection.vue';
 
 import { useLandsraadStore } from '@/stores/landsraad';
@@ -114,6 +130,8 @@ const outsideMapHouses = computed(() => {
 		.filter((house) => !house.map)
 		.sort((a, b) => a.name.localeCompare() - b.name.localeCompare());
 });
+
+const housesShowAll = useStorage('houses-show-all', false);
 </script>
 
 <style>
